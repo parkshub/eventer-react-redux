@@ -66,4 +66,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
     // compare model's user's password with the one provided using bcrypy
     // and if they match, respond with jwt
 })
-exports.getUser // this is going to work yet, just need it to test that auth middleware works
+exports.getUser = asyncHandler(async(req, res) => {
+    res.json(req.user)
+    console.log(req.user)
+})
