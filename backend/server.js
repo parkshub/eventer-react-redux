@@ -5,7 +5,7 @@ const colors = require('colors');
 require('dotenv').config({path: "./backend/config/.env"})
 
 const userRouter = require('./routers/userRoute')
-
+const eventRouter = require('./routers/eventRouter')
 
 connectDB()
 
@@ -15,6 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use('/api/user', userRouter)
+app.use('/api/goal', eventRouter)
 
 
 

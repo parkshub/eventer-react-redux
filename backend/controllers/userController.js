@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken') 
-const userModel = require('../models/User')
+const UserModel = require('../models/User')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs')
 
@@ -12,8 +12,8 @@ function generateToken(id) {
 exports.registerUser = asyncHandler(async (req, res) => {
     const {name, email, password} = req.body
 
-    console.log(JSON.stringify(req.body))
-    console.log(name, email, password)
+    // console.log(JSON.stringify(req.body))
+    // console.log(name, email, password)
 
 
     if (!name || !email || !password) {
@@ -21,7 +21,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
         throw new Error('Please enter all fields')
     }
 
-    const checkUser = await userModel.findOne({email: email})
+    const checkUser = await UserModel.findOne({email: email})
     if (checkUser) {
         res.status(400)
         throw new Error ('User already exists')
@@ -30,7 +30,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    const user = await userModel.create({
+    const user = await UserModel.create({
         name: name,
         email: email,
         password: hashedPassword
@@ -48,12 +48,13 @@ exports.registerUser = asyncHandler(async (req, res) => {
     }
 })
 
-
 exports.loginUser = asyncHandler(async (req, res) => {
     // get email and password
     let {email, password} = req.body
+
     // find user with that email
-    const user = await userModel.findOne({email: email})
+    const user = await UserModel.findOne({email: email})
+    
     if (await bcrypt.compare(password, user.password)) {
         res.status(201).json({
             token: generateToken(user.id)
@@ -66,6 +67,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
     // compare model's user's password with the one provided using bcrypy
     // and if they match, respond with jwt
 })
+
 exports.getUser = asyncHandler(async(req, res) => {
     res.json(req.user)
     console.log(req.user)
