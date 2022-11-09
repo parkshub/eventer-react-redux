@@ -8,6 +8,10 @@ router.get('/getUserEvents/:id', auth, eventController.getUserEvents)
 router.delete('/deleteEvent/:id', auth, eventController.deleteEvent)
 router.put('/updateEvent/:id', auth, eventController.updateEvent)
 
+
+router.put('/attendEvent/:id', auth, eventController.attendEvent)
+// router.post('/attendEvent/:id', auth, eventController.attendEvent)
+
 // since we're using JWT tokens loggin out will be handled by one of slice services by just removing user from local storage
 
 module.exports = router

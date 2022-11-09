@@ -15,7 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
 app.use('/api/user', userRouter)
-app.use('/api/goal', eventRouter)
+app.use('/api/event', eventRouter)
 
 
 

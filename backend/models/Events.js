@@ -20,15 +20,16 @@ const eventSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
-    }
-    // attending: {
-    //     type: Number,
-    //     required: true,
-    // },
-    // user: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    // },
+    },
+    attending: {
+        type: Number,
+        required: true,
+        default: 1,
+    },
+    attendee: {
+        // type: String
+    },
+
     // dateTime: {
     //     type: String,
     //     required: true,
@@ -53,10 +54,6 @@ const eventSchema = new mongoose.Schema({
     //     type: String,
     //     required: true
     // },
-    // attendee: {
-    //     type: [mongoose.Schema.Types.ObjectId],
-    //     default: []
-    // }
 });
 
 module.exports = mongoose.model('Event', eventSchema)
