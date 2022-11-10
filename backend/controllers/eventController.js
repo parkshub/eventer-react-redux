@@ -2,6 +2,8 @@
 const EventModel = require('../models/Events')
 const AttendeeModel = require('../models/Events')
 const asyncHandler = require('express-async-handler')
+const {cloudinary} = require('../config/cloudinary')
+
 // ** just a reminder we just asynchandler because async can't deal with throw new Error
 
 exports.createEvent = asyncHandler(async(req, res) => {
@@ -80,6 +82,25 @@ exports.attendEvent = asyncHandler(async(req, res) => {
 
     res.json(updatedEvent) // might only need to send the attendee portion and attendee count, dont need rest
 })
+
+ 
+exports.uploadPic = asyncHandler(async(req, res) => {
+    console.log('here')
+    console.log(process.env.REACT_APP_API_SECRET)
+    try {
+        const fileStr = req.body.data;
+
+        const uploadResponse = await cloudinary.uploader.upload(fileStr);
+        console.log(uploadResponse);
+        // store the public_id of cloudinary image
+        res.json({ msg: 'yaya' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ err: 'Something went wrong' });
+    }
+}
+)
+
 
 function checkUser(req, res, doc) {
 
