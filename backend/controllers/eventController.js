@@ -1,8 +1,9 @@
 // const UserModel = require('../models/User')
 const EventModel = require('../models/Events')
-const AttendeeModel = require('../models/Events')
+const ImageModel = require('../models/Images')
 const asyncHandler = require('express-async-handler')
-const {cloudinary} = require('../config/cloudinary')
+const cloudinary = require('../config/cloudinary')
+
 
 // ** just a reminder we just asynchandler because async can't deal with throw new Error
 
@@ -18,6 +19,28 @@ exports.createEvent = asyncHandler(async(req, res) => {
     res.status(200).json(event)
 })
 
+exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine these together later
+    const image = req.body.selectedFile // remember this is the name you set on the frontend redux, might change later
+    try {
+        const response = await cloudinary.uploader.upload(image, {
+            folder: "products",
+        })
+        console.log(response)
+
+        const result = await ImageModel.create({
+            public_id: response.public_id,
+            url: response.secure_url
+        })
+
+        res.json('awesome');
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ err: 'Something went wrong' });
+    }
+}
+)
+
+
 exports.getUserEvents = asyncHandler(async(req, res) => {
     const events = await EventModel.find({user: req.user.id})
     res.status(200).json(events)
@@ -29,6 +52,8 @@ exports.deleteEvent = asyncHandler(async(req, res) => {
 
     await checkUser(req, res, event)
 
+    // await cloudinary.uploader.destory(event.cloudinaryId)
+
     await event.deleteOne()
 
     res.status(200).json(event.id)
@@ -39,25 +64,24 @@ exports.updateEvent = asyncHandler(async(req, res) => {
     const findEvent = await EventModel.findById(req.params.id)
 
     await checkUser(req, res, findEvent)
+
+    // so im going to have a preset of images people can upload in the sample file, if it didn't come from sample file it would be destroyed, but it's in the sample file it should be destroyed...the conditional would be something like...
+
+    // const imageUrl = findEvent.imageUrl
+    // if (!imageUrl.includes('sample')) {
+        // then destory
+    // } else { don't need this statement, but else just update normally}
+
     console.log(req.user)
     const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, req.body, {
         new: true
     })
 
+
     res.status(200).json(updatedEvent)
   // ** would be cool if I could find a way to only send the updated portions of the doc
 })
 
-// exports.attendEvent = asyncHandler(async(req,res) => {
-//     const attendee = await AttendeeModel.create({
-//         name: req.user.name,
-//         userId: req.user.id,
-//         eventId: req.params.id,
-//     })
-
-//     res.json(attendee)
-    
-// })
 
 exports.attendEvent = asyncHandler(async(req, res) => {
     const findEvent = await EventModel.findById(req.params.id)
@@ -82,25 +106,6 @@ exports.attendEvent = asyncHandler(async(req, res) => {
 
     res.json(updatedEvent) // might only need to send the attendee portion and attendee count, dont need rest
 })
-
- 
-exports.uploadPic = asyncHandler(async(req, res) => {
-    console.log('here')
-    console.log(process.env.REACT_APP_API_SECRET)
-    try {
-        const fileStr = req.body.data;
-
-        const uploadResponse = await cloudinary.uploader.upload(fileStr);
-        console.log(uploadResponse);
-        // store the public_id of cloudinary image
-        res.json({ msg: 'yaya' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ err: 'Something went wrong' });
-    }
-}
-)
-
 
 function checkUser(req, res, doc) {
 

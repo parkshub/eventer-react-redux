@@ -5,14 +5,14 @@ const eventSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please enter title']
       },
-    //   image: {
-    //     type: String,
-    //     require: true,
-    //   },
-    //   cloudinaryId: {
-    //     type: String,
-    //     require: true,
-    //   },
+    imageUrl: {
+        type: String,
+        // require: true,
+    },
+    cloudinaryId: {
+        type: String,
+        // require: true,
+    },
     caption: {
         type: String,
         required: [true, 'Please enter caption']

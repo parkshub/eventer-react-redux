@@ -1,80 +1,51 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-export default function Upload() {
-    const [fileInputState, setFileInputState] = useState('');
-    const [previewSource, setPreviewSource] = useState('');
-    const [selectedFile, setSelectedFile] = useState();
-    const [successMsg, setSuccessMsg] = useState('');
-    const [errMsg, setErrMsg] = useState('');
-    const handleFileInputChange = (e) => {
+const Uploader = () => {
+    
+    const [selectedFile, setSelectedFile] = useState(''); 
+
+    const onSelectFile = (e) => {
         const file = e.target.files[0];
-        console.log(e.target.files)
-        previewFile(file);
-        setSelectedFile(file);
-        setFileInputState(e.target.value);
-    };
-
-    const previewFile = (file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
+        console.log(file)
+        
+        let reader = new FileReader()
+        reader.readAsDataURL(file)
         reader.onloadend = () => {
-            setPreviewSource(reader.result);
-        };
-    };
-
-    const handleSubmitFile = (e) => {
-        e.preventDefault();
-        if (!selectedFile) return;
-        const reader = new FileReader();
-        reader.readAsDataURL(selectedFile);
-        reader.onloadend = () => {
-            uploadImage(reader.result);
-        };
-        reader.onerror = () => {
-            console.error('AHHHHHHHH!!');
-            setErrMsg('something went wrong!');
-        };
-        setPreviewSource('')
-    };
-
-    const uploadImage = async (base64EncodedImage) => {
-        try {
-            await fetch('/api/event/uploadPic', {
-                method: 'POST',
-                body: JSON.stringify({ data: base64EncodedImage }),
-                headers: { 'Content-Type': 'application/json' },
-            });
-            setFileInputState('');
-            setPreviewSource('');
-            setSuccessMsg('Image uploaded successfully');
-        } catch (err) {
-            console.error(err);
-            setErrMsg('Something went wrong!');
+            setSelectedFile(reader.result)
         }
     };
+
+    const uploadImage = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await axios.post('api/event/uploadPic', {selectedFile})
+            if (response.success === true) {
+                setSelectedFile('')
+            }
+        } catch (error) {
+            console.log('here')
+            console.log(error)
+        }
+      };
+
     return (
         <div>
             <h1 className="title">Upload an Image</h1>
-            <form onSubmit={handleSubmitFile} className="form">
+            <form onSubmit={uploadImage} className="form">
                 <input
                     id="fileInput"
                     type="file"
                     name="image"
-                    onChange={handleFileInputChange}
-                    value={fileInputState}
+                    onChange={onSelectFile}
                     className="form-input"
                 />
                 <button className="btn" type="submit">
                     Submit
                 </button>
             </form>
-            {previewSource && (
-                <img
-                    src={previewSource}
-                    alt="chosen"
-                    style={{ height: '300px' }}
-                />
-            )}
         </div>
     );
 }
+
+export default Uploader;
