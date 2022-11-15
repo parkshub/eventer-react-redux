@@ -1,3 +1,5 @@
+// ** The previewer currently works, but the img is too big make sure to make it better
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -44,6 +46,7 @@ const Uploader = () => {
                     Submit
                 </button>
             </form>
+            <img src={selectedFile} alt="" />
         </div>
     );
 }
