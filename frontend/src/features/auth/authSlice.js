@@ -31,6 +31,17 @@ export const register = createAsyncThunk(
     }
     )
 
+export const login = createAsyncThunk(
+    'auth/login',
+    async(userData, thunkAPI) => {
+        try {
+            return await authService.login(userData)
+        } catch (error) {
+            
+        }
+    }
+)
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
