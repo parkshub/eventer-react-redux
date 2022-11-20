@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = '/api/event/'
+const API_URL = '/api/user/'
 
 const register = async(userData) => {
     const response = await axios.post(API_URL, userData)
@@ -13,7 +13,7 @@ const register = async(userData) => {
 }
 
 const authService = {
-    register,
+    register,    
 }
 
 export default authService

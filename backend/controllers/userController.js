@@ -10,13 +10,13 @@ function generateToken(id) {
 }
 
 exports.registerUser = asyncHandler(async (req, res) => {
-    const {name, email, password} = req.body
+    const {userName, email, password} = req.body
 
     // console.log(JSON.stringify(req.body))
     // console.log(name, email, password)
 
 
-    if (!name || !email || !password) {
+    if (!userName || !email || !password) {
         res.status(400)
         throw new Error('Please enter all fields')
     }
@@ -31,7 +31,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
 
     const user = await UserModel.create({
-        name: name,
+        name: userName,
         email: email,
         password: hashedPassword
     })
@@ -39,7 +39,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
     if (user) {
         // this part is to see that the token hasn't been tampered with
         res.status(201).json({
-            name: user.name,
+            name: user.userName,
             token: generateToken(user.id)
         })
     } else {
