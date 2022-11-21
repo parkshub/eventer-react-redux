@@ -40,7 +40,7 @@ export const login = createAsyncThunk(
             return thunkAPI.rejectWithValue(message)
         }
     }
-)
+)   
 
 export const authSlice = createSlice({
     name: 'auth',

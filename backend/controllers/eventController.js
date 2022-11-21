@@ -4,6 +4,8 @@ const ImageModel = require('../models/Images')
 const asyncHandler = require('express-async-handler')
 const cloudinary = require('../config/cloudinary')
 
+// ** SINCE YOU'RE NOT USING THROW ERROR YOU DONT NEED ASYNC HANDLER, SLOWLY GET RID OF IT AND SEE IF ANYTHING BREAKS AFTER COMPLETION
+
 
 // ** just a reminder we just asynchandler because async can't deal with throw new Error
 
@@ -17,6 +19,16 @@ exports.createEvent = asyncHandler(async(req, res) => {
     })
 
     res.status(200).json(event)
+})
+
+exports.getHomeEvents = asyncHandler(async(req, res) => {
+    try {
+        console.log('here controller')
+        const events = await EventModel.find().sort({attending: -1}).limit(4)
+        res.json(events)   
+    } catch (error) {
+        res.status(500).send('Something went wrong. Could not load main page events')
+    }
 })
 
 exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine these together later
