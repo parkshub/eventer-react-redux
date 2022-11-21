@@ -19,13 +19,11 @@ export const register = createAsyncThunk(
         try {
             return await authService.register(userData)
         } catch (error) {
-            const message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString()
-
+            const message = error.response.data
+            console.log(error.message)
+            // console.log(error)
+            // console.log(error.message)
+            // console.log(error.response)
             return thunkAPI.rejectWithValue(message)
         }
     }
@@ -37,7 +35,9 @@ export const login = createAsyncThunk(
         try {
             return await authService.login(userData)
         } catch (error) {
-            
+            const message = error.response.data
+            console.log(error.message)
+            return thunkAPI.rejectWithValue(message)
         }
     }
 )
@@ -67,7 +67,22 @@ export const authSlice = createSlice({
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
-                // state.user = null i don't think you need this, but we'll see
+                state.user = null
+            })            
+            
+            .addCase(login.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(login.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.user = action.payload
+            })
+            .addCase(login.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
+                state.user = null
             })
     }
 })

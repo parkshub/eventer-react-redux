@@ -26,6 +26,7 @@ function Register() {
 
     useEffect(() => {
         if (isRejected) {
+            console.log('heloooooooo the msg is', message)
             toast.error(message) // this is working 
         }
 

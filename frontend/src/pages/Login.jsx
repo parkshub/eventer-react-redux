@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { login, reset } from '../features/auth/authSlice'
+import Loading from '../components/Loading'
 
 function Login() {
 
@@ -11,8 +14,21 @@ function Login() {
 
     const { email, password } = formData
 
+    const { user, isPending, isFulfilled, isRejected, message } = useSelector((state) => state.auth)
+
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+
+    useEffect(() => {
+        if (isRejected) {
+            toast.error(message)
+        }
+        if (isFulfilled) {
+            navigate('/')
+        }
+        dispatch(reset())
+    }, [isPending, isFulfilled, isRejected, message, dispatch, navigate])
 
     const onChange = (e) => {
         setFormData((prevState) => ({
@@ -24,6 +40,11 @@ function Login() {
 
     const onSubmit = (e) => {
         e.preventDefault()
+        dispatch(login(formData))
+    }
+
+    if (isPending) {
+        return <Loading />
     }
 
     return (

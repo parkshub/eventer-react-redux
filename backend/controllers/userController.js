@@ -17,14 +17,12 @@ exports.registerUser = asyncHandler(async (req, res) => {
 
 
     if (!name || !email || !password) {
-        res.status(400)
-        throw new Error('Please enter all fields')
+        res.status(400).send('Please enter all fields')
     }
 
     const checkUser = await UserModel.findOne({email: email})
     if (checkUser) {
-        res.status(400)
-        throw new Error ('User already exists')
+        res.status(400).send('User already exists')
     }
 
     const salt = await bcrypt.genSalt(10)
@@ -44,8 +42,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
             token: generateToken(user.id)
         })
     } else {
-        res.status(400)
-        throw new Error('Invalid user data')
+        res.status(400).send('Invalid user data')
     }
 })
 
@@ -64,8 +61,7 @@ exports.loginUser = asyncHandler(async (req, res) => {
         })
         console.log(user.name + ' is logged in')
     } else {
-        res.status(400)
-        throw new Error('Invalid credentials')
+        res.status(400).send('Invalid credentials')
     }
     // compare model's user's password with the one provided using bcrypy
     // and if they match, respond with jwt

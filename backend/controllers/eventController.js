@@ -89,13 +89,14 @@ exports.attendEvent = asyncHandler(async(req, res) => {
     // checking to see if already attending
     let attendees = findEvent.attendee.map(x => Object.keys(x)).flat(1)
     if( attendees.indexOf(req.user.id) != -1) {
-        throw new Error ("You're already attending this event")
+        res.status(401).send("You're already attending this event")
+        // throw new Error ("You're already attending this event")
     }
     
     // checking to see if maker is trying to attend
     if (req.user.id === String(findEvent.user)) {
-        res.status(401)
-        throw new Error ("You made this event. Can't attend")
+        res.status(401).send("You made this event. Can't attend.")
+        // throw new Error ("You made this event. Can't attend")
     }
 
     const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, {
@@ -110,7 +111,7 @@ exports.attendEvent = asyncHandler(async(req, res) => {
 function checkUser(req, res, doc) {
 
     if (req.user.id !== String(doc.user)) {
-        res.status(401)
-        throw new Error('Unauthorized user')
+        res.status(401).send("Unauthorized user")
+        // throw new Error('Unauthorized user')
     }
 }
