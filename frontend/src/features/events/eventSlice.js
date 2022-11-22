@@ -3,6 +3,7 @@ import eventService from './eventService'
 
 const initialState = {
     events: [],
+    // homeEvents:'',
     isPending: false,
     isRejected: false, 
     isFulfilled: false,
@@ -16,7 +17,7 @@ export const getHomeEvents = createAsyncThunk(
         try {
             console.log('here slice2')
             // const dude = await eventService.getHomeEvents()
-            // console.log(dude)
+            // console.log('this is dude--->', dude)
             return await eventService.getHomeEvents()
         } catch (error) {
             const message = error.response.data
@@ -50,13 +51,12 @@ const eventSlice = createSlice({
                 state.isPending = false
                 state.isFulfilled = true
                 state.events.push(action.payload)
-                // state.events = action.payload
             })
             .addCase(getHomeEvents.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
-                // state.events = []
+                state.events = []
             })    
     }
 })
