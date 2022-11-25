@@ -23,13 +23,23 @@ exports.createEvent = asyncHandler(async(req, res) => {
 
 exports.getHomeEvents = asyncHandler(async(req, res) => {
     try {
-        console.log('here controller')
+        console.log('getHomeEvents controller')
         const events = await EventModel.find().sort({attending: -1}).limit(4)
         res.json(events)   
     } catch (error) {
         res.status(500).send('Something went wrong. Could not load main page events')
     }
 })
+
+exports.getEvent = asyncHandler(async(req, res) => {
+    console.log('getEvent controller')
+    const events = await EventModel.findById(req.params.id)
+    res.status(200).json(events)
+})
+
+
+
+
 
 exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine these together later
     const image = req.body.selectedFile // remember this is the name you set on the frontend redux, might change later

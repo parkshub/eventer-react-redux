@@ -10,6 +10,7 @@ router.get('/getUserEvents/:id', auth, eventController.getUserEvents)
 router.delete('/deleteEvent/:id', auth, eventController.deleteEvent)
 router.put('/updateEvent/:id', auth, eventController.updateEvent)
 
+router.get('/getEvent/:id', eventController.getEvent)
 
 router.put('/attendEvent/:id', auth, eventController.attendEvent)
 

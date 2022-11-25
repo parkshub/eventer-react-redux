@@ -11,48 +11,35 @@ function Home () {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const { events, isPending, isRejected, isFulfilled, message } = useSelector((state) => state.events)
+    const { homeEvents, isPending, isRejected, isFulfilled, message } = useSelector((state) => state.events)
 
-    const test = events
-    console.log('this is the test', test, Array.isArray(test))
-
-    const onClick = (e) => {
-        // console.log(e.target.getAttribute('data-index'))
-        // console.log(e.target.getAttribute('data-index'))
-        console.log('twas clicked-->', e)
-    }
-
+    
     useEffect(() => {
+        
         dispatch(getHomeEvents())
-
-        if (isRejected) {
-            console.log('was rejected')
-            toast.error(message)
-        }
-
-        if (isFulfilled) {
-            console.log('was fulfilled')
-            // console.log('these are the events--->'+ events.event)
-        }
-
-        // return () => {
-        //     console.log('it reset')
-        //     dispatch(reset())
+        // if (isRejected) {
+        //     console.log('was rejected')
+        //     toast.error(message)
         // }
-    }, [isRejected, isFulfilled, message, dispatch])
+        
+        return () => {
+            console.log('it reset')
+            dispatch(reset())
+        }
+
+    }, [dispatch])
 
     if (isPending) {
-        console.log('was loading')
         return <Loading />
     }
 
     return (
         <section>
             <h3>Top Events</h3>
-            {events.length > 0 ? 
+            {homeEvents.length > 0 ? 
                 <div>
-                    {events[0].map((event) => 
-                        <HomeEventItem key={event._id} event={event} onClick={onClick}/>
+                    {homeEvents[0].map((homeEvent) => 
+                        <HomeEventItem key={homeEvent._id} event={homeEvent}/>
                     )
                     }
                 </div>

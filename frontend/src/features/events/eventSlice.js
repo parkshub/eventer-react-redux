@@ -1,24 +1,35 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
 import eventService from './eventService'
 
 const initialState = {
-    events: [],
-    // homeEvents:'',
+    homeEvents: [],
+    event: '',
     isPending: false,
     isRejected: false, 
     isFulfilled: false,
     message: ''
 }
 
+
 export const getHomeEvents = createAsyncThunk(
     'event/getHomeEvents',
     async(_, thunkAPI) => {
-        console.log('here slice1')
         try {
-            console.log('here slice2')
-            // const dude = await eventService.getHomeEvents()
-            // console.log('this is dude--->', dude)
             return await eventService.getHomeEvents()
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const getEvent = createAsyncThunk(
+    'event/getEvent',
+    async(id, thunkAPI) => {
+        try {
+            console.log('getEventPage slice')
+            return await eventService.getEvent(id)
         } catch (error) {
             const message = error.response.data
             return thunkAPI.rejectWithValue(message)
@@ -28,14 +39,13 @@ export const getHomeEvents = createAsyncThunk(
 
 
 
-
 const eventSlice = createSlice({
     name: 'event',
     initialState,
     reducers: {
         reset: (state) => {
-            console.log('here reseter')
-            state.events = []
+            state.event = ''
+            state.homeEvents = []
             state.isPending = false
             state.isRejected = false
             state.isFulfilled = false
@@ -50,13 +60,27 @@ const eventSlice = createSlice({
             .addCase(getHomeEvents.fulfilled, (state, action) => {
                 state.isPending = false
                 state.isFulfilled = true
-                state.events.push(action.payload)
+                state.homeEvents.push(action.payload)
             })
             .addCase(getHomeEvents.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
-                state.events = []
+                state.homeEvents = []
+            })
+            .addCase(getEvent.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(getEvent.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.event = action.payload
+            })
+            .addCase(getEvent.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
+                state.event = ''
             })    
     }
 })
