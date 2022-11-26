@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
+import { logout } from "../auth/authSlice";
 import eventService from './eventService'
 
 const initialState = {
@@ -81,7 +82,7 @@ const eventSlice = createSlice({
                 state.isRejected = true
                 state.message = action.payload
                 state.event = ''
-            })    
+            })
     }
 })
 

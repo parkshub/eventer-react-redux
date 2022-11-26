@@ -8,7 +8,7 @@ import Header from './components/Header'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import Event from './pages/Event'
-// import Profile from './pages/Profile'
+import Profile from './pages/Profile'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -22,6 +22,7 @@ function App() {
           <Route path='/' element={ <Home /> }/>
           <Route path='/login' element={ <Login /> }/>
           <Route path='/register' element={ <Register /> }/>
+          <Route path='/profile' element={ <Profile /> }/>
           <Route path='/event' element={ <Event /> }/>
         </Routes>
       </Router>
