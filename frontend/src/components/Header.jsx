@@ -4,13 +4,18 @@ import { useNavigate, Link } from 'react-router-dom'
 
 import { logout } from '../features/auth/authSlice'
 
-import { FaSignInAlt, FaUserAstronaut, FaSignOutAlt } from 'react-icons/fa'
+import { FaSignInAlt, FaUserAstronaut, FaSignOutAlt, FaUserAlt } from 'react-icons/fa'
 
 function Header() {
 
     const { user } = useSelector((state) => state.auth)
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const onClickProfile = () => {
+        navigate('/profile')
+    }
 
     const onClickLogout = () => {
         dispatch(logout())
@@ -33,7 +38,10 @@ function Header() {
             ) : (
                 <ul>
                     <li>
-                        <Link to='/profile' >Profile</Link>
+                        <button onClick={onClickProfile}>
+                            <FaUserAlt/> Profile
+                        </button>
+                        {/* <Link to='/profile' >Profile</Link> */}
                     </li>
                     <li>
                         <button onClick={onClickLogout}>

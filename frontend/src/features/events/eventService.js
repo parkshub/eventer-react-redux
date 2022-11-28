@@ -14,9 +14,22 @@ const getEvent = async(id) => {
     return response.data
 }
 
+const getUserEvents = async(token, id) => {
+    console.log('getUserEvents service searching for id', id)
+    const config = {
+        headers: {
+          authorization: `Bearer ${token}`,
+        }
+    }
+    const response = await axios.get(API_URL + `getUserEvents/${id}`, config)
+    console.log('this was the response===>', response.data)
+    return response.data
+}
+
 const eventService = {
     getHomeEvents,
     getEvent,
+    getUserEvents,
 }
 
 export default eventService

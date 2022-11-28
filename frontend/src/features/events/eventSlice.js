@@ -4,8 +4,9 @@ import { logout } from "../auth/authSlice";
 import eventService from './eventService'
 
 const initialState = {
-    homeEvents: [],
     event: '',
+    homeEvents: [],
+    userEvents: [],
     isPending: false,
     isRejected: false, 
     isFulfilled: false,
@@ -18,6 +19,20 @@ export const getHomeEvents = createAsyncThunk(
     async(_, thunkAPI) => {
         try {
             return await eventService.getHomeEvents()
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const getUserEvents = createAsyncThunk(
+    'event/getUserEvents',
+    async(id, thunkAPI) => {
+        try {
+            console.log('getUserEvents slice')
+            const token = thunkAPI.getState().auth.user.token
+            return await eventService.getUserEvents(token, id)
         } catch (error) {
             const message = error.response.data
             return thunkAPI.rejectWithValue(message)
@@ -46,6 +61,7 @@ const eventSlice = createSlice({
     reducers: {
         reset: (state) => {
             state.event = ''
+            state.userEvents = []
             state.homeEvents = []
             state.isPending = false
             state.isRejected = false
@@ -82,6 +98,20 @@ const eventSlice = createSlice({
                 state.isRejected = true
                 state.message = action.payload
                 state.event = ''
+            })
+            .addCase(getUserEvents.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(getUserEvents.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.userEvents.push(action.payload)
+            })
+            .addCase(getUserEvents.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
+                state.userEvents = []
             })
     }
 })

@@ -64,6 +64,7 @@ exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine th
 
 
 exports.getUserEvents = asyncHandler(async(req, res) => {
+    console.log('getUserEvents controller')
     const events = await EventModel.find({user: req.user.id})
     res.status(200).json(events)
 })
