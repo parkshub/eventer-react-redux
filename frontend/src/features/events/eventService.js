@@ -26,10 +26,24 @@ const getUserEvents = async(token, id) => {
     return response.data
 }
 
+const createEvent = async(token, formData) => {
+    console.log('createEvent service')
+    const config = {
+        headers: {
+          authorization: `Bearer ${token}`,
+        }
+    }
+
+    const response = axios.post(API_URL, formData, config)
+
+    return response.data
+}
+
 const eventService = {
     getHomeEvents,
     getEvent,
     getUserEvents,
+    createEvent,
 }
 
 export default eventService

@@ -22,8 +22,6 @@ function Event() {
     }
   }, [dispatch])
 
-  console.log('loaded and location is' + JSON.stringify(location.state.id))
-
   return (
     <>
       <div>Event</div>

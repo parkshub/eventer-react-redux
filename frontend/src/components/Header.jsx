@@ -19,6 +19,7 @@ function Header() {
 
     const onClickLogout = () => {
         dispatch(logout())
+        navigate('/')
     }
 
     return (

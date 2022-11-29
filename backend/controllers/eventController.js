@@ -1,4 +1,4 @@
-// const UserModel = require('../models/User')
+const UserModel = require('../models/User')
 const EventModel = require('../models/Events')
 const ImageModel = require('../models/Images')
 const asyncHandler = require('express-async-handler')
@@ -10,6 +10,8 @@ const cloudinary = require('../config/cloudinary')
 // ** just a reminder we just asynchandler because async can't deal with throw new Error
 
 exports.createEvent = asyncHandler(async(req, res) => {
+
+    console.log('createEvent controller')
     
     const event = await EventModel.create({
         title: req.body.title,
@@ -127,6 +129,13 @@ exports.attendEvent = asyncHandler(async(req, res) => {
         $push: {attendee: {[req.user.id]: req.user.name}}
     },
     {new : true})
+
+    // ** this is the part where events are going to be added to users documents
+    // const attendEvent = await UserModel.findById(req.user.id, {
+    //     $push: {attending: updatedEvent.id}
+    // })
+
+
 
     res.json(updatedEvent) // might only need to send the attendee portion and attendee count, dont need rest
 })

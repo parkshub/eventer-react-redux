@@ -23,7 +23,7 @@ function Home () {
         // }
         
         return () => {
-            console.log('it reset')
+            console.log('it reset home events')
             dispatch(reset())
         }
 
