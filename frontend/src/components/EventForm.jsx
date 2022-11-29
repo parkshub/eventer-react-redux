@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Navigate, useNavigate } from 'react-router-dom'
 import {createEvent} from '../features/events/eventSlice'
 
 function EventForm() {
@@ -10,6 +11,7 @@ function EventForm() {
   })
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const { title, caption } = formData
 

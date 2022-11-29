@@ -20,6 +20,8 @@ exports.createEvent = asyncHandler(async(req, res) => {
         attendee: [{[req.user.id]: req.user.name}]
     })
 
+    console.log('this is the created event from controller',event)
+
     res.status(200).json(event)
 })
 
