@@ -113,27 +113,26 @@ exports.attendEvent = asyncHandler(async(req, res) => {
     
     // checking to see if already attending
     let attendees = findEvent.attendee.map(x => Object.keys(x)).flat(1)
+    
     if( attendees.indexOf(req.user.id) != -1) {
         res.status(401).send("You're already attending this event")
-        // throw new Error ("You're already attending this event")
     }
     
     // checking to see if maker is trying to attend
     if (req.user.id === String(findEvent.user)) {
         res.status(401).send("You made this event. Can't attend.")
-        // throw new Error ("You made this event. Can't attend")
     }
 
     const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, {
         $inc: {attending: 1},
         $push: {attendee: {[req.user.id]: req.user.name}}
     },
-    {new : true})
+    {new: true})
 
-    // ** this is the part where events are going to be added to users documents
-    // const attendEvent = await UserModel.findById(req.user.id, {
-    //     $push: {attending: updatedEvent.id}
-    // })
+    const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
+        $push: {attending: updatedEvent.id}
+    },
+    {new: true})
 
 
 

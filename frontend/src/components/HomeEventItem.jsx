@@ -1,12 +1,16 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 
 function HomeEventItem({event}) {
     console.log('this is the event-->', event._id)
 
+    const { user } = useSelector((state) => state.auth)
+
     const navigate = useNavigate()
 
     const onClick = (e) => {
+
         console.log('it was I', event._id)
         navigate('/event', {
             state: {id: event._id}

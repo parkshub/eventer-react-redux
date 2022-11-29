@@ -16,6 +16,8 @@ const UserSchema = mongoose.Schema(
             required: [true, 'Please add password']
         },
         attending: {
+            type: [String],
+            default: []
         }
     }
 )

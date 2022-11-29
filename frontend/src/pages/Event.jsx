@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
-// import { getEventPage } from '../features/events/eventService'
 import { toast } from 'react-toastify'
 import { reset, getEvent } from '../features/events/eventSlice'
 
