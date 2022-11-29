@@ -34,8 +34,22 @@ const createEvent = async(token, formData) => {
         }
     }
 
-    const response = axios.post(API_URL, formData, config)
+    const response = await axios.post(API_URL, formData, config)
 
+    return response.data
+}
+
+const attendEvent = async(token, id) => {
+    console.log('attendEvent service')
+    
+    const config = {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(API_URL + `attendEvent/${id}`, config)
+    console.log('this was the response--->', response.data)
     return response.data
 }
 
@@ -44,6 +58,7 @@ const eventService = {
     getEvent,
     getUserEvents,
     createEvent,
+    attendEvent
 }
 
 export default eventService

@@ -3,30 +3,30 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Navigate, useNavigate } from 'react-router-dom'
 import {createEvent} from '../features/events/eventSlice'
 
-function EventForm() {
+function EventForm({ formData, setFormData, onChange, onSubmit }) {
 
-  const [formData, setFormData] = useState({
-    title:'',
-    caption: ''
-  })
+  // const [formData, setFormData] = useState({
+  //   title:'',
+  //   caption: ''
+  // })
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const { title, caption } = formData
 
-  const onChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.id]: e.target.value
-    }))
-    console.log(formData, typeof(formData))
-  }
+  // const onChange = (e) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [e.target.id]: e.target.value
+  //   }))
+  //   console.log(formData, typeof(formData))
+  // }
   
-  const onSubmit = (e) => {
-      e.preventDefault()
-      dispatch(createEvent(formData))
-  }
+  // const onSubmit = (e) => {
+  //     e.preventDefault()
+  //     dispatch(createEvent(formData))
+  // }
 
   return (
     <>

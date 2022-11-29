@@ -111,6 +111,7 @@ exports.updateEvent = asyncHandler(async(req, res) => {
 
 
 exports.attendEvent = asyncHandler(async(req, res) => {
+    console.log('attendEvent controller')
     const findEvent = await EventModel.findById(req.params.id)
     
     // checking to see if already attending
@@ -145,6 +146,5 @@ function checkUser(req, res, doc) {
 
     if (req.user.id !== String(doc.user)) {
         res.status(401).send("Unauthorized user")
-        // throw new Error('Unauthorized user')
     }
 }

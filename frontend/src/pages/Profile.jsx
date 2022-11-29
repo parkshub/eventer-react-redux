@@ -1,17 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 
 
 import { getUserEvents, reset } from '../features/events/eventSlice'
+import {createEvent} from '../features/events/eventSlice'
 
 import Loading from '../components/Loading'
-import UserEventItem from '../components/EventItem'
+import UserEventItem from '../components/UserEventItem'
 import EventForm from '../components/EventForm'
 import { toast } from 'react-toastify'
 
 
 function Profile() {
+  
+  // newly added
+  const [formData, setFormData] = useState({
+    title:'',
+    caption: ''
+  })
 
   const { user } = useSelector((state) => state.auth)
   const { userEvents, isPending, isRejected, message } = useSelector((state) => state.events)
@@ -19,6 +26,20 @@ function Profile() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
+  const onChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.id]: e.target.value
+    }))
+    console.log(formData)
+  }
+  
+  const onSubmit = (e) => {
+      e.preventDefault()
+      dispatch(createEvent(formData))
+      window.location.reload()
+
+  }
   
   useEffect(() => {
 
@@ -41,7 +62,9 @@ function Profile() {
     <>
       <h2>Profile</h2>
 
-      <EventForm/>
+      {/* newly added */}
+      <EventForm formData={formData} setFormData={setFormData} onChange={onChange} onSubmit={onSubmit}/>
+      {/* <EventForm /> */}
       
       <h3>Your Events</h3>
 

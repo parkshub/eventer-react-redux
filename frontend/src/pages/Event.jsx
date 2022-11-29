@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { reset, getEvent } from '../features/events/eventSlice'
+import { reset, getEvent, attendEvent } from '../features/events/eventSlice'
 
 function Event() {
   const location = useLocation()
@@ -12,6 +12,10 @@ function Event() {
   const { event, isPending, isRejected, isFulfilled, message } = useSelector((state) => state.events)
   const { user } = useSelector((state) => state.auth)
   
+  const onClick = () => {
+    dispatch(attendEvent(location.state.id))
+  }
+
   useEffect(() => {
     dispatch(getEvent(location.state.id))
     console.log(event)
@@ -30,8 +34,9 @@ function Event() {
       <div>attending: {event.attending}</div>
       <div>by: {event.user}</div>
       {user ? 
-        <div>this shows up when user is logged in</div>
+        <button onClick={onClick}>Attend</button>
        : <div>this shows up when user is not logged in</div> }
+
     </>
   )
 }

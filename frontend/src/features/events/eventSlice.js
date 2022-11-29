@@ -1,6 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import thunk from "redux-thunk";
-import { logout } from "../auth/authSlice";
 import eventService from './eventService'
 
 const initialState = {
@@ -68,6 +66,20 @@ export const createEvent = createAsyncThunk(
     }
 )
 
+export const attendEvent = createAsyncThunk(
+    'event/attendEvent',
+    async(id, thunkAPI) => {
+        try {
+            console.log('attendEvent slice')
+            const token = thunkAPI.getState().auth.user.token
+            return await eventService.attendEvent(token, id)
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+        
+    }
+)
 
 
 const eventSlice = createSlice({
@@ -134,13 +146,23 @@ const eventSlice = createSlice({
             .addCase(createEvent.fulfilled, (state) => {
                 state.isPending = false
                 state.isFulfilled = true
-                // state.userEvents = action.payload
             })
             .addCase(createEvent.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
-                // state.userEvents = []
+            })
+            .addCase(attendEvent.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(attendEvent.fulfilled, (state) => {
+                state.isPending = false
+                state.isFulfilled = true
+            })
+            .addCase(attendEvent.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
             })
     }
 })
