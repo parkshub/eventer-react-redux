@@ -113,33 +113,33 @@ exports.updateEvent = asyncHandler(async(req, res) => {
 exports.attendEvent = asyncHandler(async(req, res) => {
     console.log('attendEvent controller')
     const findEvent = await EventModel.findById(req.params.id)
-    
+    console.log('here 1')
     // checking to see if already attending
     let attendees = findEvent.attendee.map(x => Object.keys(x)).flat(1)
+    console.log('here 2')
     
-    if( attendees.indexOf(req.user.id) != -1) {
+    if( attendees.indexOf(req.user.id) != -1) { //change this to -1
         res.status(401).send("You're already attending this event")
+        console.log('here 3')
     }
     
     // checking to see if maker is trying to attend
-    if (req.user.id === String(findEvent.user)) {
+    else if (req.user.id === String(findEvent.user)) {
         res.status(401).send("You made this event. Can't attend.")
     }
+    else {
+        const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, {
+            $inc: {attending: 1},
+            $push: {attendee: {[req.user.id]: req.user.name}}
+        },
+        {new: true})
+        const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
+            $push: {attending: updatedEvent.id}
+        },
+        {new: true})
 
-    const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, {
-        $inc: {attending: 1},
-        $push: {attendee: {[req.user.id]: req.user.name}}
-    },
-    {new: true})
-
-    const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
-        $push: {attending: updatedEvent.id}
-    },
-    {new: true})
-
-
-
-    res.json(updatedEvent) // might only need to send the attendee portion and attendee count, dont need rest
+        res.status(200).json(updatedEvent)
+    }
 })
 
 function checkUser(req, res, doc) {

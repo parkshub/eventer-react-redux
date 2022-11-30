@@ -13,7 +13,11 @@ function HomeEventItem({event}) {
 
         console.log('it was I', event._id)
         navigate('/event', {
-            state: {id: event._id}
+            state: {
+                id: event._id,
+                attending: event.attending,
+                attendee: event.attendee
+            }
         })
     }
 
@@ -25,7 +29,10 @@ function HomeEventItem({event}) {
                 <p className='eventCaption'>{event.caption}</p>
                 <span className='attending'>{event.attending} attending</span>
             </div>
-            <button onClick={onClick}>View</button>
+            { user ? 
+            <button onClick={onClick}>View</button> :
+            ''
+            }
         </>
     )
 }

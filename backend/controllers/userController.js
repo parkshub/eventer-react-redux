@@ -39,7 +39,8 @@ exports.registerUser = asyncHandler(async (req, res) => {
         res.status(201).json({
             id: user.id,
             name: user.name,
-            token: generateToken(user.id)
+            token: generateToken(user.id),
+            attending: []
         })
     } else {
         res.status(400).send('Invalid user data')
@@ -57,7 +58,8 @@ exports.loginUser = asyncHandler(async (req, res) => {
         res.status(201).json({
             id: user.id,
             name: user.name,
-            token: generateToken(user.id)
+            token: generateToken(user.id),
+            attending: user.attending
         })
         console.log(user.name + ' is logged in')
     } else {

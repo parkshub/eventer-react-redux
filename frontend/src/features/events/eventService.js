@@ -48,9 +48,13 @@ const attendEvent = async(token, id) => {
         }
     }
 
-    const response = await axios.put(API_URL + `attendEvent/${id}`, config)
+    const response = await axios.put(API_URL + `attendEvent/${id}`, null, config)
     console.log('this was the response--->', response.data)
     return response.data
+}
+
+const deleteEvent = async(token, id) => {
+    
 }
 
 const eventService = {

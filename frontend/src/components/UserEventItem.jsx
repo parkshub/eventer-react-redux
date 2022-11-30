@@ -5,7 +5,6 @@ function UserEventItem ({event}) {
     return (
         <>
             <div>{event.title}</div>
-            <div>cool beans</div>
         </>
     )
 }

@@ -62,9 +62,7 @@ function Profile() {
     <>
       <h2>Profile</h2>
 
-      {/* newly added */}
       <EventForm formData={formData} setFormData={setFormData} onChange={onChange} onSubmit={onSubmit}/>
-      {/* <EventForm /> */}
       
       <h3>Your Events</h3>
 
