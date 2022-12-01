@@ -26,7 +26,8 @@ const login = async(userData) => {
 
 const logout = async() => {
     console.log('logout service')
-    await localStorage.removeItem('user')
+    await localStorage.clear()
+    // await localStorage.removeItem('user') IT WAS THIS BEFORE CHANGE IT BACK IF SOMETHING BREAKS
 }
 
 const authService = {

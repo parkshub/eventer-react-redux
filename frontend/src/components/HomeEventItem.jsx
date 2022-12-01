@@ -1,36 +1,35 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 
-function HomeEventItem({event}) {
+
+// import getEvent from '../features/events/eventSlice'
+
+
+function HomeEventItem({event, onClick}) {
     console.log('this is the event-->', event._id)
 
     const { user } = useSelector((state) => state.auth)
-
+    console.log('this is the event', event)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
+    // dispatch(getEvent(event._id))
 
-    const onClick = (e) => {
+    // const onClick = (e) => {
+    //     dispatch(getEvent(event.id))
+    //     navigate('/event')
+    // }
 
-        console.log('it was I', event._id)
-        navigate('/event', {
-            state: {
-                id: event._id,
-                attending: event.attending,
-                attendee: event.attendee
-            }
-        })
-    }
-
-    console.log('here++>', event)
     return (
         <>
             <div className="eventItem">
+                <h3>{event._id}</h3>
                 <h4 className='eventName'>{event.title}</h4>
                 <p className='eventCaption'>{event.caption}</p>
                 <span className='attending'>{event.attending} attending</span>
             </div>
             { user ? 
-            <button onClick={onClick}>View</button> :
+            <button value={event._id} onClick={onClick}>View</button> :
             ''
             }
         </>

@@ -81,6 +81,20 @@ export const attendEvent = createAsyncThunk(
     }
 )
 
+export const deleteEvent = createAsyncThunk(
+    'event/delete',
+    async(id, thunkAPI) => {
+        try {
+            console.log(`deleteEvent slice this is id${id}`)
+            const token = thunkAPI.getState().auth.user.token
+            return await eventService.deleteEvent(token, id)
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 
 const eventSlice = createSlice({
     name: 'event',
@@ -94,6 +108,13 @@ const eventSlice = createSlice({
             state.isRejected = false
             state.isFulfilled = false
             state.message = ''
+        },
+        resetHomeEvents: (state) => {
+            state.homeEvents = []
+            state.isPending = false
+            state.isFulfilled = false
+            state.isRejected = false
+            state.message = false
         }
     },
     extraReducers: (builder) => {
@@ -164,8 +185,21 @@ const eventSlice = createSlice({
                 state.isRejected = true
                 state.message = action.payload
             })
+            .addCase(deleteEvent.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(deleteEvent.fulfilled, (state) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.event = ''
+            })
+            .addCase(deleteEvent.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
+            })
     }
 })
 
 export default eventSlice.reducer
-export const { reset } = eventSlice.actions
+export const { reset, resetHomeEvents } = eventSlice.actions

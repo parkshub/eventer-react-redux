@@ -74,7 +74,7 @@ exports.getUserEvents = asyncHandler(async(req, res) => {
 })
 
 exports.deleteEvent = asyncHandler(async(req, res) => {
-    
+    console.log('deleteEvent controller')
     const event = await EventModel.findById(req.params.id)
 
     await checkUser(req, res, event)

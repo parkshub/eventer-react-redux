@@ -11,6 +11,7 @@ const getHomeEvents = async() => {
 const getEvent = async(id) => {
     console.log('getEventPage service')
     const response = await axios.get(API_URL + `getEvent/${id}`)
+    localStorage.setItem('event', JSON.stringify(response.data))
     return response.data
 }
 
@@ -54,7 +55,15 @@ const attendEvent = async(token, id) => {
 }
 
 const deleteEvent = async(token, id) => {
-    
+    console.log('deleteEvent service')
+    const config = {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.delete(API_URL + `deleteEvent/${id}`, config)
+    return response.data
 }
 
 const eventService = {
@@ -62,7 +71,8 @@ const eventService = {
     getEvent,
     getUserEvents,
     createEvent,
-    attendEvent
+    attendEvent,
+    deleteEvent
 }
 
 export default eventService
