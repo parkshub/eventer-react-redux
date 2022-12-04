@@ -12,10 +12,6 @@ function generateToken(id) {
 exports.registerUser = asyncHandler(async (req, res) => {
     const {name, email, password} = req.body
 
-    // console.log(JSON.stringify(req.body))
-    // console.log(name, email, password)
-
-
     if (!name || !email || !password) {
         res.status(400).send('Please enter all fields')
     }
@@ -53,8 +49,12 @@ exports.loginUser = asyncHandler(async (req, res) => {
 
     // find user with that email
     const user = await UserModel.findOne({email: email})
+
+    if(!user) {
+        res.status(400).send('Invalid credentials')
+    }
     
-    if (await bcrypt.compare(password, user.password)) {
+    else if (await bcrypt.compare(password, user.password)) {
         res.status(201).json({
             id: user.id,
             name: user.name,

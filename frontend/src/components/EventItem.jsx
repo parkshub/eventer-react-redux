@@ -1,24 +1,21 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
+import { getEvent } from '../features/events/eventSlice'
 
 
-// import getEvent from '../features/events/eventSlice'
-
-
-function HomeEventItem({event, onClick}) {
+function EventItem({event}) {
     console.log('this is the event-->', event._id)
 
     const { user } = useSelector((state) => state.auth)
     console.log('this is the event', event)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    // dispatch(getEvent(event._id))
 
-    // const onClick = (e) => {
-    //     dispatch(getEvent(event.id))
-    //     navigate('/event')
-    // }
+    const onClick = async(e) => {
+        await dispatch(getEvent(e.target.value))
+        navigate('/event')
+    }
 
     return (
         <>
@@ -36,4 +33,4 @@ function HomeEventItem({event, onClick}) {
     )
 }
 
-export default HomeEventItem
+export default EventItem

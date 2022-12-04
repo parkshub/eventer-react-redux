@@ -12,17 +12,15 @@ const cloudinary = require('../config/cloudinary')
 exports.createEvent = asyncHandler(async(req, res) => {
 
     console.log('createEvent controller')
-    
+        
     const event = await EventModel.create({
         title: req.body.title,
         caption: req.body.caption,
         user: req.user.id,
         attendee: [{[req.user.id]: req.user.name}]
     })
-
-    console.log('this is the created event from controller',event)
-
     res.status(200).json(event)
+
 })
 
 exports.getHomeEvents = asyncHandler(async(req, res) => {
@@ -40,9 +38,6 @@ exports.getEvent = asyncHandler(async(req, res) => {
     const events = await EventModel.findById(req.params.id)
     res.status(200).json(events)
 })
-
-
-
 
 
 exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine these together later
@@ -88,6 +83,8 @@ exports.deleteEvent = asyncHandler(async(req, res) => {
 
 exports.updateEvent = asyncHandler(async(req, res) => {
     
+    console.log('updateEvent controller this is req.body', req.body)
+    
     const findEvent = await EventModel.findById(req.params.id)
 
     await checkUser(req, res, findEvent)
@@ -113,10 +110,9 @@ exports.updateEvent = asyncHandler(async(req, res) => {
 exports.attendEvent = asyncHandler(async(req, res) => {
     console.log('attendEvent controller')
     const findEvent = await EventModel.findById(req.params.id)
-    console.log('here 1')
+    
     // checking to see if already attending
     let attendees = findEvent.attendee.map(x => Object.keys(x)).flat(1)
-    console.log('here 2')
     
     if( attendees.indexOf(req.user.id) != -1) { //change this to -1
         res.status(401).send("You're already attending this event")

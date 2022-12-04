@@ -66,13 +66,30 @@ const deleteEvent = async(token, id) => {
     return response.data
 }
 
+const updateEvent = async(token, formData) => {
+
+    console.log('updateEvent service sending form data', formData)
+
+    const config = {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    }
+    const id = formData._id
+
+    const response = await axios.put(API_URL + `updateEvent/${id}`, formData, config)
+
+    return response.data
+}
+
 const eventService = {
     getHomeEvents,
     getEvent,
     getUserEvents,
     createEvent,
     attendEvent,
-    deleteEvent
+    deleteEvent,
+    updateEvent,
 }
 
 export default eventService

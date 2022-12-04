@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { reset, resetHomeEvents, getHomeEvents } from '../features/events/eventSlice'
 
 import Loading from '../components/Loading'
-import HomeEventItem from '../components/HomeEventItem'
+import EventItem from '../components/EventItem'
 
 import { getEvent } from '../features/events/eventSlice'
 
@@ -35,21 +35,13 @@ function Home () {
         return <Loading />
     }
 
-
-    const onClick = async(e) => {
-        // console.log('it was i', e.target.value)
-        await dispatch(getEvent(e.target.value))
-        navigate('/event')
-    }
-
-
     return (
         <section>
             <h3>Top Events</h3>
             {homeEvents.length > 0 ? 
                 <div>
-                    {homeEvents[0].map((homeEvent) => 
-                        <HomeEventItem key={homeEvent._id} event={homeEvent} onClick={onClick}/>
+                    {homeEvents.map((homeEvent) => 
+                        <EventItem key={homeEvent._id} event={homeEvent}/>
                     )
                     }
                 </div>

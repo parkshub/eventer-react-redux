@@ -95,6 +95,19 @@ export const deleteEvent = createAsyncThunk(
     }
 )
 
+export const updateEvent = createAsyncThunk(
+    'event/updateEvent',
+    async(formData, thunkAPI) => {
+        console.log('updateEvent Slice')
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await eventService.updateEvent(token, formData)
+        } catch (error) {
+            
+        }
+    }
+)
+
 
 const eventSlice = createSlice({
     name: 'event',
@@ -125,7 +138,7 @@ const eventSlice = createSlice({
             .addCase(getHomeEvents.fulfilled, (state, action) => {
                 state.isPending = false
                 state.isFulfilled = true
-                state.homeEvents.push(action.payload)
+                state.homeEvents = action.payload
             })
             .addCase(getHomeEvents.rejected, (state, action) => {
                 state.isPending = false
@@ -194,6 +207,19 @@ const eventSlice = createSlice({
                 state.event = ''
             })
             .addCase(deleteEvent.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
+            })
+            .addCase(updateEvent.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(updateEvent.fulfilled, (state) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.event = ''
+            })
+            .addCase(updateEvent.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload

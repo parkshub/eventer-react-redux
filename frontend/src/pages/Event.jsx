@@ -34,8 +34,12 @@ function Event() {
     }))
   }
 
-  const onClickDelete = () => {
-    dispatch(deleteEvent(eventState._id))
+  const onClickEdit = () => {
+    navigate('/eventForm')
+  }
+
+  const onClickDelete = async() => {
+    await dispatch(deleteEvent(eventState._id))
     navigate('/profile')
   }
   
@@ -68,7 +72,10 @@ function Event() {
       }
 
       {user.id === eventState.user && 
-      <button onClick={onClickDelete}>delete event</button>
+      <>
+        <button onClick={onClickEdit}>Edit Event</button>
+        <button onClick={onClickDelete}>Delete Event</button>
+      </>
       }
 
     </>
