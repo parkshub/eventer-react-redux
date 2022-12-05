@@ -81,6 +81,8 @@ export const attendEvent = createAsyncThunk(
     }
 )
 
+
+
 export const deleteEvent = createAsyncThunk(
     'event/delete',
     async(id, thunkAPI) => {
@@ -108,6 +110,21 @@ export const updateEvent = createAsyncThunk(
     }
 )
 
+export const unattendEvent = createAsyncThunk(
+    'event/unattend',
+    async(formData, thunkAPI) => {
+        try {
+            console.log('unattendEvent slice')
+            console.log('this is data slice is receiving', formData)
+            const token = thunkAPI.getState().auth.user.token
+            return await eventService.unattendEvent(token, formData)
+
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 
 const eventSlice = createSlice({
     name: 'event',
@@ -220,6 +237,19 @@ const eventSlice = createSlice({
                 state.event = ''
             })
             .addCase(updateEvent.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
+            })
+            .addCase(unattendEvent.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(unattendEvent.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.event = action.payload
+            })
+            .addCase(unattendEvent.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload

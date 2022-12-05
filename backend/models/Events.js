@@ -21,6 +21,9 @@ const eventSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
+    userName: {
+        type: String,
+    },
     attending: {
         type: Number,
         required: true,

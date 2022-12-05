@@ -10,6 +10,7 @@ import Login from './pages/Login'
 import Event from './pages/Event'
 import Profile from './pages/Profile'
 import EventForm from './pages/EventForm';
+import Test from './pages/Test'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -26,6 +27,7 @@ function App() {
           <Route path='/profile' element={ <Profile /> }/>
           <Route path='/event' element={ <Event /> }/>
           <Route path='/eventForm' element={ <EventForm /> }/>
+          <Route path='/test' element={ <Test /> }/>
         </Routes>
       </Router>
       <ToastContainer />

@@ -15,6 +15,8 @@ router.get('/getEvent/:id', eventController.getEvent)
 
 router.put('/attendEvent/:id', auth, eventController.attendEvent)
 
+router.put('/unattendEvent/:id', auth, eventController.unattendEvent)
+
 router.post('/uploadPic', eventController.uploadPic)
 
 // router.post('/attendEvent/:id', auth, eventController.attendEvent)

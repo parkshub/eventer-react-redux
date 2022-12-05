@@ -17,6 +17,7 @@ exports.createEvent = asyncHandler(async(req, res) => {
         title: req.body.title,
         caption: req.body.caption,
         user: req.user.id,
+        userName: req.user.name,
         attendee: [{[req.user.id]: req.user.name}]
     })
     res.status(200).json(event)
@@ -110,7 +111,7 @@ exports.updateEvent = asyncHandler(async(req, res) => {
 exports.attendEvent = asyncHandler(async(req, res) => {
     console.log('attendEvent controller')
     const findEvent = await EventModel.findById(req.params.id)
-    
+
     // checking to see if already attending
     let attendees = findEvent.attendee.map(x => Object.keys(x)).flat(1)
     
@@ -137,6 +138,33 @@ exports.attendEvent = asyncHandler(async(req, res) => {
         res.status(200).json(updatedEvent)
     }
 })
+
+exports.unattendEvent = async(req, res) => {
+    try {
+        console.log('unattendEvent controller')
+        
+        const updatedEvent = await EventModel.findById(req.params.id)
+        updatedEvent.attending -= 1
+        updatedEvent.attendee = updatedEvent.attendee.filter(x => Object.keys(x)[0] !==req.user.id)
+        await updatedEvent.save()
+
+
+        localStorage.removeItem('event')
+        localStorage.setItem('event', event)
+        console.log('this is updatedEvent', updatedEvent)
+
+        // const userAttendingEvents = req.user.attending.filter(x => x!==eventId)
+        // const updatedUser = UserModel.findByIdAndUpdate(req.user.id, {attending: userAttendingEvents}, {
+        //     new:true
+        // })
+
+        res.status(200).json(updatedEvent)
+
+    } catch (error) {
+        res.status(500).send('something went wrong')
+    }
+}
+
 
 function checkUser(req, res, doc) {
 
