@@ -43,7 +43,6 @@ function Header() {
                         <button onClick={onClickProfile}>
                             <FaUserAlt/> Profile
                         </button>
-                        {/* <Link to='/profile' >Profile</Link> */}
                     </li>
                     <li>
                         <button onClick={onClickLogout}>

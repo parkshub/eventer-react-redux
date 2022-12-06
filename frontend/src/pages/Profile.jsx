@@ -16,12 +16,6 @@ import { toast } from 'react-toastify'
 
 function Profile() {
   
-  // newly added
-  // const [formData, setFormData] = useState({
-  //   title:'',
-  //   caption: ''
-  // })
-
   const { user } = useSelector((state) => state.auth)
   const { userEvents, isPending, isRejected, message } = useSelector((state) => state.events)
 
@@ -60,7 +54,7 @@ function Profile() {
 
       { userEvents.length > 0 ?
       userEvents.map(userEvent => 
-        <EventItem key={userEvent.id} event={userEvent}/>
+        <EventItem key={userEvent._id} event={userEvent}/>
         ) : 
         <div>you have no events. let's create an event!</div>
         }

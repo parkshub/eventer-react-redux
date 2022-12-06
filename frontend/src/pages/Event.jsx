@@ -7,7 +7,6 @@ import { reset, getEvent, attendEvent, deleteEvent, unattendEvent } from '../fea
 import Loading from '../components/Loading'
 
 function Event() {
-  const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -15,13 +14,9 @@ function Event() {
   const { event, isPending } = useSelector((state) => state.events)
   const { user } = useSelector((state) => state.auth)
   
-  // const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem('event')))
+  const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem('event')))
 
-
-  const [eventState, setEventState] = useState(event ? event : JSON.parse(localStorage.getItem('event')))
-
-  console.log('this is global eventState', eventState)
-  console.log('this is eventState', event)
+  localStorage.setItem('event', JSON.stringify(eventState))
   
   //* MAKE SURE TO ERASE LOCAL STORAGE ON EXIT
   const attendeeArray = eventState.attendee.map(x => Object.keys(x)).join(' ').split(' ')
@@ -39,8 +34,6 @@ function Event() {
       attendee: concatUsers
     }))
   }
-
-  console.log('this is eventState', eventState)
   
   const onClickUnattend = async() => {
     
@@ -50,22 +43,21 @@ function Event() {
       ...prev,
       attendee: prev.attendee.filter(x => Object.keys(x)[0] !==user.id),
       attending: prev.attending - 1
-      // attending: 8000
     }))
 
     localStorage.removeItem('event')
     
   }
-
-
-  const onClickEdit = () => {
-    navigate('/eventForm')
-  }
-
+  
   const onClickDelete = async() => {
     await dispatch(deleteEvent(eventState._id))
     navigate('/profile')
   }
+  
+  const onClickEdit = () => {
+    navigate('/eventForm')
+  }
+
   
   useEffect(() => {
     dispatch(getEvent(eventState._id))
@@ -90,7 +82,6 @@ function Event() {
       <div>these are ppl attending {JSON.stringify(eventState.attendee)}</div>
       {/* Seeing if user is attending the event */}
 
-
       {
         !attendeeArray.includes(user.id) // if user is not attending
           ? <button onClick={onClickAttend}>Attend</button> // show attend button
@@ -104,21 +95,6 @@ function Event() {
               </>
               : ''
       }
-
-
-
-      {/* {attendeeArray.includes(user.id) ? 
-      <button onClick={onClickUnattend}>Unattend</button> :
-      <button onClick={onClickAttend}>Attend</button>
-      } */}
-
-      {/* {user.id === eventState.user && 
-      <>
-        <button onClick={onClickEdit}>Edit Event</button>
-        <button onClick={onClickDelete}>Delete Event</button>
-      </>
-      } */}
-
     </>
   )
 }

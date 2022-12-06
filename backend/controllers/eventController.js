@@ -115,51 +115,42 @@ exports.attendEvent = asyncHandler(async(req, res) => {
     // checking to see if already attending
     let attendees = findEvent.attendee.map(x => Object.keys(x)).flat(1)
     
-    if( attendees.indexOf(req.user.id) != -1) { //change this to -1
-        res.status(401).send("You're already attending this event")
-        console.log('here 3')
-    }
+    // if( attendees.indexOf(req.user.id) != -1) { //change this to -1
+    //     res.status(401).send("You're already attending this event")
+    //     console.log('here 3')
+    // }
     
     // checking to see if maker is trying to attend
-    else if (req.user.id === String(findEvent.user)) {
-        res.status(401).send("You made this event. Can't attend.")
-    }
-    else {
+    // else if (req.user.id === String(findEvent.user)) {
+    //     res.status(401).send("You made this event. Can't attend.")
+    // }
+    // else {
         const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, {
             $inc: {attending: 1},
             $push: {attendee: {[req.user.id]: req.user.name}}
-        },
-        {new: true})
+        })
         const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
             $push: {attending: updatedEvent.id}
-        },
-        {new: true})
+        })
 
         res.status(200).json(updatedEvent)
-    }
+    // }
 })
 
 exports.unattendEvent = async(req, res) => {
     try {
         console.log('unattendEvent controller')
         
-        const updatedEvent = await EventModel.findById(req.params.id)
-        updatedEvent.attending -= 1
-        updatedEvent.attendee = updatedEvent.attendee.filter(x => Object.keys(x)[0] !==req.user.id)
-        await updatedEvent.save()
+        const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, { // this also works
+            $pull: {attendee: {[req.user.id]: req.user.name}},
+            $inc: {attending: -1}
+        })
 
-
-        localStorage.removeItem('event')
-        localStorage.setItem('event', event)
-        console.log('this is updatedEvent', updatedEvent)
-
-        // const userAttendingEvents = req.user.attending.filter(x => x!==eventId)
-        // const updatedUser = UserModel.findByIdAndUpdate(req.user.id, {attending: userAttendingEvents}, {
-        //     new:true
-        // })
-
+        const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
+            $pull: {attending: updatedEvent.id}
+        })
+        
         res.status(200).json(updatedEvent)
-
     } catch (error) {
         res.status(500).send('something went wrong')
     }

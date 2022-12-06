@@ -11,7 +11,7 @@ const getHomeEvents = async() => {
 const getEvent = async(id) => {
     console.log('getEventPage service')
     const response = await axios.get(API_URL + `getEvent/${id}`)
-    localStorage.setItem('event', JSON.stringify(response.data))
+    // localStorage.setItem('event', JSON.stringify(response.data))
     return response.data
 }
 
