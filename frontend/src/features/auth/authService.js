@@ -40,7 +40,7 @@ const unattendEventUser = async(id) => {
     console.log('unattendEventUser service')
     const user = JSON.parse(localStorage.getItem('user'))
     user.attending = user.attending.filter(x => x!==id)
-    localStorage.setItem('user', user)
+    localStorage.setItem('user', JSON.stringify(user))
     return user.attending
 }
 

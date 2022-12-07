@@ -96,13 +96,13 @@ const unattendEvent = async(token, formData) => {
 }
 
 const getAttendingEvents = async(token, attendingEvents) => {
-    console.log('getAttendingEvents service')
+    console.log('getAttendingEvents service is sending this', attendingEvents)
     const config = {
         headers: {
             authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.get(API_URL + 'getAttendingEvents', attendingEvents, config)
+    const response = await axios.get(API_URL + 'getAttendingEvents', config)
     return response.data
 }
 

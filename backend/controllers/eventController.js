@@ -158,14 +158,13 @@ exports.unattendEvent = async(req, res) => {
 }
 
 exports.getAttendingEvents = async(req, res) => {
-    // const ids = ['638ef51180558ab5bc0314bf',
-    // '638ef89d69355ef41f643203',
-    // '638ef8f731b20fe60822545a']
-    console.log('getAttendingEvents controller')
-
-    const attendingEvents = await EventModel.find({ 'id': { $in: req.body}})
-
-    res.json(attendingEvents)
+    console.log('getAttendingEvents controller received', req.user.attending)
+    if (req.user.attending.length === 0) {
+        res.json('')
+    } else {
+        const attendingEvents = await EventModel.find({ 'id': { $in: req.body}})
+        res.json(attendingEvents)
+    }
 }
 
 

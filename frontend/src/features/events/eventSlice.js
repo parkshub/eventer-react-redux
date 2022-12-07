@@ -130,7 +130,7 @@ export const getAttendingEvents = createAsyncThunk(
     'event/attendingEvents',
     async(attendingEvents ,thunkAPI) => {
         try {
-            console.log('getAttendingEvents slice')
+            console.log('getAttendingEvents slice is sending this', attendingEvents)
             const token = thunkAPI.getState().auth.user.token
             return await eventService.getAttendingEvents(token, attendingEvents)
         } catch (error) {
@@ -256,19 +256,26 @@ const eventSlice = createSlice({
                 state.isRejected = true
                 state.message = action.payload
             })
+
+            // *-------------------------
+            // *-------------------------
+            // *-------------------------
             .addCase(unattendEvent.pending, (state) => {
                 state.isPending = true
             })
             .addCase(unattendEvent.fulfilled, (state, action) => {
                 state.isPending = false
                 state.isFulfilled = true
-                state.event = action.payload
+                state.event = action.payload // ** SOMETHING MIGHT BE WRONG HERE BUT MOST LIKELY GETaTTENDINGeVENTS IS WRONG
             })
             .addCase(unattendEvent.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
             })
+            // *-------------------------
+            // *-------------------------
+            // *-------------------------
             .addCase(getAttendingEvents.pending, (state) => {
                 state.isPending = true
             })

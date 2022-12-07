@@ -29,12 +29,6 @@ function Profile() {
     navigate('/eventForm')
   }
 
-  const testing = () => {
-    console.log('these are attending events', attendingEvents)
-    const output = attendingEvents.map(x => x)
-    console.log(output)
-  }
-  
   useEffect(() => {
 
     if (isRejected) {
@@ -42,7 +36,8 @@ function Profile() {
     }
 
     dispatch(getUserEvents(user.id))
-    dispatch(getAttendingEvents(user.attending))
+    // console.log('user.attendings length', user.attending.length === 0 ? 'nothing' : 'something')
+    dispatch(getAttendingEvents(user.attending.length === 0 ? 0 : user.attending))
 
     return () => (
       dispatch(reset())
@@ -56,8 +51,6 @@ function Profile() {
   return (
     <>
       <h1>Profile</h1>
-
-      <button onClick={testing}>testing</button>
 
       <button onClick={onClick}>Create Event</button>
       
@@ -73,7 +66,7 @@ function Profile() {
       <h2>Events Your Attending</h2>
 
       { attendingEvents.length > 0
-        ? <div> {attendingEvents.map((attendingEvent) => 
+        ? <div> {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
                 <EventItem key={attendingEvent._id} event={attendingEvent}/>
                 )}
           </div>
