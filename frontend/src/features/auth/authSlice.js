@@ -3,6 +3,7 @@ import authService from './authService'
 
 // we have to parse here because local storages can only have strings
 const user = JSON.parse(localStorage.getItem('user'))
+console.log('this ran')
 
 const initialState = {
     user: user ? user : null,
@@ -20,10 +21,6 @@ export const register = createAsyncThunk(
             return await authService.register(userData)
         } catch (error) {
             const message = error.response.data
-            console.log(error.message)
-            // console.log(error)
-            // console.log(error.message)
-            // console.log(error.response)
             return thunkAPI.rejectWithValue(message)
         }
     }
@@ -35,9 +32,7 @@ export const login = createAsyncThunk(
         try {
             return await authService.login(userData)
         } catch (error) {
-            console.log('this is the error', error)
             const message = error.response.data
-            console.log(error.message)
             return thunkAPI.rejectWithValue(message)
         }
     }
@@ -48,6 +43,31 @@ export const logout = createAsyncThunk(
     async(_, thunkAPI) => {
         console.log('logout slice')
         await authService.logout()
+    }
+)
+
+export const attendEventUser = createAsyncThunk(
+    'auth/attendEvent',
+    async(id, thunkAPI) => {
+        try {
+            return await authService.attendEventUser(id)
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
+export const unattendEventUser = createAsyncThunk(
+    'auth/unattendEvent',
+    async(id, thunkAPI) => {
+        try {
+            console.log('unattendEvent slice')
+            return await authService.unattendEventUser(id)
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
     }
 )
 
@@ -95,6 +115,16 @@ export const authSlice = createSlice({
             })
             .addCase(logout.fulfilled, (state) => {
                 state.user = null
+            })
+            .addCase(attendEventUser.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.user.attending.push(action.payload)
+            })
+            .addCase(unattendEventUser.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.user.attending = action.payload
             })
     }
 })

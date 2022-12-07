@@ -19,6 +19,9 @@ router.put('/unattendEvent/:id', auth, eventController.unattendEvent)
 
 router.post('/uploadPic', eventController.uploadPic)
 
+// router.get('/getAttendingEvents/:id', auth, eventController.getAttendingEvents)
+router.get('/getAttendingEvents', eventController.getAttendingEvents)
+
 // router.post('/attendEvent/:id', auth, eventController.attendEvent)
 
 // since we're using JWT tokens loggin out will be handled by one of slice services by just removing user from local storage

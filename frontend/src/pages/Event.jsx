@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { reset, getEvent, attendEvent, deleteEvent, unattendEvent } from '../features/events/eventSlice'
+import { attendEventUser, unattendEventUser } from '../features/auth/authSlice'
 
 import Loading from '../components/Loading'
 
@@ -24,6 +25,7 @@ function Event() {
   const onClickAttend = () => {
 
     dispatch(attendEvent(eventState._id))
+    dispatch(attendEventUser(eventState._id)) // ** NEXT TASK IS DOING THIS FOR UNATTENDING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
 
     const currUser = {[user.id]: user.name}
     const concatUsers = eventState.attendee.concat(currUser)
@@ -38,6 +40,7 @@ function Event() {
   const onClickUnattend = async() => {
     
     dispatch(unattendEvent(eventState))
+    dispatch(unattendEventUser(eventState._id))
 
     setEventState((prev) => ({
       ...prev,
@@ -45,7 +48,7 @@ function Event() {
       attending: prev.attending - 1
     }))
 
-    localStorage.removeItem('event')
+    // localStorage.removeItem('event')
     
   }
   
@@ -53,7 +56,7 @@ function Event() {
     await dispatch(deleteEvent(eventState._id))
     navigate('/profile')
   }
-  
+
   const onClickEdit = () => {
     navigate('/eventForm')
   }
@@ -61,6 +64,7 @@ function Event() {
   
   useEffect(() => {
     dispatch(getEvent(eventState._id))
+
     return () => {
       dispatch(reset())
     }

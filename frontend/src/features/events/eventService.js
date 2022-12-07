@@ -16,14 +16,13 @@ const getEvent = async(id) => {
 }
 
 const getUserEvents = async(token, id) => {
-    console.log('getUserEvents service searching for id', id)
+    console.log('getUserEvents service')
     const config = {
         headers: {
           authorization: `Bearer ${token}`,
         }
     }
     const response = await axios.get(API_URL + `getUserEvents/${id}`, config)
-    console.log('this was the response===>', response.data)
     return response.data
 }
 
@@ -36,7 +35,6 @@ const createEvent = async(token, formData) => {
     }
 
     const response = await axios.post(API_URL, formData, config)
-
     return response.data
 }
 
@@ -50,7 +48,6 @@ const attendEvent = async(token, id) => {
     }
 
     const response = await axios.put(API_URL + `attendEvent/${id}`, null, config)
-    console.log('this was the response--->', response.data)
     return response.data
 }
 
@@ -95,7 +92,17 @@ const unattendEvent = async(token, formData) => {
     const eventId = formData._id
 
     const response = await axios.put(API_URL + `unattendEvent/${eventId}`, formData, config)
-    console.log('this was the response', response)
+    return response.data
+}
+
+const getAttendingEvents = async(token, attendingEvents) => {
+    console.log('getAttendingEvents service')
+    const config = {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axios.get(API_URL + 'getAttendingEvents', attendingEvents, config)
     return response.data
 }
 
@@ -108,6 +115,7 @@ const eventService = {
     deleteEvent,
     updateEvent,
     unattendEvent,
+    getAttendingEvents
 }
 
 export default eventService

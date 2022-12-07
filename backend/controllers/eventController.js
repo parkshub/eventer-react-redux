@@ -3,6 +3,7 @@ const EventModel = require('../models/Events')
 const ImageModel = require('../models/Images')
 const asyncHandler = require('express-async-handler')
 const cloudinary = require('../config/cloudinary')
+const { json } = require('express')
 
 // ** SINCE YOU'RE NOT USING THROW ERROR YOU DONT NEED ASYNC HANDLER, SLOWLY GET RID OF IT AND SEE IF ANYTHING BREAKS AFTER COMPLETION
 
@@ -149,11 +150,22 @@ exports.unattendEvent = async(req, res) => {
         const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
             $pull: {attending: updatedEvent.id}
         })
-        
+
         res.status(200).json(updatedEvent)
     } catch (error) {
         res.status(500).send('something went wrong')
     }
+}
+
+exports.getAttendingEvents = async(req, res) => {
+    // const ids = ['638ef51180558ab5bc0314bf',
+    // '638ef89d69355ef41f643203',
+    // '638ef8f731b20fe60822545a']
+    console.log('getAttendingEvents controller')
+
+    const attendingEvents = await EventModel.find({ 'id': { $in: req.body}})
+
+    res.json(attendingEvents)
 }
 
 

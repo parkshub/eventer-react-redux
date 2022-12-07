@@ -5,10 +5,8 @@ import { getEvent } from '../features/events/eventSlice'
 
 
 function EventItem({event}) {
-    console.log('this is the event-->', event._id)
 
     const { user } = useSelector((state) => state.auth)
-    console.log('this is the event', event)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 

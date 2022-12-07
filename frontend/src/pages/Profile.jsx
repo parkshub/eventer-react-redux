@@ -6,6 +6,8 @@ import { useNavigate, Link } from 'react-router-dom'
 import { getUserEvents, reset } from '../features/events/eventSlice'
 import {createEvent} from '../features/events/eventSlice'
 
+import { getAttendingEvents } from '../features/events/eventSlice'
+
 import Loading from '../components/Loading'
 import EventItem from '../components/EventItem'
 
@@ -17,7 +19,7 @@ import { toast } from 'react-toastify'
 function Profile() {
   
   const { user } = useSelector((state) => state.auth)
-  const { userEvents, isPending, isRejected, message } = useSelector((state) => state.events)
+  const { userEvents, attendingEvents, isPending, isRejected, message } = useSelector((state) => state.events)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -25,6 +27,12 @@ function Profile() {
   const onClick= () => {
     localStorage.removeItem('event')
     navigate('/eventForm')
+  }
+
+  const testing = () => {
+    console.log('these are attending events', attendingEvents)
+    const output = attendingEvents.map(x => x)
+    console.log(output)
   }
   
   useEffect(() => {
@@ -34,6 +42,7 @@ function Profile() {
     }
 
     dispatch(getUserEvents(user.id))
+    dispatch(getAttendingEvents(user.attending))
 
     return () => (
       dispatch(reset())
@@ -46,11 +55,13 @@ function Profile() {
 
   return (
     <>
-      <h2>Profile</h2>
+      <h1>Profile</h1>
+
+      <button onClick={testing}>testing</button>
 
       <button onClick={onClick}>Create Event</button>
       
-      <h3>Your Events</h3>
+      <h2>Your Events</h2>
 
       { userEvents.length > 0 ?
       userEvents.map(userEvent => 
@@ -59,7 +70,16 @@ function Profile() {
         <div>you have no events. let's create an event!</div>
         }
       
-      <h3>Events Your Attending</h3>
+      <h2>Events Your Attending</h2>
+
+      { attendingEvents.length > 0
+        ? <div> {attendingEvents.map((attendingEvent) => 
+                <EventItem key={attendingEvent._id} event={attendingEvent}/>
+                )}
+          </div>
+        : ''
+      }
+
     </>
     // it should also include the events you are attending
   )
