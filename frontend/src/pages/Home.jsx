@@ -37,7 +37,7 @@ function Home () {
 
     return (
         <section>
-            <h3>Top Events</h3>
+            <h3>Top Events I made this change</h3>
             {homeEvents.length > 0 ? 
                 <div>
                     {homeEvents.map((homeEvent) => 
