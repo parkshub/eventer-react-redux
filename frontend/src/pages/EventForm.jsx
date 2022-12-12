@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { createEvent, updateEvent } from '../features/events/eventSlice'
 import Loading from '../components/Loading'
+import { toast } from 'react-toastify'
 
 function EventForm() {
 
   const edit = localStorage.getItem('event') ? true : false
-
+  
   let date = new Date()
   date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ (date.getDate()+1) + 'T' + date.getHours() + ':' + date.getMinutes()
 
@@ -24,10 +25,12 @@ function EventForm() {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  const { title, caption, dateTime } = formData
   
-  console.log('this is the formData', formData)
+  const { title, caption, dateTime } = formData
+
+  const buttonDisable = title && caption && dateTime && selectedFile ? false : true
+  
+  // console.log('this is the selectedFile', selectedFile.files.item(0).size)
 
   const onChange = (e) => {
     setFormData((prev) => ({
@@ -39,12 +42,20 @@ function EventForm() {
 
   const onSelectFile = (e) => {
     const file = e.target.files[0];
-    console.log(file)
     
-    let reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onloadend = () => {
-        setSelectedFile(reader.result)
+    const fileSize = e.target.files.item(0).size
+    const fileMb = fileSize / 1024 ** 2
+
+    if (fileMb > 5) {
+      toast.error('file too large')
+      setSelectedFile('')
+    }
+    else {
+      let reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onloadend = () => {
+          setSelectedFile(reader.result)
+      }
     }
 };
   
@@ -79,10 +90,11 @@ function EventForm() {
 
               <label htmlFor="dateTime">Date and Time</label>
               <input type="datetime-local" id='dateTime' name='dateTime' min={date} onChange={ onChange } value={ dateTime }/>
-
+              
+              <label htmlFor="dateTime">Select image less than 5mb</label>
               <input id="fileInput" type="file" name="image" onChange={ onSelectFile } className="form-input"/>
 
-              <button type='submit'>Submit</button>
+              <button type='submit' disabled={buttonDisable}>Submit</button>
           </form>
           <img src={selectedFile} className={selectedFile ? 'image' : 'hide'} width={200} height={200} alt="preview image" />
       </section>
