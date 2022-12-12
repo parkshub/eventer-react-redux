@@ -13,6 +13,7 @@ function EventForm() {
   }
 
   const [formData, setFormData] = useState(JSON.parse(localStorage.getItem('event')) || eventObj)
+  const [selectedFile, setSelectedFile] = useState('')
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -28,6 +29,17 @@ function EventForm() {
     }))
     console.log(formData)
   }
+
+  const onSelectFile = (e) => {
+    const file = e.target.files[0];
+    console.log(file)
+    
+    let reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend = () => {
+        setSelectedFile(reader.result)
+    }
+};
   
   const onSubmit = async(e) => {
       e.preventDefault()
@@ -51,8 +63,11 @@ function EventForm() {
 
               <label htmlFor="caption">Caption</label>
               <input type="text" id='caption' name='caption' onChange={ onChange } value={ caption }/>
+              <input id="fileInput" type="file" name="image" onChange={ onSelectFile } className="form-input"/>
+
               <button type='submit'>Submit</button>
           </form>
+          <img src={selectedFile} className={selectedFile ? 'image' : 'hide'} width={200} height={200} alt="preview image" />
       </section>
     </>
   )
