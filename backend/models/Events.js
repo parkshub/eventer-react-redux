@@ -7,11 +7,11 @@ const eventSchema = new mongoose.Schema({
       },
     imageUrl: {
         type: String,
-        // require: true,
+        require: [true, 'Please input an image'],
     },
     cloudinaryId: {
         type: String,
-        // require: true,
+        require: [true, 'Please input an image'],
     },
     caption: {
         type: String,
@@ -32,11 +32,10 @@ const eventSchema = new mongoose.Schema({
     attendee: {
         // type: String
     },
-
-    // dateTime: {
-    //     type: String,
-    //     required: true,
-    // },
+    dateTime: {
+        type: String,
+        required: true,
+    },
     // description: {
     //     type: String,
     //     required: true,

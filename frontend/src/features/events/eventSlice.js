@@ -52,14 +52,28 @@ export const getEvent = createAsyncThunk(
     }
 )
 
+// export const createEvent = createAsyncThunk(
+//     'event/createEvent',
+//     async(formData, thunkAPI) => {
+//         try {
+//             // const formData = {title:'meh', caption:'myeh'}
+//             console.log('createEvent slice')
+//             const token = thunkAPI.getState().auth.user.token
+//             return await eventService.createEvent(token, formData)
+//         } catch (error) {
+//             const message = error.response.data
+//             return thunkAPI.rejectWithValue(message)
+//         }
+//     }
+// )
+
 export const createEvent = createAsyncThunk(
     'event/createEvent',
-    async(formData, thunkAPI) => {
+    async({formData, selectedFile}, thunkAPI) => {
         try {
-            // const formData = {title:'meh', caption:'myeh'}
             console.log('createEvent slice')
             const token = thunkAPI.getState().auth.user.token
-            return await eventService.createEvent(token, formData)
+            return await eventService.createEvent(token, {formData, selectedFile})
         } catch (error) {
             const message = error.response.data
             return thunkAPI.rejectWithValue(message)
@@ -100,11 +114,11 @@ export const deleteEvent = createAsyncThunk(
 
 export const updateEvent = createAsyncThunk(
     'event/updateEvent',
-    async(formData, thunkAPI) => {
+    async({formData, selectedFile}, thunkAPI) => {
         console.log('updateEvent Slice')
         try {
             const token = thunkAPI.getState().auth.user.token
-            return await eventService.updateEvent(token, formData)
+            return await eventService.updateEvent(token, {formData, selectedFile})
         } catch (error) {
             
         }
@@ -130,7 +144,7 @@ export const getAttendingEvents = createAsyncThunk(
     'event/attendingEvents',
     async(attendingEvents ,thunkAPI) => {
         try {
-            console.log('getAttendingEvents slice is sending this', attendingEvents)
+            console.log('getAttendingEvents slice')
             const token = thunkAPI.getState().auth.user.token
             return await eventService.getAttendingEvents(token, attendingEvents)
         } catch (error) {

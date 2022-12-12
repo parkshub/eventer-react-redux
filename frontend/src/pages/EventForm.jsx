@@ -2,25 +2,32 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { createEvent, updateEvent } from '../features/events/eventSlice'
+import Loading from '../components/Loading'
 
 function EventForm() {
 
   const edit = localStorage.getItem('event') ? true : false
 
+  let date = new Date()
+  date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ (date.getDate()+1) + 'T' + date.getHours() + ':' + date.getMinutes()
+
   const eventObj = {
     title:'',
-    caption:''
+    caption:'',
+    dateTime:'',
   }
 
-  const [formData, setFormData] = useState(JSON.parse(localStorage.getItem('event')) || eventObj)
-  const [selectedFile, setSelectedFile] = useState('')
+  const { isPending } = useSelector((state) => state.events)
+
+  const [formData, setFormData] = useState(localStorage.getItem('event') ? JSON.parse(localStorage.getItem('event')) : eventObj)
+  const [selectedFile, setSelectedFile] = useState(localStorage.getItem('event') ? JSON.parse(localStorage.getItem('event')).imageUrl : '')
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { title, caption } = formData
+  const { title, caption, dateTime } = formData
   
-  console.log(formData)
+  console.log('this is the formData', formData)
 
   const onChange = (e) => {
     setFormData((prev) => ({
@@ -45,11 +52,17 @@ function EventForm() {
       e.preventDefault()
       // if it's in edit mode, then it should navigate back to the event page not the profile
       if (edit) {
-        await dispatch(updateEvent(formData))
+        await dispatch(updateEvent({formData, selectedFile}))
+        // await dispatch(updateEvent(formData))
       } else {
-        await dispatch(createEvent(formData))
+        // await dispatch(createEvent(formData))
+        await dispatch(createEvent({formData, selectedFile}))
       }
       navigate('/profile')
+  }
+
+  if (isPending) {
+    return <Loading />
   }
 
   return (
@@ -63,6 +76,10 @@ function EventForm() {
 
               <label htmlFor="caption">Caption</label>
               <input type="text" id='caption' name='caption' onChange={ onChange } value={ caption }/>
+
+              <label htmlFor="dateTime">Date and Time</label>
+              <input type="datetime-local" id='dateTime' name='dateTime' min={date} onChange={ onChange } value={ dateTime }/>
+
               <input id="fileInput" type="file" name="image" onChange={ onSelectFile } className="form-input"/>
 
               <button type='submit'>Submit</button>

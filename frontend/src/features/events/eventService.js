@@ -26,7 +26,7 @@ const getUserEvents = async(token, id) => {
     return response.data
 }
 
-const createEvent = async(token, formData) => {
+const createEvent = async(token, {formData, selectedFile}) => {
     console.log('createEvent service')
     const config = {
         headers: {
@@ -34,7 +34,7 @@ const createEvent = async(token, formData) => {
         }
     }
 
-    const response = await axios.post(API_URL, formData, config)
+    const response = await axios.post(API_URL, {formData, selectedFile}, config)
     return response.data
 }
 
@@ -63,9 +63,9 @@ const deleteEvent = async(token, id) => {
     return response.data
 }
 
-const updateEvent = async(token, formData) => {
+const updateEvent = async(token, {formData, selectedFile}) => {
 
-    console.log('updateEvent service sending form data', formData)
+    console.log('updateEvent service')
 
     const config = {
         headers: {
@@ -74,7 +74,7 @@ const updateEvent = async(token, formData) => {
     }
     const id = formData._id
 
-    const response = await axios.put(API_URL + `updateEvent/${id}`, formData, config)
+    const response = await axios.put(API_URL + `updateEvent/${id}`, {formData, selectedFile}, config)
 
     return response.data
 }
@@ -96,7 +96,7 @@ const unattendEvent = async(token, formData) => {
 }
 
 const getAttendingEvents = async(token, attendingEvents) => {
-    console.log('getAttendingEvents service is sending this', attendingEvents)
+    console.log('getAttendingEvents service')
     const config = {
         headers: {
             authorization: `Bearer ${token}`

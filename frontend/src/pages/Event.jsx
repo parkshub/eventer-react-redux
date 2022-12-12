@@ -12,7 +12,7 @@ function Event() {
   const navigate = useNavigate()
 
   
-  const { event, isPending } = useSelector((state) => state.events)
+  const { event, isPending, isRejected, message } = useSelector((state) => state.events)
   const { user } = useSelector((state) => state.auth)
   
   const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem('event')))
@@ -25,7 +25,7 @@ function Event() {
   const onClickAttend = () => {
 
     dispatch(attendEvent(eventState._id))
-    dispatch(attendEventUser(eventState._id)) // ** NEXT TASK IS DOING THIS FOR UNATTENDING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  
+    dispatch(attendEventUser(eventState._id)) 
 
     const currUser = {[user.id]: user.name}
     const concatUsers = eventState.attendee.concat(currUser)
@@ -65,10 +65,14 @@ function Event() {
   useEffect(() => {
     dispatch(getEvent(eventState._id))
 
+    if (isRejected) {
+      toast.error(message)
+    }
+
     return () => {
       dispatch(reset())
     }
-  }, [dispatch])
+  }, [message ,isRejected ,dispatch])
 
 
   if (isPending) {
@@ -81,9 +85,11 @@ function Event() {
       <div>{eventState._id}</div>
       <div>{eventState.title}</div>
       <div>{event.caption}</div>
+      <div>{eventState.dateTime}</div>
       <div>attending: {eventState.attending}</div>
       <div>created by: {eventState.userName}</div>
       <div>these are ppl attending {JSON.stringify(eventState.attendee)}</div>
+      <img src={eventState.imageUrl} height={200} width={200} alt="" />
       {/* Seeing if user is attending the event */}
 
       {

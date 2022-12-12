@@ -13,13 +13,22 @@ const { json } = require('express')
 exports.createEvent = asyncHandler(async(req, res) => {
 
     console.log('createEvent controller')
+
+    const image = req.body.selectedFile
+
+    const imageResponse = await cloudinary.uploader.upload(image, {
+        folder: "userImage",
+    })
         
     const event = await EventModel.create({
-        title: req.body.title,
-        caption: req.body.caption,
+        title: req.body.formData.title,
+        caption: req.body.formData.caption,
+        dateTime: req.body.formData.dateTime,
         user: req.user.id,
         userName: req.user.name,
-        attendee: [{[req.user.id]: req.user.name}]
+        attendee: [{[req.user.id]: req.user.name}],
+        imageUrl: imageResponse.secure_url,
+        cloudinaryId: imageResponse.public_id
     })
     res.status(200).json(event)
 
@@ -46,7 +55,7 @@ exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine th
     const image = req.body.selectedFile // remember this is the name you set on the frontend redux, might change later
     try {
         const response = await cloudinary.uploader.upload(image, {
-            folder: "products",
+            folder: "userImage",
         })
         console.log(response)
 
@@ -76,7 +85,7 @@ exports.deleteEvent = asyncHandler(async(req, res) => {
 
     await checkUser(req, res, event)
 
-    // await cloudinary.uploader.destory(event.cloudinaryId)
+    await cloudinary.uploader.destroy(event.cloudinaryId)
 
     await event.deleteOne()
 
@@ -85,26 +94,42 @@ exports.deleteEvent = asyncHandler(async(req, res) => {
 
 exports.updateEvent = asyncHandler(async(req, res) => {
     
-    console.log('updateEvent controller this is req.body', req.body)
+    console.log('updateEvent controller')
+    console.log(req.body.selectedFile)
+    // console.log(req.body.se)
     
-    const findEvent = await EventModel.findById(req.params.id)
+    const event = await EventModel.findById(req.params.id)
+    
+    await checkUser(req, res, event)
 
-    await checkUser(req, res, findEvent)
+    const image = req.body.selectedFile
+    
+    if (image == event.imageUrl) {
+        const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, req.body.formData, {
+            new: true
+        })
+        res.status(200).json(updatedEvent)
+    } else {
+        await cloudinary.uploader.destroy(event.cloudinaryId)
 
-    // so im going to have a preset of images people can upload in the sample file, if it didn't come from sample file it would be destroyed, but it's in the sample file it should be destroyed...the conditional would be something like...
+        const imageResponse = await cloudinary.uploader.upload(image, {
+            folder: "userImage",
+        })
+        
+        req.body.formData.imageUrl = imageResponse.secure_url
+        req.body.formData.cloudinaryId = imageResponse.public_id
 
-    // const imageUrl = findEvent.imageUrl
-    // if (!imageUrl.includes('sample')) {
-        // then destory
-    // } else { don't need this statement, but else just update normally}
-
-    console.log(req.user)
-    const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, req.body, {
-        new: true
-    })
+        const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, req.body.formData, {
+            new: true
+        })
+        
+        res.status(200).json(updatedEvent)
+    }
 
 
-    res.status(200).json(updatedEvent)
+
+
+    
   // ** would be cool if I could find a way to only send the updated portions of the doc
 })
 
@@ -158,7 +183,7 @@ exports.unattendEvent = async(req, res) => {
 }
 
 exports.getAttendingEvents = async(req, res) => {
-    console.log('getAttendingEvents controller received', req.user.attending)
+    console.log('getAttendingEvents controller')
     if (req.user.attending.length === 0) {
         res.json('')
     } else {

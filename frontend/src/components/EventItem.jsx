@@ -18,10 +18,12 @@ function EventItem({event}) {
     return (
         <>
             <div className="eventItem">
+                <img src={event.imageUrl} width={200} height={200} alt="" />
                 <h3>{event._id}</h3>
                 <h4 className='eventName'>{event.title}</h4>
                 <p className='eventCaption'>{event.caption}</p>
-                <span className='attending'>{event.attending} attending</span>
+                <p className='attending'>Time & Date: {event.dateTime}</p>
+                <p className='attending'>{event.attending} attending</p>
             </div>
             { user ? 
             <button value={event._id} onClick={onClick}>View</button> :
