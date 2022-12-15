@@ -15,14 +15,16 @@ const getEvent = async(id) => {
     return response.data
 }
 
-const getUserEvents = async(token, id) => {
+// const getUserEvents = async(token, id) => {
+const getUserEvents = async(token) => {
     console.log('getUserEvents service')
     const config = {
         headers: {
           authorization: `Bearer ${token}`,
         }
     }
-    const response = await axios.get(API_URL + `getUserEvents/${id}`, config)
+    // const response = await axios.get(API_URL + `getUserEvents/${id}`, config)
+    const response = await axios.get(API_URL + 'getUserEvents', config)
     return response.data
 }
 

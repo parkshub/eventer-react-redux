@@ -13,7 +13,7 @@ function Home () {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const { homeEvents, event, isPending, isRejected, isFulfilled, message } = useSelector((state) => state.events)
+    const { homeEvents, event, isPending, isRejected, message } = useSelector((state) => state.events)
 
     
     useEffect(() => {

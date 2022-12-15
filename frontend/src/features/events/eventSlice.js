@@ -27,11 +27,11 @@ export const getHomeEvents = createAsyncThunk(
 
 export const getUserEvents = createAsyncThunk(
     'event/getUserEvents',
-    async(id, thunkAPI) => {
+    async(_, thunkAPI) => {
         try {
             console.log('getUserEvents slice')
             const token = thunkAPI.getState().auth.user.token
-            return await eventService.getUserEvents(token, id)
+            return await eventService.getUserEvents(token)
         } catch (error) {
             const message = error.response.data
             return thunkAPI.rejectWithValue(message)
@@ -128,7 +128,7 @@ export const unattendEvent = createAsyncThunk(
 
 export const getAttendingEvents = createAsyncThunk(
     'event/attendingEvents',
-    async(thunkAPI) => {
+    async(_, thunkAPI) => {
     // async(attendingEvents ,thunkAPI) => {
         try {
             console.log('getAttendingEvents slice')
@@ -259,25 +259,19 @@ const eventSlice = createSlice({
                 state.message = action.payload
             })
 
-            // *-------------------------
-            // *-------------------------
-            // *-------------------------
             .addCase(unattendEvent.pending, (state) => {
                 state.isPending = true
             })
             .addCase(unattendEvent.fulfilled, (state, action) => {
                 state.isPending = false
                 state.isFulfilled = true
-                state.event = action.payload // ** SOMETHING MIGHT BE WRONG HERE BUT MOST LIKELY GETaTTENDINGeVENTS IS WRONG
+                state.event = action.payload
             })
             .addCase(unattendEvent.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
             })
-            // *-------------------------
-            // *-------------------------
-            // *-------------------------
             .addCase(getAttendingEvents.pending, (state) => {
                 state.isPending = true
             })

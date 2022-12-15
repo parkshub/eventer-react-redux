@@ -35,20 +35,12 @@ function Profile() {
 
   useEffect(() => {
 
-    async function fetchData() {
-      await dispatch(getUserEvents(user.id))
-      await dispatch(getAttendingEvents())
-    }
-
-    fetchData()
-
+    dispatch(getUserEvents())
+    dispatch(getAttendingEvents())
+    
     if (isRejected) {
       toast.error(message)
     }
-
-    // await dispatch(getUserEvents(user.id))
-    // await dispatch(getAttendingEvents())
-    // dispatch(getAttendingEvents(user.attending.length === 0 ? 0 : user.attending))
 
     return () => (
       dispatch(reset())
@@ -94,7 +86,6 @@ function Profile() {
       }
 
     </>
-    // it should also include the events you are attending
   )
 }
 
