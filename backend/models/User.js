@@ -2,7 +2,11 @@ const mongoose = require('mongoose')
 
 const UserSchema = mongoose.Schema(
     {
-        name: {
+        firstName: {
+            type: String,
+            required: [true, 'Please add name']
+        },
+        lastName: {
             type: String,
             required: [true, 'Please add name']
         },
@@ -14,6 +18,13 @@ const UserSchema = mongoose.Schema(
         password: {
             type: String,
             required: [true, 'Please add password']
+        },
+        image: {
+            type: String,
+            required: [true, 'Please add hex or image']
+        },
+        cloudinaryId: {
+            type: String,
         },
         attending: {
             type: [String],

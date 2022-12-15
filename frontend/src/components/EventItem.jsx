@@ -18,7 +18,8 @@ function EventItem({event}) {
     return (
         <>
             <div className="eventItem">
-                <img src={event.imageUrl} width={200} height={200} alt="" />
+                <img src={event.imageUrl} width={250} height={250} alt="" />
+                {/* <img src={event.imageUrl} alt="" /> */}
                 <h3>{event._id}</h3>
                 <h4 className='eventName'>{event.title}</h4>
                 <p className='eventCaption'>{event.caption}</p>

@@ -41,3 +41,32 @@
 .hide {
   display: none;
 }
+
+
+.profileImagePreview {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: #512DA8;
+  font-size: 15px;
+  color: #fff;
+  text-align: center;
+  line-height: 27px;
+  margin: 20px 0;
+  /* display: inline-block; */
+}
+
+.profileImage {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+}
+
+.uploadedPic {
+  display: none;
+}
+
+
+.uploadedPic[src] {
+ display: block;
+}

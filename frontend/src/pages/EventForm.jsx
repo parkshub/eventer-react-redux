@@ -96,7 +96,7 @@ function EventForm() {
 
               <button type='submit' disabled={buttonDisable}>Submit</button>
           </form>
-          <img src={selectedFile} className={selectedFile ? 'image' : 'hide'} width={200} height={200} alt="preview image" />
+          <img src={selectedFile} className={selectedFile ? 'image' : 'hide'} width={300}  alt="preview image" />
       </section>
     </>
   )

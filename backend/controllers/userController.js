@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const UserModel = require('../models/User')
 const asyncHandler = require('express-async-handler')
 const bcrypt = require('bcryptjs')
+const cloudinary = require('../config/cloudinary')
 
 function generateToken(id) {
     return jwt.sign({id}, process.env.JWT_SECRET, {
@@ -10,9 +11,9 @@ function generateToken(id) {
 }
 
 exports.registerUser = asyncHandler(async (req, res) => {
-    const {name, email, password} = req.body
+    const {firstName, lastName, email, password, image} = req.body
 
-    if (!name || !email || !password) {
+    if (!firstName || !lastName || !email || !password || !image) {
         res.status(400).send('Please enter all fields')
     }
 
@@ -24,21 +25,68 @@ exports.registerUser = asyncHandler(async (req, res) => {
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(password, salt)
 
-    const user = await UserModel.create({
-        name: name,
-        email: email,
-        password: hashedPassword
-    })
+    const regex = /#[0-9A-Fa-f]{6}/g;
 
-    if (user) {
-        // this part is to see that the token hasn't been tampered with
+    if (!image.match(regex)) { //if user actually uploaded an image
+        console.log('user uploaded an image')
+        const imageResponse = await cloudinary.uploader.upload(image, {
+            folder: "profilePic",
+            transformation: [
+                {height: 300, width:300, crop: "scale"},
+                {radius: "max"}
+            ]
+        })
+
+
+        
+        const user = await UserModel.create({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: hashedPassword,
+            image: imageResponse.secure_url,
+            cloudinaryId: imageResponse.public_id
+        })
+        
         res.status(201).json({
             id: user.id,
-            name: user.name,
+            firstName: user.firstName,
+            lastName: user.lastName,
             token: generateToken(user.id),
-            attending: []
+            attending: [],
+            image: user.image
         })
-    } else {
+
+    } else if (image.match(regex)) {
+        console.log('user uploaded an hex')
+        const user = await UserModel.create({
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            password: hashedPassword,
+            image: image,
+        })
+
+        res.status(201).json({
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            token: generateToken(user.id),
+            attending: [],
+            image: user.image
+        })
+    }
+
+    // if (user) {
+    //     // this part is to see that the token hasn't been tampered with
+    //     res.status(201).json({
+    //         id: user.id,
+    //         firstName: user.firstName,
+    //         lastName: user.lastName,
+    //         token: generateToken(user.id),
+    //         attending: []
+    //     })
+    else {
         res.status(400).send('Invalid user data')
     }
 })
@@ -57,11 +105,13 @@ exports.loginUser = asyncHandler(async (req, res) => {
     else if (await bcrypt.compare(password, user.password)) {
         res.status(201).json({
             id: user.id,
-            name: user.name,
+            firstName: user.firstName,
+            lastName: user.lastName,
             token: generateToken(user.id),
-            attending: user.attending
+            attending: user.attending,
+            image: user.image
         })
-        console.log(user.name + ' is logged in')
+        console.log(user.firstName + ' is logged in')
     } else {
         res.status(400).send('Invalid credentials')
     }

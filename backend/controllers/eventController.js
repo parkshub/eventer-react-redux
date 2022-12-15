@@ -4,6 +4,7 @@ const ImageModel = require('../models/Images')
 const asyncHandler = require('express-async-handler')
 const cloudinary = require('../config/cloudinary')
 const { json } = require('express')
+const User = require('../models/User')
 
 // ** SINCE YOU'RE NOT USING THROW ERROR YOU DONT NEED ASYNC HANDLER, SLOWLY GET RID OF IT AND SEE IF ANYTHING BREAKS AFTER COMPLETION
 
@@ -18,6 +19,9 @@ exports.createEvent = asyncHandler(async(req, res) => {
 
     const imageResponse = await cloudinary.uploader.upload(image, {
         folder: "userImage",
+        transformation: [
+            {height: 300, width:300, crop: "scale"}
+        ]
     })
         
     const event = await EventModel.create({
@@ -25,8 +29,8 @@ exports.createEvent = asyncHandler(async(req, res) => {
         caption: req.body.formData.caption,
         dateTime: req.body.formData.dateTime,
         user: req.user.id,
-        userName: req.user.name,
-        attendee: [{[req.user.id]: req.user.name}],
+        userName: req.user.firstName + ' ' + req.user.lastName,
+        attendee: [{[req.user.id]: req.user.firstName}],
         imageUrl: imageResponse.secure_url,
         cloudinaryId: imageResponse.public_id
     })
@@ -153,7 +157,7 @@ exports.attendEvent = asyncHandler(async(req, res) => {
     // else {
         const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, {
             $inc: {attending: 1},
-            $push: {attendee: {[req.user.id]: req.user.name}}
+            $push: {attendee: {[req.user.id]: req.user.firstName + ' ' + req.user.lastName}}
         })
         const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
             $push: {attending: updatedEvent.id}
@@ -168,7 +172,7 @@ exports.unattendEvent = async(req, res) => {
         console.log('unattendEvent controller')
         
         const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, { // this also works
-            $pull: {attendee: {[req.user.id]: req.user.name}},
+            $pull: {attendee: {[req.user.id]: req.user.firstName + ' ' + req.user.lastName}},
             $inc: {attending: -1}
         })
 
@@ -184,10 +188,16 @@ exports.unattendEvent = async(req, res) => {
 
 exports.getAttendingEvents = async(req, res) => {
     console.log('getAttendingEvents controller')
+
+    const user = UserModel.findById(req.user.id)
+
+    console.log(req.user.attending)
+
+
     if (req.user.attending.length === 0) {
         res.json('')
     } else {
-        const attendingEvents = await EventModel.find({ 'id': { $in: req.body}})
+        const attendingEvents = await EventModel.find({ '_id': { $in: [req.user.attending]}})
         res.json(attendingEvents)
     }
 }

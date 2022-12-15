@@ -15,11 +15,15 @@ import EventItem from '../components/EventItem'
 import EventForm from './EventForm'
 import { toast } from 'react-toastify'
 
+import { createImageFromInitials } from '../components/Utils'
+
 
 function Profile() {
   
   const { user } = useSelector((state) => state.auth)
   const { userEvents, attendingEvents, isPending, isRejected, message } = useSelector((state) => state.events)
+  
+  let imgSrc = ''
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -31,13 +35,20 @@ function Profile() {
 
   useEffect(() => {
 
+    async function fetchData() {
+      await dispatch(getUserEvents(user.id))
+      await dispatch(getAttendingEvents())
+    }
+
+    fetchData()
+
     if (isRejected) {
       toast.error(message)
     }
 
-    dispatch(getUserEvents(user.id))
-    // console.log('user.attendings length', user.attending.length === 0 ? 'nothing' : 'something')
-    dispatch(getAttendingEvents(user.attending.length === 0 ? 0 : user.attending))
+    // await dispatch(getUserEvents(user.id))
+    // await dispatch(getAttendingEvents())
+    // dispatch(getAttendingEvents(user.attending.length === 0 ? 0 : user.attending))
 
     return () => (
       dispatch(reset())
@@ -50,7 +61,16 @@ function Profile() {
 
   return (
     <>
-      <h1>Profile</h1>
+
+      {
+        user.image.startsWith('#')
+        ?
+        <img id='preview' className='profileImage defaultPic' src={ imgSrc.length <= 0 ? createImageFromInitials(300, user.firstName + ' ' + user.lastName, user.image) : imgSrc } alt='profile-pic' />
+        :
+        <img src={user.image} alt="" className={'profileImage'}/>
+      }
+
+      <h1>Welcome to your profile, {user.firstName}</h1>
 
       <button onClick={onClick}>Create Event</button>
       

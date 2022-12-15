@@ -52,20 +52,6 @@ export const getEvent = createAsyncThunk(
     }
 )
 
-// export const createEvent = createAsyncThunk(
-//     'event/createEvent',
-//     async(formData, thunkAPI) => {
-//         try {
-//             // const formData = {title:'meh', caption:'myeh'}
-//             console.log('createEvent slice')
-//             const token = thunkAPI.getState().auth.user.token
-//             return await eventService.createEvent(token, formData)
-//         } catch (error) {
-//             const message = error.response.data
-//             return thunkAPI.rejectWithValue(message)
-//         }
-//     }
-// )
 
 export const createEvent = createAsyncThunk(
     'event/createEvent',
@@ -142,11 +128,13 @@ export const unattendEvent = createAsyncThunk(
 
 export const getAttendingEvents = createAsyncThunk(
     'event/attendingEvents',
-    async(attendingEvents ,thunkAPI) => {
+    async(thunkAPI) => {
+    // async(attendingEvents ,thunkAPI) => {
         try {
             console.log('getAttendingEvents slice')
             const token = thunkAPI.getState().auth.user.token
-            return await eventService.getAttendingEvents(token, attendingEvents)
+            // return await eventService.getAttendingEvents(token, attendingEvents)
+            return await eventService.getAttendingEvents(token)
         } catch (error) {
             const message = error.response.data
             return thunkAPI.rejectWithValue(message)

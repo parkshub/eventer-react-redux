@@ -27,7 +27,8 @@ function Event() {
     dispatch(attendEvent(eventState._id))
     dispatch(attendEventUser(eventState._id)) 
 
-    const currUser = {[user.id]: user.name}
+    const currUser = {[user.id]: user.firstName}
+    // const currUser = {[user.id]: user.name}
     const concatUsers = eventState.attendee.concat(currUser)
 
     setEventState((prev) => ({
