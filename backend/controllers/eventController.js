@@ -31,6 +31,11 @@ exports.createEvent = asyncHandler(async(req, res) => {
         user: req.user.id,
         userName: req.user.firstName + ' ' + req.user.lastName,
         attendee: [{[req.user.id]: req.user.firstName}],
+                // attendee: [
+        //     {
+        //         [req.user.id]: {
+        //             name: req.user.firstName + ' ' + req.user.lastName,
+        //             image: req.user.image}}],
         imageUrl: imageResponse.secure_url,
         cloudinaryId: imageResponse.public_id
     })

@@ -34,9 +34,11 @@ function Profile() {
   }
 
   useEffect(() => {
-
-    dispatch(getUserEvents())
-    dispatch(getAttendingEvents())
+    async function asyncDispatch() {
+      await dispatch(getUserEvents())
+      await dispatch(getAttendingEvents())
+    }
+    asyncDispatch()
     
     if (isRejected) {
       toast.error(message)

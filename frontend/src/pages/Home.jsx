@@ -48,7 +48,6 @@ function Home () {
              : (
                 <h2>no events</h2>
             )}
-            <div id='profileImage'>AJ</div>
             <div>so what i can do with profile pics is...see if they have a link or color and if they have a color output a div with class profileImage but if they have a link, out an img with src class profileImage...things to do next, editing profile name and pic.
             </div>
         </section>

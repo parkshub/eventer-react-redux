@@ -25,19 +25,6 @@ export const getHomeEvents = createAsyncThunk(
     }
 )
 
-export const getUserEvents = createAsyncThunk(
-    'event/getUserEvents',
-    async(_, thunkAPI) => {
-        try {
-            console.log('getUserEvents slice')
-            const token = thunkAPI.getState().auth.user.token
-            return await eventService.getUserEvents(token)
-        } catch (error) {
-            const message = error.response.data
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
 
 export const getEvent = createAsyncThunk(
     'event/getEvent',
@@ -125,11 +112,23 @@ export const unattendEvent = createAsyncThunk(
         }
     }
 )
+export const getUserEvents = createAsyncThunk(
+    'event/getUserEvents',
+    async(_, thunkAPI) => {
+        try {
+            console.log('getUserEvents slice')
+            const token = thunkAPI.getState().auth.user.token
+            return await eventService.getUserEvents(token)
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 
 export const getAttendingEvents = createAsyncThunk(
     'event/attendingEvents',
     async(_, thunkAPI) => {
-    // async(attendingEvents ,thunkAPI) => {
         try {
             console.log('getAttendingEvents slice')
             const token = thunkAPI.getState().auth.user.token

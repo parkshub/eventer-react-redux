@@ -27,7 +27,7 @@ function Header() {
             <div className='logo'>
                 <Link to ='/'>Eventer</Link>
             </div>
-            {user && <div>welcome user: {user.id}</div>}
+            {user && <div>welcome user: {user.id + ': ' + user.firstName + ' ' + user.lastName} </div>}
             {!user ? (
                 <ul>
                     <li>
