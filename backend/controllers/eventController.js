@@ -30,12 +30,15 @@ exports.createEvent = asyncHandler(async(req, res) => {
         dateTime: req.body.formData.dateTime,
         user: req.user.id,
         userName: req.user.firstName + ' ' + req.user.lastName,
-        attendee: [{[req.user.id]: req.user.firstName}],
-                // attendee: [
-        //     {
-        //         [req.user.id]: {
-        //             name: req.user.firstName + ' ' + req.user.lastName,
-        //             image: req.user.image}}],
+        // attendee: [{[req.user.id]: req.user.firstName}],
+        attendee: 
+        [{
+            [req.user.id]: 
+                {
+                    name: req.user.firstName + ' ' + req.user.lastName,
+                    image: req.user.image
+                }
+        }],
         imageUrl: imageResponse.secure_url,
         cloudinaryId: imageResponse.public_id
     })
@@ -81,25 +84,26 @@ exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine th
 }
 )
 
-
-exports.getUserEvents = asyncHandler(async(req, res) => {
-    console.log('getUserEvents controller')
-    
-    // const user = UserModel.findById(req.user.id)
-    // const attendingEvents = await EventModel.find({ '_id': { $in: [req.user.attending]}})
-    
-    const events = await EventModel.find({user: req.user.id})
-
-    // const test = events.concat(attendingEvents)
-
-    res.status(200).json(events)
-})
-
 exports.deleteEvent = asyncHandler(async(req, res) => {
     console.log('deleteEvent controller')
+    
+    
     const event = await EventModel.findById(req.params.id)
-
     await checkUser(req, res, event)
+    
+    const attendees = event.attendee.map(x => Object.keys(x)).flat(1).filter(x => x !== req.user.id)
+    
+    const users = await UserModel.find({ '_id': { $in: attendees}})
+
+    const filterEvents = async(users) => {
+        for (let user of users) {
+            user.attending = user.attending.filter(event => event !== req.params.id)
+            await user.save()
+        }
+    }
+
+    filterEvents(users)
+
 
     await cloudinary.uploader.destroy(event.cloudinaryId)
 
@@ -156,6 +160,7 @@ exports.attendEvent = asyncHandler(async(req, res) => {
 
     // checking to see if already attending
     let attendees = findEvent.attendee.map(x => Object.keys(x)).flat(1)
+    let fullName = req.user.firstName + ' ' + req.user.lastName
     
     // if( attendees.indexOf(req.user.id) != -1) { //change this to -1
     //     res.status(401).send("You're already attending this event")
@@ -169,7 +174,10 @@ exports.attendEvent = asyncHandler(async(req, res) => {
     // else {
         const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, {
             $inc: {attending: 1},
-            $push: {attendee: {[req.user.id]: req.user.firstName + ' ' + req.user.lastName}}
+            $push: {attendee: {[req.user.id]: {
+                name: fullName,
+                image: req.user.image
+            }}}
         })
         const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
             $push: {attending: updatedEvent.id}
@@ -182,9 +190,12 @@ exports.attendEvent = asyncHandler(async(req, res) => {
 exports.unattendEvent = async(req, res) => {
     try {
         console.log('unattendEvent controller')
-        
+        const fullName = req.user.firstName + ' ' + req.user.lastName
         const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, { // this also works
-            $pull: {attendee: {[req.user.id]: req.user.firstName + ' ' + req.user.lastName}},
+            $pull: {attendee: {[req.user.id]: {
+                name: fullName,
+                image: req.user.image
+            }}},
             $inc: {attending: -1}
         })
 
@@ -203,15 +214,41 @@ exports.getAttendingEvents = async(req, res) => {
 
     const user = UserModel.findById(req.user.id)
 
-    console.log(req.user.attending)
-
-
     if (req.user.attending.length === 0) {
         res.json('')
     } else {
         const attendingEvents = await EventModel.find({ '_id': { $in: [req.user.attending]}})
         res.json(attendingEvents)
     }
+}
+
+exports.getUserEvents = asyncHandler(async(req, res) => {
+    console.log('getUserEvents controller')
+    
+    // const user = UserModel.findById(req.user.id)
+    // const attendingEvents = await EventModel.find({ '_id': { $in: [req.user.attending]}})
+    
+    const events = await EventModel.find({user: req.user.id})
+
+    // const test = events.concat(attendingEvents)
+
+    res.status(200).json(events)
+})
+
+exports.getProfileEvents = async(req, res) => {
+    const user = await UserModel.findById(req.params.id)
+
+    const userEvents = await EventModel.find({user: req.params.id})
+
+    const attendingEvents = await EventModel.find({ '_id': { $in: user.attending}})
+
+    // const allEvents = userEvents.concat(attendingEvents)
+
+    res.json(
+        {
+            userEvents: userEvents,
+            attendingEvents: attendingEvents
+        })
 }
 
 

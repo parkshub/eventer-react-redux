@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 
 
-import { getUserEvents, reset } from '../features/events/eventSlice'
+// import { getUserEvents, reset } from '../features/events/eventSlice'
+import { reset, getProfileEvents } from '../features/events/eventSlice'
 import {createEvent} from '../features/events/eventSlice'
 
-import { getAttendingEvents } from '../features/events/eventSlice'
+// import { getAttendingEvents } from '../features/events/eventSlice'
 
 import Loading from '../components/Loading'
 import EventItem from '../components/EventItem'
@@ -21,7 +22,12 @@ import { createImageFromInitials } from '../components/Utils'
 function Profile() {
   
   const { user } = useSelector((state) => state.auth)
-  const { userEvents, attendingEvents, isPending, isRejected, message } = useSelector((state) => state.events)
+  // const { events, userEvents, attendingEvents, isPending, isRejected, message } = useSelector((state) => state.events)
+  const { events, isPending, isRejected, message } = useSelector((state) => state.events)
+
+  const { attendingEvents, userEvents } = events
+
+  console.log('these are the events', events)
   
   let imgSrc = ''
 
@@ -34,11 +40,8 @@ function Profile() {
   }
 
   useEffect(() => {
-    async function asyncDispatch() {
-      await dispatch(getUserEvents())
-      await dispatch(getAttendingEvents())
-    }
-    asyncDispatch()
+
+    dispatch(getProfileEvents(user.id))
     
     if (isRejected) {
       toast.error(message)
@@ -70,7 +73,8 @@ function Profile() {
       
       <h2>Your Events</h2>
 
-      { userEvents.length > 0 ?
+      {/* { userEvents.length > 0 ? */}
+      { userEvents ?
       userEvents.map(userEvent => 
         <EventItem key={userEvent._id} event={userEvent}/>
         ) : 
@@ -79,8 +83,8 @@ function Profile() {
       
       <h2>Events Your Attending</h2>
 
-      { attendingEvents.length > 0
-        ? <div> {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
+      { attendingEvents ?
+         <div> {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
                 <EventItem key={attendingEvent._id} event={attendingEvent}/>
                 )}
           </div>

@@ -6,6 +6,7 @@ const initialState = {
     homeEvents: [],
     userEvents: [],
     attendingEvents: '',
+    events: '',
     isPending: false,
     isRejected: false, 
     isFulfilled: false,
@@ -112,28 +113,42 @@ export const unattendEvent = createAsyncThunk(
         }
     }
 )
-export const getUserEvents = createAsyncThunk(
-    'event/getUserEvents',
-    async(_, thunkAPI) => {
-        try {
-            console.log('getUserEvents slice')
-            const token = thunkAPI.getState().auth.user.token
-            return await eventService.getUserEvents(token)
-        } catch (error) {
-            const message = error.response.data
-            return thunkAPI.rejectWithValue(message)
-        }
-    }
-)
+// export const getUserEvents = createAsyncThunk(
+//     'event/getUserEvents',
+//     async(_, thunkAPI) => {
+//         try {
+//             console.log('getUserEvents slice')
+//             const token = thunkAPI.getState().auth.user.token
+//             return await eventService.getUserEvents(token)
+//         } catch (error) {
+//             const message = error.response.data
+//             return thunkAPI.rejectWithValue(message)
+//         }
+//     }
+// )
 
-export const getAttendingEvents = createAsyncThunk(
-    'event/attendingEvents',
-    async(_, thunkAPI) => {
+// export const getAttendingEvents = createAsyncThunk(
+//     'event/attendingEvents',
+//     async(_, thunkAPI) => {
+//         try {
+//             console.log('getAttendingEvents slice')
+//             const token = thunkAPI.getState().auth.user.token
+//             // return await eventService.getAttendingEvents(token, attendingEvents)
+//             return await eventService.getAttendingEvents(token)
+//         } catch (error) {
+//             const message = error.response.data
+//             return thunkAPI.rejectWithValue(message)
+//         }
+//     }
+// )
+
+export const getProfileEvents = createAsyncThunk(
+    'event/getProfileEvents',
+    async(id, thunkAPI) => {
         try {
-            console.log('getAttendingEvents slice')
+            console.log('getProfileEvents slice')
             const token = thunkAPI.getState().auth.user.token
-            // return await eventService.getAttendingEvents(token, attendingEvents)
-            return await eventService.getAttendingEvents(token)
+            return await eventService.getProfileEvents(id, token)
         } catch (error) {
             const message = error.response.data
             return thunkAPI.rejectWithValue(message)
@@ -193,20 +208,6 @@ const eventSlice = createSlice({
                 state.message = action.payload
                 state.event = ''
             })
-            .addCase(getUserEvents.pending, (state) => {
-                state.isPending = true
-            })
-            .addCase(getUserEvents.fulfilled, (state, action) => {
-                state.isPending = false
-                state.isFulfilled = true
-                state.userEvents = action.payload
-            })
-            .addCase(getUserEvents.rejected, (state, action) => {
-                state.isPending = false
-                state.isRejected = true
-                state.message = action.payload
-                state.userEvents = []
-            })
             .addCase(createEvent.pending, (state) => {
                 state.isPending = true
             })
@@ -257,7 +258,7 @@ const eventSlice = createSlice({
                 state.isRejected = true
                 state.message = action.payload
             })
-
+            
             .addCase(unattendEvent.pending, (state) => {
                 state.isPending = true
             })
@@ -271,21 +272,48 @@ const eventSlice = createSlice({
                 state.isRejected = true
                 state.message = action.payload
             })
-            .addCase(getAttendingEvents.pending, (state) => {
+            // .addCase(getAttendingEvents.pending, (state) => {
+                //     state.isPending = true
+                // })
+            // .addCase(getAttendingEvents.fulfilled, (state, action) => {
+                //     state.isPending = false
+                //     state.isFulfilled = true
+                //     state.attendingEvents = action.payload
+                // })
+            // .addCase(getAttendingEvents.rejected, (state, action) => {
+                //     state.isPending = false
+                //     state.isRejected = true
+                //     state.message = action.payload
+                // })
+            // .addCase(getUserEvents.pending, (state) => {
+            //     state.isPending = true
+            // })
+            // .addCase(getUserEvents.fulfilled, (state, action) => {
+            //     state.isPending = false
+            //     state.isFulfilled = true
+            //     state.userEvents = action.payload
+            // })
+            // .addCase(getUserEvents.rejected, (state, action) => {
+            //     state.isPending = false
+            //     state.isRejected = true
+            //     state.message = action.payload
+            //     state.userEvents = []
+            // })
+            .addCase(getProfileEvents.pending, (state) => {
                 state.isPending = true
             })
-            .addCase(getAttendingEvents.fulfilled, (state, action) => {
+            .addCase(getProfileEvents.fulfilled, (state, action) => {
                 state.isPending = false
                 state.isFulfilled = true
-                state.attendingEvents = action.payload
+                state.events = action.payload
             })
-            .addCase(getAttendingEvents.rejected, (state, action) => {
+            .addCase(getProfileEvents.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
             })
-    }
-})
-
-export default eventSlice.reducer
-export const { reset, resetHomeEvents } = eventSlice.actions
+        }
+    })
+    
+    export default eventSlice.reducer
+    export const { reset, resetHomeEvents } = eventSlice.actions

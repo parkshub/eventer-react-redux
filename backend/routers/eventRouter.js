@@ -13,6 +13,9 @@ router.get('/getEvent/:id', eventController.getEvent)
 router.get('/getUserEvents', auth, eventController.getUserEvents) 
 router.get('/getAttendingEvents', auth, eventController.getAttendingEvents)
 
+// #### testing
+router.get('/getProfileEvents/:id', auth, eventController.getProfileEvents)
+// ####
 
 
 router.put('/updateEvent/:id', auth, eventController.updateEvent)

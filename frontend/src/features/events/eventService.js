@@ -15,19 +15,6 @@ const getEvent = async(id) => {
     return response.data
 }
 
-// const getUserEvents = async(token, id) => {
-const getUserEvents = async(token) => {
-    console.log('getUserEvents service')
-    const config = {
-        headers: {
-          authorization: `Bearer ${token}`,
-        }
-    }
-    // const response = await axios.get(API_URL + `getUserEvents/${id}`, config)
-    const response = await axios.get(API_URL + 'getUserEvents', config)
-    return response.data
-}
-
 const createEvent = async(token, {formData, selectedFile}) => {
     console.log('createEvent service')
     const config = {
@@ -97,28 +84,52 @@ const unattendEvent = async(token, formData) => {
     return response.data
 }
 
-const getAttendingEvents = async(token) => {
-    console.log('getAttendingEvents service')
+// const getUserEvents = async(token) => {
+//     console.log('getUserEvents service')
+//     const config = {
+//         headers: {
+//             authorization: `Bearer ${token}`,
+//         }
+//     }
+//     // const response = await axios.get(API_URL + `getUserEvents/${id}`, config)
+//     const response = await axios.get(API_URL + 'getUserEvents', config)
+//     return response.data
+// }
+
+// const getAttendingEvents = async(token) => {
+//     console.log('getAttendingEvents service')
+//     const config = {
+//         headers: {
+//             authorization: `Bearer ${token}`
+//         }
+//     }
+//     // const response = await axios.get(API_URL + 'getAttendingEvents', config)
+//     const response = await axios.get(API_URL + 'getAttendingEvents', config)
+//     return response.data
+// }
+
+const getProfileEvents = async(id, token) => {
+    console.log('getProfileEvents service')
     const config = {
         headers: {
             authorization: `Bearer ${token}`
         }
     }
-    // const response = await axios.get(API_URL + 'getAttendingEvents', config)
-    const response = await axios.get(API_URL + 'getAttendingEvents', config)
+    const response = await axios.get(API_URL + `getProfileEvents/${id}`, config)
     return response.data
 }
 
 const eventService = {
     getHomeEvents,
     getEvent,
-    getUserEvents,
+    // getUserEvents,
     createEvent,
     attendEvent,
     deleteEvent,
     updateEvent,
     unattendEvent,
-    getAttendingEvents
+    // getAttendingEvents,
+    getProfileEvents,
 }
 
 export default eventService
