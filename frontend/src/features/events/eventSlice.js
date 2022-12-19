@@ -156,12 +156,27 @@ export const getProfileEvents = createAsyncThunk(
     }
 )
 
+export const getAllEvents = createAsyncThunk(
+    'event/getAllEvents',
+    async(_, thunkAPI) => {
+        try {
+            console.log('getAllEvents Slice')
+            const token = thunkAPI.getState().auth.user.token
+            return await eventService.getAllEvents(token)
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 const eventSlice = createSlice({
     name: 'event',
     initialState,
     reducers: {
         reset: (state) => {
             state.event = ''
+            state.events = ''
             state.userEvents = []
             state.homeEvents = []
             state.attendingEvents = ''
@@ -308,6 +323,19 @@ const eventSlice = createSlice({
                 state.events = action.payload
             })
             .addCase(getProfileEvents.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
+            })
+            .addCase(getAllEvents.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(getAllEvents.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.events = action.payload
+            })
+            .addCase(getAllEvents.rejected, (state, action) => {
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload

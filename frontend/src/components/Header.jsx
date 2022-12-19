@@ -22,6 +22,10 @@ function Header() {
         navigate('/')
     }
 
+    const onClickBrowse = () => {
+        navigate('/allEvents')
+    }
+
     return (
         <header>
             <div className='logo'>
@@ -47,6 +51,11 @@ function Header() {
                     <li>
                         <button onClick={onClickLogout}>
                             <FaSignOutAlt /> Logout
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={onClickBrowse}>
+                            <FaSignOutAlt /> Browse All
                         </button>
                     </li>
                 </ul>

@@ -5,17 +5,17 @@ const eventController = require('../controllers/eventController')
 // const test = require('../controllers/test')
 
 router.post('/', auth, eventController.createEvent)
-router.post('/uploadPic', eventController.uploadPic)
+// router.post('/uploadPic', eventController.uploadPic)
 
 router.get('/getHomeEvents', eventController.getHomeEvents)
 router.get('/getEvent/:id', eventController.getEvent)
 
 router.get('/getUserEvents', auth, eventController.getUserEvents) 
 router.get('/getAttendingEvents', auth, eventController.getAttendingEvents)
-
-// #### testing
 router.get('/getProfileEvents/:id', auth, eventController.getProfileEvents)
-// ####
+
+// testing
+router.get('/getAllEvents', eventController.getAllEvents)
 
 
 router.put('/updateEvent/:id', auth, eventController.updateEvent)

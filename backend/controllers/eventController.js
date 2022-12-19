@@ -62,27 +62,35 @@ exports.getEvent = asyncHandler(async(req, res) => {
     res.status(200).json(events)
 })
 
-
-exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine these together later
-    const image = req.body.selectedFile // remember this is the name you set on the frontend redux, might change later
-    try {
-        const response = await cloudinary.uploader.upload(image, {
-            folder: "userImage",
-        })
-        console.log(response)
-
-        const result = await ImageModel.create({
-            public_id: response.public_id,
-            url: response.secure_url
-        })
-
-        res.json('awesome');
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ err: 'Something went wrong' });
-    }
+exports.getAllEvents = async(req, res) => {
+    console.log('getAllEvents controller')
+    const events = await EventModel.find()
+    
+    res.status(200).json(events)
+    
 }
-)
+
+
+// exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine these together later
+//     const image = req.body.selectedFile // remember this is the name you set on the frontend redux, might change later
+//     try {
+//         const response = await cloudinary.uploader.upload(image, {
+//             folder: "userImage",
+//         })
+//         console.log(response)
+
+//         const result = await ImageModel.create({
+//             public_id: response.public_id,
+//             url: response.secure_url
+//         })
+
+//         res.json('awesome');
+//     } catch (err) {
+//         console.error(err);
+//         res.status(500).json({ err: 'Something went wrong' });
+//     }
+// }
+// )
 
 exports.deleteEvent = asyncHandler(async(req, res) => {
     console.log('deleteEvent controller')

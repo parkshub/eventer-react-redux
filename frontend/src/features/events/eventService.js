@@ -119,6 +119,16 @@ const getProfileEvents = async(id, token) => {
     return response.data
 }
 
+const getAllEvents = async(token) => {
+    const config = {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axios.get(API_URL + 'getAllEvents')
+    return response.data
+}
+
 const eventService = {
     getHomeEvents,
     getEvent,
@@ -130,6 +140,7 @@ const eventService = {
     unattendEvent,
     // getAttendingEvents,
     getProfileEvents,
+    getAllEvents,
 }
 
 export default eventService
