@@ -123,3 +123,8 @@ exports.getUser = asyncHandler(async(req, res) => {
     res.json(req.user)
     console.log(req.user)
 })
+
+exports.getUserInfo = async(req, res) => {
+    const user = await UserModel.findById(req.params.id).select('-password -email -id')
+    res.status(201).json(user)
+}

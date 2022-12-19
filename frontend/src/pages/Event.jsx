@@ -4,8 +4,10 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { reset, getEvent, attendEvent, deleteEvent, unattendEvent } from '../features/events/eventSlice'
 import { attendEventUser, unattendEventUser } from '../features/auth/authSlice'
-
+import { createImageFromInitials } from '../components/Utils'
 import Loading from '../components/Loading'
+
+import { getVisitingProfile } from '../features/events/eventSlice'
 
 function Event() {
   const dispatch = useDispatch()
@@ -17,11 +19,14 @@ function Event() {
   
   const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem('event')))
 
+  console.log(eventState)
+
   localStorage.setItem('event', JSON.stringify(eventState))
   
   //* MAKE SURE TO ERASE LOCAL STORAGE ON EXIT
   const attendeeArray = eventState.attendee.map(x => Object.keys(x)).join(' ').split(' ')
-  
+  let imgSrc = ''
+
   const onClickAttend = () => {
 
     dispatch(attendEvent(eventState._id))
@@ -32,7 +37,6 @@ function Event() {
         name: user.firstName,
         image: user.image,
       }}
-    // const currUser = {[user.id]: user.name}
     const concatUsers = eventState.attendee.concat(currUser)
 
     setEventState((prev) => ({
@@ -51,10 +55,7 @@ function Event() {
       ...prev,
       attendee: prev.attendee.filter(x => Object.keys(x)[0] !==user.id),
       attending: prev.attending - 1
-    }))
-
-    // localStorage.removeItem('event')
-    
+    }))    
   }
   
   const onClickDelete = async() => {
@@ -64,6 +65,12 @@ function Event() {
 
   const onClickEdit = () => {
     navigate('/eventForm')
+  }
+
+  const onClickProfile = (e) => {
+    console.log(e.target.id)
+    dispatch(getVisitingProfile(e.target.id))
+    navigate('/visitorsProfile')
   }
 
   
@@ -94,6 +101,16 @@ function Event() {
       <div>attending: {eventState.attending}</div>
       <div>created by: {eventState.userName}</div>
       <div>these are ppl attending {JSON.stringify(eventState.attendee)}</div>
+
+      <div>these are ppl attending 
+        {eventState.attendee.map((x, i) => 
+          Object.values(x)[0].image.startsWith('#') ?
+            <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? 'profileImage defaultPic hostPic' : 'profileImage defaultPic'} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt='profile-pic' onClick={onClickProfile}/> :
+            <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? 'profileImage defaultPic hostPic' : 'profileImage defaultPic'} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
+        )
+        }
+      </div>
+
       <img src={eventState.imageUrl} height={200} width={200} alt="" />
       {/* Seeing if user is attending the event */}
 

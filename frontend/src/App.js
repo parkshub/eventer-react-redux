@@ -14,6 +14,7 @@ import Test from './pages/Test'
 import AllEvents from './pages/AllEvents';
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import VisitorsProfile from './pages/VisitorsProfile';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path='/login' element={ <Login /> }/>
           <Route path='/register' element={ <Register /> }/>
           <Route path='/profile' element={ <Profile /> }/>
+          <Route path='/visitorsProfile' element={ <VisitorsProfile /> }/>
           <Route path='/event' element={ <Event /> }/>
           <Route path='/allEvents' element={ <AllEvents /> }/>
           <Route path='/eventForm' element={ <EventForm /> }/>

@@ -6,6 +6,8 @@ const auth = require('../middleware/authMiddleware')
 router.post('/', userController.registerUser)
 router.post('/login',  userController.loginUser)
 router.get('/me', auth,  userController.getUser)
+
+router.get('/getUserInfo/:id', auth,  userController.getUserInfo)
 // since we're using JWT tokens loggin out will be handled by one of slice services by just removing user from local storage
 
 module.exports = router

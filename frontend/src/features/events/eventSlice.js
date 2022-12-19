@@ -5,6 +5,7 @@ const initialState = {
     event: '',
     homeEvents: [],
     userEvents: [],
+    visitingProfile:'',
     attendingEvents: '',
     events: '',
     isPending: false,
@@ -170,6 +171,13 @@ export const getAllEvents = createAsyncThunk(
     }
 )
 
+export const getVisitingProfile = createAsyncThunk(
+    'event/getVisitngProfile',
+    async (id) => {
+        localStorage.setItem('visitingProfile', JSON.stringify(id))
+    }
+)
+
 const eventSlice = createSlice({
     name: 'event',
     initialState,
@@ -287,33 +295,6 @@ const eventSlice = createSlice({
                 state.isRejected = true
                 state.message = action.payload
             })
-            // .addCase(getAttendingEvents.pending, (state) => {
-                //     state.isPending = true
-                // })
-            // .addCase(getAttendingEvents.fulfilled, (state, action) => {
-                //     state.isPending = false
-                //     state.isFulfilled = true
-                //     state.attendingEvents = action.payload
-                // })
-            // .addCase(getAttendingEvents.rejected, (state, action) => {
-                //     state.isPending = false
-                //     state.isRejected = true
-                //     state.message = action.payload
-                // })
-            // .addCase(getUserEvents.pending, (state) => {
-            //     state.isPending = true
-            // })
-            // .addCase(getUserEvents.fulfilled, (state, action) => {
-            //     state.isPending = false
-            //     state.isFulfilled = true
-            //     state.userEvents = action.payload
-            // })
-            // .addCase(getUserEvents.rejected, (state, action) => {
-            //     state.isPending = false
-            //     state.isRejected = true
-            //     state.message = action.payload
-            //     state.userEvents = []
-            // })
             .addCase(getProfileEvents.pending, (state) => {
                 state.isPending = true
             })
@@ -339,6 +320,10 @@ const eventSlice = createSlice({
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
+            })
+            .addCase(getVisitingProfile.fulfilled, (state) => {
+                state.isFulfilled = true
+                // state.visitingProfile = action.payload
             })
         }
     })

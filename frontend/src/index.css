@@ -49,8 +49,13 @@ div {
 .uploadedPic[src] {
  display: block;
 }
-
-img:hover {
+/* MAKE HOSTS PIC SPECIAL .hostPic */
+.profileImage:hover {
   opacity: 0.5;
   cursor: pointer;
+}
+
+.hostPic {
+  border-color: aqua;
+  border-width: 50px;
 }

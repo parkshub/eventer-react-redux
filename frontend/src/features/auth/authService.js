@@ -44,12 +44,23 @@ const unattendEventUser = async(id) => {
     return user.attending
 }
 
+const getUserInfo = async(token, id) => {
+    const config = {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axios.get(API_URL + `getUserInfo/${id}`, config)
+    return response.data
+}
+
 const authService = {
     register,    
     login,
     logout,
     attendEventUser,
-    unattendEventUser
+    unattendEventUser,
+    getUserInfo
 }
 
 export default authService

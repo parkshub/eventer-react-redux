@@ -7,6 +7,7 @@ console.log('this ran')
 
 const initialState = {
     user: user ? user : null,
+    visitingUser: '',
     isRejected: false,
     isPending: false,
     isFulfilled: false,
@@ -71,11 +72,25 @@ export const unattendEventUser = createAsyncThunk(
     }
 )
 
+export const getUserInfo = createAsyncThunk(
+    'auth/getUserInfo',
+    async(id, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await authService.getUserInfo(token, id)
+        } catch (error) {
+            const message = error.response.message
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
         reset: (state) => {
+            state.visitingUser = ''
             state.isRejected = false
             state.isPending = false
             state.isFulfilled = false
@@ -125,6 +140,11 @@ export const authSlice = createSlice({
                 state.isPending = false
                 state.isFulfilled = true
                 state.user.attending = action.payload
+            })
+            .addCase(getUserInfo.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.visitingUser = action.payload
             })
     }
 })
