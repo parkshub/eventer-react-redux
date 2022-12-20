@@ -1,19 +1,19 @@
-import React from 'react'
+import React from "react"
 
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { useState } from "react"
+import { useSelector } from "react-redux"
 
-import { reset } from '../features/events/eventSlice'
+import { reset } from "../features/events/eventSlice"
 
-import Loading from '../components/Loading'
+import Loading from "../components/Loading"
 
-import { getAllEvents } from '../features/events/eventSlice'
+import { getAllEvents } from "../features/events/eventSlice"
 
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify"
 
-import EventItem from '../components/EventItem'
+import EventItem from "../components/EventItem"
 
 
 function AllEvents() {
@@ -23,9 +23,13 @@ function AllEvents() {
   const { events, isPending, isRejected, message } = useSelector((state) => state.events)
   const { user } = useSelector((state) => state.auth)
 
+  console.log(events==="")
+
   useEffect(() => {
 
-    dispatch(getAllEvents())
+    if (events === "") {
+      dispatch(getAllEvents())
+    }
 
     if (isRejected) {
       toast.error(message)
@@ -45,12 +49,13 @@ function AllEvents() {
   return (
     <>
       <div>AllEvents FIX LATER, WHEN COMING FROM PROFILE, DOES NOT WORK</div>
-      {events !== '' ? 
+      {events !== "" ? 
         <div>
             {events.map((event) => 
                 <EventItem key={event._id} event={event}/>
             )
             }
+            these are events
         </div>
       : (
         <h2>no events</h2>

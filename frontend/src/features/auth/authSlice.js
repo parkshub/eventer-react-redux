@@ -1,22 +1,22 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import authService from './authService'
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import authService from "./authService"
 
 // we have to parse here because local storages can only have strings
-const user = JSON.parse(localStorage.getItem('user'))
-console.log('this ran')
+const user = JSON.parse(localStorage.getItem("user"))
+console.log("this ran")
 
 const initialState = {
     user: user ? user : null,
-    visitingUser: '',
+    visitingUser: "",
     isRejected: false,
     isPending: false,
     isFulfilled: false,
-    message: ''
+    message: ""
 }
 
 // remember thunkAPI can be used to show nice pop up error messages, and! to get the value of global state values
 export const register = createAsyncThunk(
-    'auth/register', 
+    "auth/register", 
     async(userData, thunkAPI) => {
         try {
             return await authService.register(userData)
@@ -28,7 +28,7 @@ export const register = createAsyncThunk(
     )
 
 export const login = createAsyncThunk(
-    'auth/login',
+    "auth/login",
     async(userData, thunkAPI) => {
         try {
             return await authService.login(userData)
@@ -40,15 +40,15 @@ export const login = createAsyncThunk(
 )   
 
 export const logout = createAsyncThunk(
-    'auth/logout',
+    "auth/logout",
     async(_, thunkAPI) => {
-        console.log('logout slice')
+        console.log("logout slice")
         await authService.logout()
     }
 )
 
 export const attendEventUser = createAsyncThunk(
-    'auth/attendEvent',
+    "auth/attendEvent",
     async(id, thunkAPI) => {
         try {
             return await authService.attendEventUser(id)
@@ -60,10 +60,10 @@ export const attendEventUser = createAsyncThunk(
 )
 
 export const unattendEventUser = createAsyncThunk(
-    'auth/unattendEvent',
+    "auth/unattendEvent",
     async(id, thunkAPI) => {
         try {
-            console.log('unattendEvent slice')
+            console.log("unattendEvent slice")
             return await authService.unattendEventUser(id)
         } catch (error) {
             const message = error.response.data
@@ -73,7 +73,7 @@ export const unattendEventUser = createAsyncThunk(
 )
 
 export const getUserInfo = createAsyncThunk(
-    'auth/getUserInfo',
+    "auth/getUserInfo",
     async(id, thunkAPI) => {
         try {
             const token = thunkAPI.getState().auth.user.token
@@ -85,16 +85,29 @@ export const getUserInfo = createAsyncThunk(
     }
 )
 
+export const changeProfile = createAsyncThunk(
+    'auth/changeProfile',
+    async(userData, thunkAPI) => {
+        try {
+            const token = thunkAPI.getState().auth.user.token
+            return await authService.changeProfile(token, userData)
+        } catch (error) {
+            const message = error.response.data
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+
 export const authSlice = createSlice({
-    name: 'auth',
+    name: "auth",
     initialState,
     reducers: {
         reset: (state) => {
-            state.visitingUser = ''
+            state.visitingUser = ""
             state.isRejected = false
             state.isPending = false
             state.isFulfilled = false
-            state.message = ''
+            state.message = ""
         }
     },
     extraReducers: (builder) => {
@@ -145,6 +158,20 @@ export const authSlice = createSlice({
                 state.isPending = false
                 state.isFulfilled = true
                 state.visitingUser = action.payload
+            })            
+            .addCase(changeProfile.pending, (state) => {
+                state.isPending = true
+            })
+            .addCase(changeProfile.fulfilled, (state, action) => {
+                state.isPending = false
+                state.isFulfilled = true
+                state.user = action.payload
+            })
+            .addCase(changeProfile.rejected, (state, action) => {
+                state.isPending = false
+                state.isRejected = true
+                state.message = action.payload
+                state.user = null
             })
     }
 })

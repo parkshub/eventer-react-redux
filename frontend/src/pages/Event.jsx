@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { reset, getEvent, attendEvent, deleteEvent, unattendEvent } from '../features/events/eventSlice'
-import { attendEventUser, unattendEventUser } from '../features/auth/authSlice'
-import { createImageFromInitials } from '../components/Utils'
-import Loading from '../components/Loading'
+import React, {useState, useEffect} from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useLocation } from "react-router-dom"
+import { toast } from "react-toastify"
+import { reset, getEvent, attendEvent, deleteEvent, unattendEvent } from "../features/events/eventSlice"
+import { attendEventUser, unattendEventUser } from "../features/auth/authSlice"
+import { createImageFromInitials } from "../components/Utils"
+import Loading from "../components/Loading"
 
-import { getVisitingProfile } from '../features/events/eventSlice'
+import { getVisitingProfile } from "../features/events/eventSlice"
 
 function Event() {
   const dispatch = useDispatch()
@@ -17,15 +17,15 @@ function Event() {
   const { event, isPending, isRejected, message } = useSelector((state) => state.events)
   const { user } = useSelector((state) => state.auth)
   
-  const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem('event')))
+  const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem("event")))
 
   console.log(eventState)
 
-  localStorage.setItem('event', JSON.stringify(eventState))
+  localStorage.setItem("event", JSON.stringify(eventState))
   
   //* MAKE SURE TO ERASE LOCAL STORAGE ON EXIT
-  const attendeeArray = eventState.attendee.map(x => Object.keys(x)).join(' ').split(' ')
-  let imgSrc = ''
+  const attendeeArray = eventState.attendee.map(x => Object.keys(x)).join(" ").split(" ")
+  let imgSrc = ""
 
   const onClickAttend = () => {
 
@@ -60,17 +60,17 @@ function Event() {
   
   const onClickDelete = async() => {
     await dispatch(deleteEvent(eventState._id))
-    navigate('/profile')
+    navigate("/profile")
   }
 
   const onClickEdit = () => {
-    navigate('/eventForm')
+    navigate("/eventForm")
   }
 
   const onClickProfile = (e) => {
     console.log(e.target.id)
     dispatch(getVisitingProfile(e.target.id))
-    navigate('/visitorsProfile')
+    navigate("/visitorsProfile")
   }
 
   
@@ -104,9 +104,9 @@ function Event() {
 
       <div>these are ppl attending 
         {eventState.attendee.map((x, i) => 
-          Object.values(x)[0].image.startsWith('#') ?
-            <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? 'profileImage defaultPic hostPic' : 'profileImage defaultPic'} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt='profile-pic' onClick={onClickProfile}/> :
-            <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? 'profileImage defaultPic hostPic' : 'profileImage defaultPic'} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
+          Object.values(x)[0].image.startsWith("#") ?
+            <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? "profileImage defaultPic hostPic" : "profileImage defaultPic"} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={onClickProfile}/> :
+            <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? "profileImage defaultPic hostPic" : "profileImage defaultPic"} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
         )
         }
       </div>
@@ -125,7 +125,7 @@ function Event() {
                 <button onClick={onClickEdit}>Edit Event</button>
                 <button onClick={onClickDelete}>Delete Event</button>
               </>
-              : ''
+              : ""
       }
     </>
   )

@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, Link } from "react-router-dom"
 
 
-// import { getUserEvents, reset } from '../features/events/eventSlice'
-import { reset, getProfileEvents } from '../features/events/eventSlice'
-import {createEvent} from '../features/events/eventSlice'
+// import { getUserEvents, reset } from "../features/events/eventSlice"
+import { reset, getProfileEvents } from "../features/events/eventSlice"
+import {createEvent} from "../features/events/eventSlice"
 
-// import { getAttendingEvents } from '../features/events/eventSlice'
+// import { getAttendingEvents } from "../features/events/eventSlice"
 
-import Loading from '../components/Loading'
-import EventItem from '../components/EventItem'
+import Loading from "../components/Loading"
+import EventItem from "../components/EventItem"
 
 
-import EventForm from './EventForm'
-import { toast } from 'react-toastify'
+import EventForm from "./EventForm"
+import { toast } from "react-toastify"
 
-import { createImageFromInitials } from '../components/Utils'
+import { createImageFromInitials } from "../components/Utils"
 
 
 function Profile() {
@@ -27,16 +27,20 @@ function Profile() {
 
   const { attendingEvents, userEvents } = events
 
-  console.log('these are the events', events)
+  console.log("these are the events", events)
   
-  let imgSrc = ''
+  let imgSrc = ""
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
   const onClick= () => {
-    localStorage.removeItem('event')
-    navigate('/eventForm')
+    localStorage.removeItem("event")
+    navigate("/eventForm")
+  }
+
+  const onClickEdit = () => {
+    navigate("/profileForm")
   }
 
   useEffect(() => {
@@ -60,14 +64,20 @@ function Profile() {
     <>
 
       {
-        user.image.startsWith('#')
+        user.image.startsWith("#")
         ?
-        <img id='preview' className='profileImage defaultPic' src={ imgSrc.length <= 0 ? createImageFromInitials(300, user.firstName + ' ' + user.lastName, user.image) : imgSrc } alt='profile-pic' />
+        <img id="preview" className="profileImage defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, user.firstName + " " + user.lastName, user.image) : imgSrc } alt="profile-pic" />
         :
-        <img src={user.image} alt="" className={'profileImage'}/>
+        <img src={user.image} alt="" className={"profileImage"}/>
       }
 
       <h1>Welcome to your profile, {user.firstName}</h1>
+
+      <button onClick={onClickEdit}>edit profile</button>
+
+      <h2>Bio</h2>
+      <h3>{user.bio}</h3>
+
 
       <button onClick={onClick}>Create Event</button>
       
@@ -88,7 +98,7 @@ function Profile() {
                 <EventItem key={attendingEvent._id} event={attendingEvent}/>
                 )}
           </div>
-        : ''
+        : ""
       }
 
     </>

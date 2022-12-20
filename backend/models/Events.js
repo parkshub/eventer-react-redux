@@ -1,21 +1,21 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 
 const eventSchema = new mongoose.Schema({
     title: {
         type: String,
-        required: [true, 'Please enter title']
+        required: [true, "Please enter title"]
       },
     imageUrl: {
         type: String,
-        require: [true, 'Please input an image'],
+        require: [true, "Please input an image"],
     },
     cloudinaryId: {
         type: String,
-        require: [true, 'Please input an image'],
+        require: [true, "Please input an image"],
     },
     caption: {
         type: String,
-        required: [true, 'Please enter caption']
+        required: [true, "Please enter caption"]
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -58,4 +58,4 @@ const eventSchema = new mongoose.Schema({
     // },
 });
 
-module.exports = mongoose.model('Event', eventSchema)
+module.exports = mongoose.model("Event", eventSchema)

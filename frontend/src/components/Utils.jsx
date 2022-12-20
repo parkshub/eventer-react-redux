@@ -1,6 +1,6 @@
 export const  getRandomColor=()=> {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
+    var letters = "0123456789ABCDEF";
+    var color = "#";
     for (var i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
@@ -29,8 +29,8 @@ export const createImageFromInitials = (size, name, color) => {
     if (name == null) return;
     name=getInitials(name)
 
-    const canvas=document.createElement('canvas')
-    const context=canvas.getContext('2d')
+    const canvas=document.createElement("canvas")
+    const context=canvas.getContext("2d")
     canvas.width=canvas.height=size
 
     context.fillStyle="#ffffff"
@@ -39,9 +39,9 @@ export const createImageFromInitials = (size, name, color) => {
     context.fillStyle=`${color}50`
     context.fillRect(0,0,size,size)
 
-    context.fillStyle='#FFFFFF';
-    context.textBaseline='middle'
-    context.textAlign='center'
+    context.fillStyle="#FFFFFF";
+    context.textBaseline="middle"
+    context.textAlign="center"
     context.font =`${size/2}px Roboto`
     context.fillText(name,(size/2),(size/2))
 

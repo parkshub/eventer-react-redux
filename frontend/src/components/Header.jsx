@@ -1,10 +1,12 @@
-import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
+import React from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, Link } from "react-router-dom"
 
-import { logout } from '../features/auth/authSlice'
+import { logout } from "../features/auth/authSlice"
 
-import { FaSignInAlt, FaUserAstronaut, FaSignOutAlt, FaUserAlt } from 'react-icons/fa'
+import { getAllEvents } from "../features/events/eventSlice"
+
+import { FaSignInAlt, FaUserAstronaut, FaSignOutAlt, FaUserAlt } from "react-icons/fa"
 
 function Header() {
 
@@ -14,31 +16,32 @@ function Header() {
     const navigate = useNavigate()
 
     const onClickProfile = () => {
-        navigate('/profile')
+        navigate("/profile")
     }
 
     const onClickLogout = () => {
         dispatch(logout())
-        navigate('/')
+        navigate("/")
     }
 
     const onClickBrowse = () => {
-        navigate('/allEvents')
+        dispatch(getAllEvents())
+        navigate("/allEvents")
     }
 
     return (
         <header>
-            <div className='logo'>
-                <Link to ='/'>Eventer</Link>
+            <div className="logo">
+                <Link to ="/">Eventer</Link>
             </div>
-            {user && <div>welcome user: {user.id + ': ' + user.firstName + ' ' + user.lastName} </div>}
+            {user && <div>welcome user: {user.id + ": " + user.firstName + " " + user.lastName} </div>}
             {!user ? (
                 <ul>
                     <li>
-                        <Link to='/login'><FaSignInAlt/>Login</Link>
+                        <Link to="/login"><FaSignInAlt/>Login</Link>
                     </li>
                     <li>
-                        <Link to='/register'><FaUserAstronaut/>Register</Link>
+                        <Link to="/register"><FaUserAstronaut/>Register</Link>
                     </li>
                 </ul>
             ) : (

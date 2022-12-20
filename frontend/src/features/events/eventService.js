@@ -1,22 +1,22 @@
-import axios from 'axios'
+import axios from "axios"
 
-const API_URL = '/api/event/'
+const API_URL = "/api/event/"
 
 
 const getHomeEvents = async() => {
-    const response = await axios.get(API_URL + 'getHomeEvents')
+    const response = await axios.get(API_URL + "getHomeEvents")
     return response.data
 }
 
 const getEvent = async(id) => {
-    console.log('getEventPage service')
+    console.log("getEventPage service")
     const response = await axios.get(API_URL + `getEvent/${id}`)
-    // localStorage.setItem('event', JSON.stringify(response.data))
+    // localStorage.setItem("event", JSON.stringify(response.data))
     return response.data
 }
 
 const createEvent = async(token, {formData, selectedFile}) => {
-    console.log('createEvent service')
+    console.log("createEvent service")
     const config = {
         headers: {
           authorization: `Bearer ${token}`,
@@ -28,7 +28,7 @@ const createEvent = async(token, {formData, selectedFile}) => {
 }
 
 const attendEvent = async(token, id) => {
-    console.log('attendEvent service')
+    console.log("attendEvent service")
     
     const config = {
         headers: {
@@ -41,7 +41,7 @@ const attendEvent = async(token, id) => {
 }
 
 const deleteEvent = async(token, id) => {
-    console.log('deleteEvent service')
+    console.log("deleteEvent service")
     const config = {
         headers: {
             authorization: `Bearer ${token}`
@@ -54,7 +54,7 @@ const deleteEvent = async(token, id) => {
 
 const updateEvent = async(token, {formData, selectedFile}) => {
 
-    console.log('updateEvent service')
+    console.log("updateEvent service")
 
     const config = {
         headers: {
@@ -70,7 +70,7 @@ const updateEvent = async(token, {formData, selectedFile}) => {
 
 const unattendEvent = async(token, formData) => {
 
-    console.log('unattendEvent service')
+    console.log("unattendEvent service")
 
     const config = {
         headers: {
@@ -85,31 +85,31 @@ const unattendEvent = async(token, formData) => {
 }
 
 // const getUserEvents = async(token) => {
-//     console.log('getUserEvents service')
+//     console.log("getUserEvents service")
 //     const config = {
 //         headers: {
 //             authorization: `Bearer ${token}`,
 //         }
 //     }
 //     // const response = await axios.get(API_URL + `getUserEvents/${id}`, config)
-//     const response = await axios.get(API_URL + 'getUserEvents', config)
+//     const response = await axios.get(API_URL + "getUserEvents", config)
 //     return response.data
 // }
 
 // const getAttendingEvents = async(token) => {
-//     console.log('getAttendingEvents service')
+//     console.log("getAttendingEvents service")
 //     const config = {
 //         headers: {
 //             authorization: `Bearer ${token}`
 //         }
 //     }
-//     // const response = await axios.get(API_URL + 'getAttendingEvents', config)
-//     const response = await axios.get(API_URL + 'getAttendingEvents', config)
+//     // const response = await axios.get(API_URL + "getAttendingEvents", config)
+//     const response = await axios.get(API_URL + "getAttendingEvents", config)
 //     return response.data
 // }
 
 const getProfileEvents = async(id, token) => {
-    console.log('getProfileEvents service')
+    console.log("getProfileEvents service")
     const config = {
         headers: {
             authorization: `Bearer ${token}`
@@ -125,7 +125,7 @@ const getAllEvents = async(token) => {
             authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.get(API_URL + 'getAllEvents')
+    const response = await axios.get(API_URL + "getAllEvents")
     return response.data
 }
 

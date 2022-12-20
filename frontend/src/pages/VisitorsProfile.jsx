@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
 
 
-import { reset, getProfileEvents } from '../features/events/eventSlice'
+import { reset, getProfileEvents } from "../features/events/eventSlice"
 
 
-import Loading from '../components/Loading'
-import EventItem from '../components/EventItem'
+import Loading from "../components/Loading"
+import EventItem from "../components/EventItem"
 
-import { toast } from 'react-toastify'
+import { toast } from "react-toastify"
 
-import { createImageFromInitials } from '../components/Utils'
+import { createImageFromInitials } from "../components/Utils"
 
-import { getUserInfo } from '../features/auth/authSlice'
+import { getUserInfo } from "../features/auth/authSlice"
 
 
 function VisitorsProfile() {
@@ -24,11 +24,11 @@ function VisitorsProfile() {
 
   const { attendingEvents, userEvents } = events
 
-  const visitingProfile = JSON.parse(localStorage.getItem('visitingProfile'))
+  const visitingProfile = JSON.parse(localStorage.getItem("visitingProfile"))
 
-  console.log('these are the events', events)
+  console.log("these are the events", events)
   
-  let imgSrc = ''
+  let imgSrc = ""
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
@@ -55,15 +55,17 @@ function VisitorsProfile() {
     <>
 
     {
-      visitingUser && visitingUser.image.startsWith('#')
+      visitingUser && visitingUser.image.startsWith("#")
       ?
-      <img id='preview' className='profileImage defaultPic' src={ imgSrc.length <= 0 ? createImageFromInitials(300, visitingUser.firstName + ' ' + visitingUser.lastName, visitingUser.image) : imgSrc } alt='profile-pic' />
+      <img id="preview" className="profileImage defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, visitingUser.firstName + " " + visitingUser.lastName, visitingUser.image) : imgSrc } alt="profile-pic" />
       :
-      <img src={visitingUser.image} alt="" className={'profileImage'}/>
+      <img src={visitingUser.image} alt="" className={"profileImage"}/>
     }
 
     <h1>Welcome to {visitingUser.firstName}'s profile</h1>
 
+    <h2>Bio</h2>
+    <h3>{visitingUser.bio}</h3>
     
     <h2>Events {visitingUser.firstName} is Hosting</h2>
 
@@ -82,7 +84,7 @@ function VisitorsProfile() {
               <EventItem key={attendingEvent._id} event={attendingEvent}/>
               )}
         </div>
-      : ''
+      : ""
     }
 
   </>

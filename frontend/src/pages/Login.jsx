@@ -1,15 +1,15 @@
-import React, {useState, useEffect} from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { login, reset } from '../features/auth/authSlice'
-import Loading from '../components/Loading'
+import React, {useState, useEffect} from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
+import { login, reset } from "../features/auth/authSlice"
+import Loading from "../components/Loading"
 
 function Login() {
 
     const [formData, setFormData] = useState({
-        email: '',
-        password: ''
+        email: "",
+        password: ""
     })
 
     const { email, password } = formData
@@ -25,7 +25,7 @@ function Login() {
             toast.error(message)
         }
         if (isFulfilled) {
-            navigate('/')
+            navigate("/")
         }
         dispatch(reset())
     }, [isPending, isFulfilled, isRejected, message, dispatch, navigate])
@@ -52,10 +52,10 @@ function Login() {
         <form action="" onSubmit={onSubmit}>
             
             <label htmlFor="email">email</label>
-            <input type="email" name='email' value = {email} id='email' onChange={onChange}/>
+            <input type="email" name="email" value = {email} id="email" onChange={onChange}/>
 
             <label htmlFor="password">password</label>
-            <input type="password" name='password' value = {password} id='password' onChange={onChange}/>
+            <input type="password" name="password" value = {password} id="password" onChange={onChange}/>
 
             <button>Login</button>
         </form>

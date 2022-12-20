@@ -1,22 +1,22 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import eventService from './eventService'
+import eventService from "./eventService"
 
 const initialState = {
-    event: '',
+    event: "",
     homeEvents: [],
     userEvents: [],
-    visitingProfile:'',
-    attendingEvents: '',
-    events: '',
+    visitingProfile:"",
+    attendingEvents: "",
+    events: "",
     isPending: false,
     isRejected: false, 
     isFulfilled: false,
-    message: ''
+    message: ""
 }
 
 
 export const getHomeEvents = createAsyncThunk(
-    'event/getHomeEvents',
+    "event/getHomeEvents",
     async(_, thunkAPI) => {
         try {
             return await eventService.getHomeEvents()
@@ -29,10 +29,10 @@ export const getHomeEvents = createAsyncThunk(
 
 
 export const getEvent = createAsyncThunk(
-    'event/getEvent',
+    "event/getEvent",
     async(id, thunkAPI) => {
         try {
-            console.log('getEventPage slice')
+            console.log("getEventPage slice")
             return await eventService.getEvent(id)
         } catch (error) {
             const message = error.response.data
@@ -43,10 +43,10 @@ export const getEvent = createAsyncThunk(
 
 
 export const createEvent = createAsyncThunk(
-    'event/createEvent',
+    "event/createEvent",
     async({formData, selectedFile}, thunkAPI) => {
         try {
-            console.log('createEvent slice')
+            console.log("createEvent slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.createEvent(token, {formData, selectedFile})
         } catch (error) {
@@ -57,10 +57,10 @@ export const createEvent = createAsyncThunk(
 )
 
 export const attendEvent = createAsyncThunk(
-    'event/attendEvent',
+    "event/attendEvent",
     async(id, thunkAPI) => {
         try {
-            console.log('attendEvent slice')
+            console.log("attendEvent slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.attendEvent(token, id)
         } catch (error) {
@@ -74,7 +74,7 @@ export const attendEvent = createAsyncThunk(
 
 
 export const deleteEvent = createAsyncThunk(
-    'event/delete',
+    "event/delete",
     async(id, thunkAPI) => {
         try {
             console.log(`deleteEvent slice`)
@@ -88,9 +88,9 @@ export const deleteEvent = createAsyncThunk(
 )
 
 export const updateEvent = createAsyncThunk(
-    'event/updateEvent',
+    "event/updateEvent",
     async({formData, selectedFile}, thunkAPI) => {
-        console.log('updateEvent Slice')
+        console.log("updateEvent Slice")
         try {
             const token = thunkAPI.getState().auth.user.token
             return await eventService.updateEvent(token, {formData, selectedFile})
@@ -101,10 +101,10 @@ export const updateEvent = createAsyncThunk(
 )
 
 export const unattendEvent = createAsyncThunk(
-    'event/unattend',
+    "event/unattend",
     async(formData, thunkAPI) => {
         try {
-            console.log('unattendEvent slice')
+            console.log("unattendEvent slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.unattendEvent(token, formData)
 
@@ -115,10 +115,10 @@ export const unattendEvent = createAsyncThunk(
     }
 )
 // export const getUserEvents = createAsyncThunk(
-//     'event/getUserEvents',
+//     "event/getUserEvents",
 //     async(_, thunkAPI) => {
 //         try {
-//             console.log('getUserEvents slice')
+//             console.log("getUserEvents slice")
 //             const token = thunkAPI.getState().auth.user.token
 //             return await eventService.getUserEvents(token)
 //         } catch (error) {
@@ -129,10 +129,10 @@ export const unattendEvent = createAsyncThunk(
 // )
 
 // export const getAttendingEvents = createAsyncThunk(
-//     'event/attendingEvents',
+//     "event/attendingEvents",
 //     async(_, thunkAPI) => {
 //         try {
-//             console.log('getAttendingEvents slice')
+//             console.log("getAttendingEvents slice")
 //             const token = thunkAPI.getState().auth.user.token
 //             // return await eventService.getAttendingEvents(token, attendingEvents)
 //             return await eventService.getAttendingEvents(token)
@@ -144,10 +144,10 @@ export const unattendEvent = createAsyncThunk(
 // )
 
 export const getProfileEvents = createAsyncThunk(
-    'event/getProfileEvents',
+    "event/getProfileEvents",
     async(id, thunkAPI) => {
         try {
-            console.log('getProfileEvents slice')
+            console.log("getProfileEvents slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.getProfileEvents(id, token)
         } catch (error) {
@@ -158,10 +158,10 @@ export const getProfileEvents = createAsyncThunk(
 )
 
 export const getAllEvents = createAsyncThunk(
-    'event/getAllEvents',
+    "event/getAllEvents",
     async(_, thunkAPI) => {
         try {
-            console.log('getAllEvents Slice')
+            console.log("getAllEvents Slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.getAllEvents(token)
         } catch (error) {
@@ -172,26 +172,26 @@ export const getAllEvents = createAsyncThunk(
 )
 
 export const getVisitingProfile = createAsyncThunk(
-    'event/getVisitngProfile',
+    "event/getVisitngProfile",
     async (id) => {
-        localStorage.setItem('visitingProfile', JSON.stringify(id))
+        localStorage.setItem("visitingProfile", JSON.stringify(id))
     }
 )
 
 const eventSlice = createSlice({
-    name: 'event',
+    name: "event",
     initialState,
     reducers: {
         reset: (state) => {
-            state.event = ''
-            state.events = ''
+            state.event = ""
+            state.events = ""
             state.userEvents = []
             state.homeEvents = []
-            state.attendingEvents = ''
+            state.attendingEvents = ""
             state.isPending = false
             state.isRejected = false
             state.isFulfilled = false
-            state.message = ''
+            state.message = ""
         },
         resetHomeEvents: (state) => {
             state.homeEvents = []
@@ -229,7 +229,7 @@ const eventSlice = createSlice({
                 state.isPending = false
                 state.isRejected = true
                 state.message = action.payload
-                state.event = ''
+                state.event = ""
             })
             .addCase(createEvent.pending, (state) => {
                 state.isPending = true
@@ -261,7 +261,7 @@ const eventSlice = createSlice({
             .addCase(deleteEvent.fulfilled, (state) => {
                 state.isPending = false
                 state.isFulfilled = true
-                state.event = ''
+                state.event = ""
             })
             .addCase(deleteEvent.rejected, (state, action) => {
                 state.isPending = false
@@ -274,7 +274,7 @@ const eventSlice = createSlice({
             .addCase(updateEvent.fulfilled, (state) => {
                 state.isPending = false
                 state.isFulfilled = true
-                state.event = ''
+                state.event = ""
             })
             .addCase(updateEvent.rejected, (state, action) => {
                 state.isPending = false
