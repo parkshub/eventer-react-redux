@@ -49,7 +49,8 @@ function AllEvents() {
   return (
     <>
       <div>AllEvents FIX LATER, WHEN COMING FROM PROFILE, DOES NOT WORK</div>
-      {events !== "" ? 
+      {/* {events !== "" ?  */}
+      {events ?
         <div>
             {events.map((event) => 
                 <EventItem key={event._id} event={event}/>

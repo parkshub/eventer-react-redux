@@ -8,9 +8,13 @@ import { getAllEvents } from "../features/events/eventSlice"
 
 import { FaSignInAlt, FaUserAstronaut, FaSignOutAlt, FaUserAlt } from "react-icons/fa"
 
+import Loading from "../components/Loading"
+
+
 function Header() {
 
-    const { user } = useSelector((state) => state.auth)
+    const { user, isPending } = useSelector((state) => state.auth)
+    
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -24,7 +28,7 @@ function Header() {
         navigate("/")
     }
 
-    const onClickBrowse = () => {
+    const onClickBrowse = async() => {
         dispatch(getAllEvents())
         navigate("/allEvents")
     }

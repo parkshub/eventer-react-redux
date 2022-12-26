@@ -12,6 +12,8 @@ import { useDispatch } from "react-redux"
 import { changeProfile } from "../features/auth/authSlice"
 import { useNavigate } from "react-router-dom"
 
+import Loading from "../components/Loading"
+
 function ProfileForm() {
 
     const dispatch = useDispatch()
@@ -22,8 +24,6 @@ function ProfileForm() {
     const [formData, setFormData] = useState(user)
     const {id ,firstName, lastName, image, bio} = formData
     
-    const fullName = firstName + " " + lastName
-
     const imageType = image.startsWith('#') ? 'hex' : 'image'
     
     
@@ -31,8 +31,6 @@ function ProfileForm() {
     const [sketchPickerColor, setSketchPickerColor] = useState(imageType=='hex' ? image : "#4F57B0");
     const [choice, setChoice] = useState(imageType == 'image' ? 'upload' : 'default');
     const [bioLength, setBioLength] = useState("150");
-
-    // const [fileName, setFileName] = useState('')
 
     let imgSrc = ""
 
@@ -79,7 +77,7 @@ function ProfileForm() {
         setChoice(e.target.value)
     }
 
-    const onSubmit = (e) => {
+    const onSubmit = async(e) => {
         e.preventDefault()
         const userData = {
             id,
@@ -89,8 +87,12 @@ function ProfileForm() {
             bio
         }
         
-        dispatch(changeProfile(userData))
+        await dispatch(changeProfile(userData))
         navigate('/profile')
+    }
+
+    if (isPending) {
+        return <Loading />
     }
 
     return (

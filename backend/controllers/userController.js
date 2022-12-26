@@ -137,15 +137,19 @@ exports.getUserInfo = async(req, res) => {
 }
 
 exports.changeProfile = async(req, res) => {
+
+    console.log('changeProfile controller received', req.body)
     
     const regex = /#[0-9A-Fa-f]{6}/g;
 
     const { id, firstName, lastName, image, bio } = req.body
 
+    console.log(id, firstName, lastName, image, bio)
+
     const previousUser = await UserModel.findById(id)
 
     const imageResponse = 
-        image.startWith('data:image') 
+        image.startsWith('data:image') 
             ?
                 await cloudinary.uploader.upload(image, {
                     folder: "profilePic",
@@ -173,14 +177,22 @@ exports.changeProfile = async(req, res) => {
             bio: bio
         }
 
-        const user = await UserModel.findByIdAndUpdate(id, updateInfo)
+        const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'})
+
+        console.log('this is the new user', user)
+
 
         res.status(201).json({
-            ...user,
-            token: generateToken(user.id)
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            token: generateToken(user.id),
+            attending: user.attending,
+            image: user.image,
+            bio: user.bio
         })
 
-    } else {
+    } else if (!image.match(regex)){
         console.log('user uploaded an image')
         
         if (previousUser.cloudinaryId !== '') {
@@ -195,14 +207,20 @@ exports.changeProfile = async(req, res) => {
             bio: bio
         }
 
-        const user = await UserModel.findByIdAndUpdate(id, updateInfo)
+        const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'})
+
+        console.log('this is the new user', user)
 
         res.status(201).json({
-            ...user,
-            token: generateToken(user.id)
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            token: generateToken(user.id),
+            attending: user.attending,
+            image: user.image,
+            bio: user.bio
         })
+    } else {
+        res.status(201).json(previousUser)
     }
-
-    res.status(201).json(previousUser)
-
 }

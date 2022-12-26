@@ -60,10 +60,16 @@ const changeProfile = async(token, userData) => {
             authorization: `Bearer ${token}`
         }
     }
+
     const response = await axios.put(API_URL + 'changeProfile', userData, config)
+
+    console.log('this was the response', response.data)
     
     if (response.data) {
-        localStorage.setItem("user", JSON.stringify(response.data))
+        console.log('changing storage')
+        // localStorage.setItem("user", JSON.stringify(response.data))
+        await localStorage.removeItem("user")
+        await localStorage.setItem("user", JSON.stringify(response.data))
     }
     
     return response.data
