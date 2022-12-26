@@ -36,7 +36,7 @@ function Header() {
     return (
         <header>
             <div className="logo">
-                <Link to ="/">Eventer</Link>
+                <Link to ="/">Eventer - USA California</Link>
             </div>
             {user && <div>welcome user: {user.id + ": " + user.firstName + " " + user.lastName} </div>}
             {!user ? (

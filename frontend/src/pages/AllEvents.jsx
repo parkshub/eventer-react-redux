@@ -23,13 +23,9 @@ function AllEvents() {
   const { events, isPending, isRejected, message } = useSelector((state) => state.events)
   const { user } = useSelector((state) => state.auth)
 
-  console.log(events==="")
-
   useEffect(() => {
 
-    if (events === "") {
-      dispatch(getAllEvents())
-    }
+    dispatch(getAllEvents())
 
     if (isRejected) {
       toast.error(message)

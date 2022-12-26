@@ -22,13 +22,10 @@ import { createImageFromInitials } from "../components/Utils"
 function Profile() {
   
   const { user } = useSelector((state) => state.auth)
-  // const { events, userEvents, attendingEvents, isPending, isRejected, message } = useSelector((state) => state.events)
-  const { events, isPending, isRejected, message } = useSelector((state) => state.events)
-
-  const { attendingEvents, userEvents } = events
-
-  console.log("these are the events", events)
+  const { profileEvents, isPending, isRejected, message } = useSelector((state) => state.events)
   
+  const { attendingEvents, userEvents } = profileEvents
+
   let imgSrc = ""
 
   const dispatch = useDispatch()

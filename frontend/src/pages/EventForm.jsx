@@ -15,24 +15,37 @@ function EventForm() {
   const eventObj = {
     title:"",
     caption:"",
+    description: "",
     dateTime:"",
+    street: "",
+    city: "",
+    state: "",
   }
 
   const { isPending } = useSelector((state) => state.events)
 
   const [formData, setFormData] = useState(localStorage.getItem("event") ? JSON.parse(localStorage.getItem("event")) : eventObj)
   const [selectedFile, setSelectedFile] = useState(localStorage.getItem("event") ? JSON.parse(localStorage.getItem("event")).imageUrl : "")
+  const [captionLength, setCaptionLength] = useState("50");
+  const [descriptionLength, setDescriptionLength] = useState("150");
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
-  const { title, caption, dateTime } = formData
+  const { title, caption, description, dateTime, street, city, state } = formData
 
   const buttonDisable = title && caption && dateTime && selectedFile ? false : true
   
-  // console.log("this is the selectedFile", selectedFile.files.item(0).size)
-
   const onChange = (e) => {
+
+    if (e.target.id == "caption") {
+      setCaptionLength(50 - e.target.value.length)
+    }
+
+    if (e.target.id == "description") {
+      setDescriptionLength(150 - e.target.value.length)
+    }
+
     setFormData((prev) => ({
       ...prev,
       [e.target.id]: e.target.value
@@ -64,9 +77,7 @@ function EventForm() {
       // if it's in edit mode, then it should navigate back to the event page not the profile
       if (edit) {
         await dispatch(updateEvent({formData, selectedFile}))
-        // await dispatch(updateEvent(formData))
       } else {
-        // await dispatch(createEvent(formData))
         await dispatch(createEvent({formData, selectedFile}))
       }
       navigate("/profile")
@@ -85,13 +96,25 @@ function EventForm() {
               <label htmlFor="title">Title</label>
               <input type="text" id="title" name="title" onChange={ onChange } value={ title }/>
 
-              <label htmlFor="caption">Caption</label>
-              <input type="text" id="caption" name="caption" onChange={ onChange } value={ caption }/>
+              <label htmlFor="caption">Caption character limit: {captionLength}</label>
+                <input type="text" name="caption" id="caption" value={caption} onChange={onChange} maxLength={150}/>
+
+              {/* <label htmlFor="description">Description</label>
+              <input type="text" id="description" name="description" onChange={ onChange } value={ description }/> */}
+
+              <label htmlFor="description">Description min character: {descriptionLength}</label>
+              <input type="text" name="description" id="description" value={description} onChange={onChange} minLength={150}/>
 
               <label htmlFor="dateTime">Date and Time</label>
               <input type="datetime-local" id="dateTime" name="dateTime" min={date} onChange={ onChange } value={ dateTime }/>
+
+              <label htmlFor="street">Street</label>
+              <input type="text" id="street" name="street" onChange={ onChange } value={ street }/>
+
+              <label htmlFor="city">City</label>
+              <input type="text" id="city" name="city" onChange={ onChange } value={ city }/>
               
-              <label htmlFor="dateTime">Select image less than 5mb</label>
+              <label htmlFor="eventPic">Select image less than 5mb</label>
               <input id="eventPic" type="file" name="image" onChange={ onSelectFile } className="form-input"/>
 
               <button type="submit" disabled={buttonDisable}>Submit</button>

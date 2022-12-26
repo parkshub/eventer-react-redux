@@ -18,15 +18,17 @@ import { getUserInfo } from "../features/auth/authSlice"
 
 function VisitorsProfile() {
   
-  const { events, isPending, isRejected, message } = useSelector((state) => state.events)
+  // const { events, isPending, isRejected, message } = useSelector((state) => state.events)
+  const { profileEvents, isPending, isRejected, message } = useSelector((state) => state.events)
 
   const {user, visitingUser} = useSelector((state) => state.auth)
 
-  const { attendingEvents, userEvents } = events
+  // const { attendingEvents, userEvents } = events
+  const { attendingEvents, userEvents } = profileEvents
 
   const visitingProfile = JSON.parse(localStorage.getItem("visitingProfile"))
 
-  console.log("these are the events", events)
+  // console.log("these are the events", events)
   
   let imgSrc = ""
   const dispatch = useDispatch()

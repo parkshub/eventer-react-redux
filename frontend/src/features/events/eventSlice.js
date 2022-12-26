@@ -7,6 +7,9 @@ const initialState = {
     userEvents: [],
     visitingProfile:"",
     attendingEvents: "",
+    //
+    profileEvents: "",
+    //
     events: "",
     isPending: false,
     isRejected: false, 
@@ -301,7 +304,7 @@ const eventSlice = createSlice({
             .addCase(getProfileEvents.fulfilled, (state, action) => {
                 state.isPending = false
                 state.isFulfilled = true
-                state.events = action.payload
+                state.profileEvents = action.payload
             })
             .addCase(getProfileEvents.rejected, (state, action) => {
                 state.isPending = false
