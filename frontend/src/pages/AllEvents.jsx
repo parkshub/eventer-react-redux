@@ -66,42 +66,38 @@ function AllEvents() {
     
   return (
     <>
+    <section className="form">
       <form onSubmit={ filterEvents }>
 
+        <div className="formGroup">
         <label htmlFor="city">Filter by City</label>
-        <select name="city" id="city" defaultValue="" onChange={ onFilterChange }>
-          <option value="all">Show All</option>
-          {
-            cities.map((city, i) => <option key={ i } value={ city }>{ city }</option>)
-          }
-        </select>
-
-        <button type="submit">Filter</button>
-      </form>
-      {/* {events ?
-        <div>
-            {events.map((event) => 
-                <EventItem key={event._id} event={event}/>
-            )
+          <select name="city" id="city" defaultValue="" onChange={ onFilterChange }>
+            <option value="all">Show All</option>
+            {
+              cities.map((city, i) => <option key={ i } value={ city }>{ city }</option>)
             }
-            these are events
+          </select>
         </div>
-      : (
-        <h2>no events</h2>
-      )
-    } */}
+
+        <div className="formGroup">
+          <button className="btn" type="submit">Filter</button>
+        </div>
+
+      </form>
+    </section>
+
+    <section className="content">
       {eventState ?
-        <div>
+        <div className="events">
             {eventState.map((event) => 
                 <EventItem key={event._id} event={event}/>
-            )
-            }
-            these are events
-        </div>
-      : (
-        <h2>no events</h2>
-      )
-    }
+            )}
+        </div> :
+        (
+          <h2>no events</h2>
+        )
+      }
+    </section>
   </>
   )
 }

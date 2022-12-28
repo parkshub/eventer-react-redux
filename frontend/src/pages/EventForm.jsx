@@ -65,7 +65,7 @@ function EventForm() {
 
     if (fileMb > 5) {
       toast.error("file too large")
-      document.querySelector("#eventPic").value = ""
+      document.querySelector("#eventImage").value = ""
     }
     else {
       let reader = new FileReader()
@@ -93,27 +93,41 @@ function EventForm() {
 
   return (
     <>
-      {edit? <h3>Edit Event</h3>: <h3>Create Event</h3>}
+      <section className="heading">
+        {edit? <h1>Edit Event</h1>: <h1>Create Event</h1>}
+      </section>
       
       <section className="form">
           <form onSubmit={ onSubmit }>
+            
+            <div className="formGroup">
               <label htmlFor="title">Title</label>
               <input type="text" id="title" name="title" onChange={ onChange } value={ title }/>
+            </div>
 
+            <div className="formGroup">
               <label htmlFor="caption">Caption character limit: { captionLength }</label>
-                <input type="text" name="caption" id="caption" value={ caption } onChange={ onChange } maxLength={ 150 }/>
+              <input type="text" name="caption" id="caption" value={ caption } onChange={ onChange } maxLength={ 150 }/>
+            </div>
 
+            <div className="formGroup">
               <label htmlFor="description">Description min character: { descriptionLength }</label>
               {/* ALSO MAKE SURE DESCRIPTION DOESN'T GO INTO THE NEGATIVES */}
               <input type="text" name="description" id="description" value={ description } onChange={onChange} minLength={ 150 }/>
               {/* <input type="text" name="description" id="description" value={test} onChange={ onChange } minLength={150}/> */}
+            </div>
 
+            <div className="formGroup">
               <label htmlFor="dateTime">Date and Time</label>
               <input type="datetime-local" id="dateTime" name="dateTime" min={ date } onChange={ onChange } value={ dateTime }/>
+            </div>
 
+            <div className="formGroup">
               <label htmlFor="street">Street</label>
               <input type="text" id="street" name="street" onChange={ onChange } value={ street }/>
-
+            </div>
+            
+            <div className="formGroup">
               <label htmlFor="city">City</label>
 
               <select name="city" id="city" defaultValue={ cities[0] } onChange={ onChange }>
@@ -121,16 +135,23 @@ function EventForm() {
                   cities.map((city, i) => <option key={ i } value={ city }>{ city }</option>)
                 }
               </select>
-
+            </div>
+            
+            <div className="formGroup">
               <label htmlFor="maxAttendee">Maximum number of people (max: 20)</label>
               <input type="number" id="maxAttendee" name="maxAttendee" onChange={ onChange } max={20} value={ maxAttendee }/>
-              
-              <label htmlFor="eventPic">Select image less than 5mb</label>
-              <input id="eventPic" type="file" name="image" onChange={ onSelectFile } className="form-input"/>
+            </div>
 
-              <button type="submit" disabled={ buttonDisable }>Submit</button>
+            <div className="formGroup">
+              <label htmlFor="eventImage">Select image less than 5mb</label>
+              <input id="eventImage" type="file" name="eventImage" onChange={ onSelectFile } className="form-input"/>
+            </div>
+
+            <div className="formGroup">
+              <button className="btn" type="submit" disabled={ buttonDisable }>Submit</button>
+            </div>
           </form>
-          <img src={ selectedFile } className={ selectedFile ? "image" : "hide" } width={ 300 }  alt="preview image" />
+          <img src={ selectedFile } className={ selectedFile ? "eventImagePreview" : "hide" } width={ 300 }  alt="preview image" />
       </section>
     </>
   )

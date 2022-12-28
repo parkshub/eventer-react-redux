@@ -35,20 +35,25 @@ function Home () {
     }
 
     return (
-        <section>
-            <h3>Top Events</h3>
-            {homeEvents.length > 0 ? 
-                <div>
-                    {homeEvents.map((homeEvent) => 
-                        <EventItem key={homeEvent._id} event={homeEvent}/>
-                    )
-                    }
-                </div>
-             : (
-                <h2>no events</h2>
-            )}
-            <h4>Login or Signup to see more events!</h4>
-        </section>
+        <>
+            <section className="heading">
+                <h1>Top Events</h1>
+            </section>
+            
+            <section className="content">
+                {homeEvents.length > 0 ? 
+                    <div className="events">
+                        {homeEvents.map((homeEvent) => 
+                            <EventItem key={homeEvent._id} event={homeEvent}/>
+                        )
+                        }
+                    </div>
+                    : (
+                    <h2>no events</h2>
+                )}
+                <h4>Login or Signup to see more events!</h4>
+            </section>
+        </>
 
         
     )

@@ -97,44 +97,57 @@ function ProfileForm() {
 
     return (
         <>
-            <div>Edit Profile Info</div>
+            <section className="heading">
+                <h1>Edit Profile Info</h1>
+            </section>
             
             <section className="form">
                 <form action="" onSubmit={onSubmit}>
-                    
-                    <label htmlFor="firstName">First Name</label>
-                    <input id="firstName" name="firstName" type="text" value={firstName} onChange={onChange}/>
 
-                    <label htmlFor="lastName">Last Name</label>
-                    <input id="lastName" name="lastName" type="text" value={lastName} onChange={onChange}/>
-
-                    <label htmlFor="bio">Bio character limit: {bioLength}</label>
-                    <input id="bio" name="bio" type="text" value={bio} onChange={onChange}/>
-
-                    <label htmlFor="photo">Choose own photo or choose default?</label>
-
-                    <select name="photo" id="photo" defaultValue={ choice } onChange={ onChoiceChange }>
-                        <option value="upload">upload own photo</option>
-                        <option value="default">choose default photo</option>
-                    </select>
-
-                    <div className={choice==="upload" ? "" : "hide"}>
-                        <label htmlFor="profilePic">Select profile picture less than 5mb</label>
-                        <input id="profilePic" type="file" name="profilePic" onChange={ onSelectFile } className="form-input"/>
-                        {/* <input id="profilePic" type="file" name="profilePic" onChange={ onFileChange } className="form-input"/> */}
+                    <div className="formGroup">
+                        <label htmlFor="firstName">First Name</label>
+                        <input id="firstName" name="firstName" type="text" value={firstName} onChange={onChange}/>
                     </div>
 
+                    <div className="formGroup">
+                        <label htmlFor="lastName">Last Name</label>
+                        <input id="lastName" name="lastName" type="text" value={lastName} onChange={onChange}/>
+                    </div>
 
-                    <div id="colorPicker" className={choice==="default" ? "" : "hide"}>
-                        <img id="preview" className="profileImagePreview defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile-pic" />
+                    <div className="formGroup">
+                        <label htmlFor="bio">Bio character limit: {bioLength}</label>
+                        <input id="bio" name="bio" type="text" value={bio} onChange={onChange}/>
+                    </div>
+
+                    <div className="formGroup">
+                        <label htmlFor="photo">Choose own photo or choose default?</label>
+                        <select name="photo" id="photo" defaultValue={ choice } onChange={ onChoiceChange }>
+                            <option value="upload">upload own photo</option>
+                            <option value="default">choose default photo</option>
+                        </select>
+                    </div>
+
+                    <div className={choice==="upload" ? "formGroup" : "hide"}>
+                        <label htmlFor="imageUpload">Select profile picture less than 5mb</label>
+                        <input id="imageUpload" type="file" name="imageUpload" onChange={ onSelectFile } className="form-input"/>
+                    </div>
+
+                    
+                    <div id="colorPicker" className={choice==="default" ? "formGroup" : "hide"}>
+                        <img id="preview" className="profileImagePreview" src={ imgSrc.length <= 0 ? createImageFromInitials(300, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile-pic" />
                         <h6>Customize Color</h6>
                         <SketchPicker onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
                     </div>
 
-                    <button type="submit">Submit Changes</button>
-                </form>
+                    <div className="formGroup">
+                        <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/>
+                    </div>
 
-                <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/>
+                    <div className="formGroup">
+                        <button className="btn" type="submit">Submit Changes</button>
+                    </div>
+
+                </form>
 
             </section>
         </>

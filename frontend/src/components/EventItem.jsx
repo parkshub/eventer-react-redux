@@ -20,20 +20,19 @@ function EventItem({event}) {
 
     return (
         <>
-            <div className="eventItem">
+            <div className="event">
                 <img src={event.imageUrl} width={250} height={250} alt="" />
-                {/* <img src={event.imageUrl} alt="" /> */}
                 <h3>{event._id}</h3>
                 <h4 className="eventName">{event.title}</h4>
                 <p className="eventCaption">{event.caption}</p>
                 <p className="attending">Date & Time: {formattedDate + " " + formattedTime}</p>
                 <p className="attending">{event.attending}/{event.maxAttendee} attending</p>
                 <p className="location">Location: {event.street}, {event.city}, California </p>
+                { user ? 
+                    <button className="btn" value={event._id} onClick={onClick}>View</button> :
+                    ""
+                }
             </div>
-            { user ? 
-            <button value={event._id} onClick={onClick}>View</button> :
-            ""
-            }
         </>
     )
 }

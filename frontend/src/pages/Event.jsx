@@ -20,10 +20,7 @@ function Event() {
   const { user } = useSelector((state) => state.auth)
   
   const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem("event")))
-
-  localStorage.setItem("event", JSON.stringify(eventState))
   
-  //* MAKE SURE TO ERASE LOCAL STORAGE ON EXIT
   const attendeeArray = eventState.attendee.map(x => Object.keys(x)).join(" ").split(" ")
   let imgSrc = ""
 
@@ -78,7 +75,9 @@ function Event() {
 
   
   useEffect(() => {
-    dispatch(getEvent(eventState._id))
+    if (event === "") {
+      dispatch(getEvent(eventState._id))
+    }
 
     if (isRejected) {
       toast.error(message)
@@ -91,61 +90,50 @@ function Event() {
   }, [message ,isRejected ,dispatch])
 
 
-  if (isPending) {
-    return <Loading/>
-  }
+  // if (isPending) {
+  //   return <Loading/>
+  // }
 
   return (
     <>
-      <img src={eventState.imageUrl} height={200} width={200} alt="" />
-      <div>Event</div>
-      <div>{eventState._id}</div>
-      <div>Title: {eventState.title}</div>
-      <div>Description: {eventState.description}</div>
-      <div>Date & Time: {formattedDate + " " + formattedTime}</div>
-      <div>Created by: {eventState.userName}</div>
-      <div>{eventState.attending}/{eventState.maxAttendee} Attending</div>
-      <div>these are ppl attending {JSON.stringify(eventState.attendee)}</div>
+      <section className="heading">
+        <div>Title: {eventState.title}</div>
+        <div>Created by: {eventState.userName}</div>
+      </section>
+      
+      <section className="event">
+        <img src={eventState.imageUrl} height={200} width={200} alt="" />
+        <div>Event</div>
+        <div>{eventState._id}</div>
+        <div>Description: {eventState.description}</div>
+        <div>Date & Time: {formattedDate + " " + formattedTime}</div>
+        <div>{eventState.attending}/{eventState.maxAttendee} Attending</div>
+        <div>these are ppl attending {JSON.stringify(eventState.attendee)}</div>
 
-      <div>these are ppl attending 
-        {eventState.attendee.map((x, i) => 
-          Object.values(x)[0].image.startsWith("#") ?
-            <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? "profileImage defaultPic hostPic" : "profileImage defaultPic"} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={onClickProfile}/> :
-            <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? "profileImage defaultPic hostPic" : "profileImage defaultPic"} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
-        )
+        <div>these are ppl attending 
+          {eventState.attendee.map((x, i) => 
+            Object.values(x)[0].image.startsWith("#") ?
+              <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? "profileImage hostPic" : "profileImage"} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={onClickProfile}/> :
+              <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? "profileImage hostPic" : "profileImage"} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
+          )
+          }
+        </div>
+
+        {
+          user.id === eventState.user ?// if user is the event creator
+            <>
+              <button className="btn" onClick={onClickEdit}>Edit Event</button>
+              <button className="btn" onClick={onClickDelete}>Delete Event</button>
+            </> :
+            attendeeArray.includes(user.id) ?
+              <button className="btn" onClick={onClickUnattend}>Unattend</button> :
+              eventState.maxAttendee === eventState.attending ?
+                <h3>Event is currently full</h3> :
+                !attendeeArray.includes(user.id) ?
+                  <button className="btn" onClick={onClickAttend}>Attend</button> :
+                  ""
         }
-      </div>
-
-      {/* Seeing if user is attending the event */}
-
-      {/* {
-        !attendeeArray.includes(user.id) // if user is not attending
-          ? <button onClick={onClickAttend}>Attend</button> // show attend button
-          : attendeeArray.includes(user.id) && user.id !== event.user  // if user is attending and is not the owner
-            ? <button onClick={onClickUnattend}>Unattend</button> // show unattend button
-            : user.id === eventState.user // if user is the event creater
-              ? // show delete and edit buttons
-              <>
-                <button onClick={onClickEdit}>Edit Event</button>
-                <button onClick={onClickDelete}>Delete Event</button>
-              </>
-              : ""
-      } */}
-
-      {
-        user.id === eventState.user // if user is the event creater
-        ? <>
-            <button onClick={onClickEdit}>Edit Event</button>
-            <button onClick={onClickDelete}>Delete Event</button>
-          </>
-        : attendeeArray.includes(user.id)
-          ? <button onClick={onClickUnattend}>Unattend</button>
-          : eventState.maxAttendee === eventState.attending
-            ? <h3>Event is currently full</h3>
-            : !attendeeArray.includes(user.id)
-              ? <button onClick={onClickAttend}>Attend</button>
-              : ''
-      }
+      </section>
     </>
   )
 }

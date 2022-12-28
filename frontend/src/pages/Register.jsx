@@ -14,15 +14,6 @@ import Loading from "../components/Loading"
 
 function Register() {
 
-    // const [formData, setFormData] = useState({
-    //     firstName:"",
-    //     lastName:"",
-    //     email: "",
-    //     password: "",
-    //     password2: "",
-    //     image: "",
-
-    // })
     const [formData, setFormData] = useState({
         firstName:"new",
         lastName:"new",
@@ -132,55 +123,78 @@ function Register() {
     }
 
     return (
-        <section className="form">
-            <form action="" onSubmit={onSubmit}>
-                <label htmlFor="firstName">first name</label>
-                <input type="text" name="firstName" id="firstName" value={firstName} onChange={onChange}/>
+        <>
 
-                <label htmlFor="lastName">last name</label>
-                <input type="text" name="lastName" id="lastName" value={lastName} onChange={onChange}/>
+            <section className='heading'>
+                <h1>
+                 Register
+                </h1>
+                <p>Please create an account</p>
+            </section>
 
-                
-                <label htmlFor="email">email</label>
-                <input type="email" name="email" id="email" value={email} onChange={onChange}/>
+            <section className="form">
+                <form onSubmit={onSubmit}>
 
-                <label htmlFor="password">password</label>
-                <input type="password" name="password" id="password" value={password} onChange={onChange}/>
-
-                <label htmlFor="password2">confirm password</label>
-                <input type="password" name="password2" id="password2" value={password2} onChange={onChange}/>
-
-                <label htmlFor="bio">Bio character limit: {bioLength}</label>
-                <input type="text" name="bio" id="bio" value={bio} onChange={onChange} maxLength={150}/>
-
-                <label htmlFor="photo">Choose own photo or choose default?</label>
-
-                <select name="photo" id="photo" defaultValue={choice} onChange={onChoiceChange}>
-                    <option value="">please choose an option</option>
-                    <option value="upload">upload own photo</option>
-                    <option value="default">choose default photo</option>
-                </select>
-
-                    <div className={choice==="upload" ? "" : "hide"}>
-                        <label htmlFor="profilePic">Select profile picture less than 5mb</label>
-                        <input id="profilePic" type="file" name="profilePic" onChange={ onSelectFile } className="form-input"/>
-                        {/* <input id="profilePic" type="file" name="profilePic" onChange={ onFileChange } className="form-input"/> */}
+                    <div className="formGroup">
+                        <label htmlFor="firstName">first name</label>
+                        <input type="text" name="firstName" id="firstName" value={firstName} onChange={onChange}/>
+                    </div>
+                    
+                    <div className="formGroup">
+                        <label htmlFor="lastName">last name</label>
+                        <input type="text" name="lastName" id="lastName" value={lastName} onChange={onChange}/>
                     </div>
 
+                    <div className="formGroup">
+                        <label htmlFor="email">email</label>
+                        <input type="email" name="email" id="email" value={email} onChange={onChange}/>
+                    </div>
 
-                    <div id="colorPicker" className={choice==="default" ? "" : "hide"}>
+                    <div className="formGroup">
+                        <label htmlFor="password">password</label>
+                        <input type="password" name="password" id="password" value={password} onChange={onChange}/>
+                    </div>
+
+                    <div className="formGroup">
+                        <label htmlFor="password2">confirm password</label>
+                        <input type="password" name="password2" id="password2" value={password2} onChange={onChange}/>
+                    </div>
+
+                    <div className="formGroup">
+                        <label htmlFor="bio">Bio character limit: {bioLength}</label>
+                        <input type="text" name="bio" id="bio" value={bio} onChange={onChange} maxLength={150}/>
+                    </div>
+
+                    <div className="formGroup">
+                        <label htmlFor="photo">Choose own photo or choose default?</label>
+                        <select name="photo" id="photo" defaultValue={choice} onChange={onChoiceChange}>
+                            <option value="">please choose an option</option>
+                            <option value="upload">upload own photo</option>
+                            <option value="default">choose default photo</option>
+                        </select>
+                    </div>
+
+                    <div className={choice==="upload fromGroup" ? "" : "hide"}>
+                        <label htmlFor="profilePic">Select profile picture less than 5mb</label>
+                        <input id="profilePic" type="file" name="profilePic" onChange={ onSelectFile } className="form-input"/>
+                    </div>
+
+                    <div id="colorPicker" className={choice==="default fromGroup" ? "" : "hide"}>
                         <img id="preview" className="profileImagePreview defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile-pic" />
                         <h6>Customize Color</h6>
                         <SketchPicker onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
                     </div>
 
-                <button>Register</button>
-            </form>
+                    <div className="formGroup">
+                        <button type="submit" className="btn">Register</button>
+                    </div>
+                </form>
 
-            {/* <img src={selectedFile} className={selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/> */}
-            <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/>
+                {/* <img src={selectedFile} className={selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/> */}
+                <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/>
 
-        </section>
+            </section>
+        </>
     )
 }
 

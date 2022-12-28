@@ -34,7 +34,9 @@ function Header() {
     }
 
     return (
-        <header>
+        
+        <header className="header">
+            <h1>CHANGE THE NON-LOGGED-IN LINKS TO BUTTONS AND MAKE A NEW ONCLICK FUNCTION FOR THEM RATHER THAN HAVING A LINK TAG</h1>
             <div className="logo">
                 <Link to ="/">Eventer - USA California</Link>
             </div>
@@ -51,17 +53,17 @@ function Header() {
             ) : (
                 <ul>
                     <li>
-                        <button onClick={onClickProfile}>
+                        <button className="btn"onClick={onClickProfile}>
                             <FaUserAlt/> Profile
                         </button>
                     </li>
                     <li>
-                        <button onClick={onClickLogout}>
+                        <button className="btn"onClick={onClickLogout}>
                             <FaSignOutAlt /> Logout
                         </button>
                     </li>
                     <li>
-                        <button onClick={onClickBrowse}>
+                        <button className="btn" onClick={onClickBrowse}>
                             <FaSignOutAlt /> Browse All
                         </button>
                     </li>
