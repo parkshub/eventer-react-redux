@@ -126,6 +126,11 @@ const getAllEvents = async(token) => {
         }
     }
     const response = await axios.get(API_URL + "getAllEvents")
+
+    if (response.data) {
+        localStorage.setItem("events", JSON.stringify(response.data))
+    }
+
     return response.data
 }
 

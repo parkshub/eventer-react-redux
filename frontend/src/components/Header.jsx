@@ -29,7 +29,7 @@ function Header() {
     }
 
     const onClickBrowse = async() => {
-        dispatch(getAllEvents())
+        // dispatch(getAllEvents())
         navigate("/allEvents")
     }
 
