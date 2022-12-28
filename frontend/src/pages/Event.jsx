@@ -8,6 +8,8 @@ import { createImageFromInitials } from "../components/Utils"
 import Loading from "../components/Loading"
 
 import { getVisitingProfile } from "../features/events/eventSlice"
+import { formatDate } from "../components/Utils"
+
 
 function Event() {
   const dispatch = useDispatch()
@@ -19,13 +21,14 @@ function Event() {
   
   const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem("event")))
 
-  console.log(eventState)
-
   localStorage.setItem("event", JSON.stringify(eventState))
   
   //* MAKE SURE TO ERASE LOCAL STORAGE ON EXIT
   const attendeeArray = eventState.attendee.map(x => Object.keys(x)).join(" ").split(" ")
   let imgSrc = ""
+
+  const { formattedDate, formattedTime } = formatDate(eventState.dateTime)
+  console.log(formattedDate, formattedTime)
 
   const onClickAttend = () => {
 
@@ -93,13 +96,14 @@ function Event() {
 
   return (
     <>
+      <img src={eventState.imageUrl} height={200} width={200} alt="" />
       <div>Event</div>
       <div>{eventState._id}</div>
-      <div>{eventState.title}</div>
-      <div>{event.caption}</div>
-      <div>{eventState.dateTime}</div>
-      <div>attending: {eventState.attending}</div>
-      <div>created by: {eventState.userName}</div>
+      <div>Title: {eventState.title}</div>
+      <div>Description: {eventState.description}</div>
+      <div>Date & Time: {formattedDate + " " + formattedTime}</div>
+      <div>Created by: {eventState.userName}</div>
+      <div>{eventState.attending}/{eventState.maxAttendee} Attending</div>
       <div>these are ppl attending {JSON.stringify(eventState.attendee)}</div>
 
       <div>these are ppl attending 
@@ -111,10 +115,9 @@ function Event() {
         }
       </div>
 
-      <img src={eventState.imageUrl} height={200} width={200} alt="" />
       {/* Seeing if user is attending the event */}
 
-      {
+      {/* {
         !attendeeArray.includes(user.id) // if user is not attending
           ? <button onClick={onClickAttend}>Attend</button> // show attend button
           : attendeeArray.includes(user.id) && user.id !== event.user  // if user is attending and is not the owner
@@ -126,6 +129,21 @@ function Event() {
                 <button onClick={onClickDelete}>Delete Event</button>
               </>
               : ""
+      } */}
+
+      {
+        user.id === eventState.user // if user is the event creater
+        ? <>
+            <button onClick={onClickEdit}>Edit Event</button>
+            <button onClick={onClickDelete}>Delete Event</button>
+          </>
+        : attendeeArray.includes(user.id)
+          ? <button onClick={onClickUnattend}>Unattend</button>
+          : eventState.maxAttendee === eventState.attending
+            ? <h3>Event is currently full</h3>
+            : !attendeeArray.includes(user.id)
+              ? <button onClick={onClickAttend}>Attend</button>
+              : ''
       }
     </>
   )

@@ -5,6 +5,9 @@ import { createEvent, updateEvent } from "../features/events/eventSlice"
 import Loading from "../components/Loading"
 import { toast } from "react-toastify"
 
+import { formatDate } from "../components/Utils"
+import { cities } from "../components/Utils"
+
 function EventForm() {
 
   const edit = localStorage.getItem("event") ? true : false
@@ -15,11 +18,12 @@ function EventForm() {
   const eventObj = {
     title:"",
     caption:"",
+    description: "test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test",
     description: "",
-    dateTime:"",
+    dateTime: date,
     street: "",
-    city: "",
-    state: "",
+    city: "Acto",
+    maxAttendee: "",
   }
 
   const { isPending } = useSelector((state) => state.events)
@@ -32,25 +36,25 @@ function EventForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
-  const { title, caption, description, dateTime, street, city, state } = formData
+  const { title, caption, description, dateTime, street, city, maxAttendee } = formData
 
   const buttonDisable = title && caption && dateTime && selectedFile ? false : true
-  
+
   const onChange = (e) => {
 
-    if (e.target.id == "caption") {
+    if (e.target.id === "caption") {
       setCaptionLength(50 - e.target.value.length)
     }
 
-    if (e.target.id == "description") {
-      setDescriptionLength(150 - e.target.value.length)
+    if (e.target.id === "description") {
+      e.target.value.length > 150 ? setDescriptionLength(0) : setDescriptionLength(150 - e.target.value.length)
     }
 
     setFormData((prev) => ({
       ...prev,
       [e.target.id]: e.target.value
     }))
-    console.log(formData)
+    // console.log(formData)
   }
 
   const onSelectFile = (e) => {
@@ -76,9 +80,9 @@ function EventForm() {
       e.preventDefault()
       // if it's in edit mode, then it should navigate back to the event page not the profile
       if (edit) {
-        await dispatch(updateEvent({formData, selectedFile}))
+        await dispatch(updateEvent({ formData, selectedFile }))
       } else {
-        await dispatch(createEvent({formData, selectedFile}))
+        await dispatch(createEvent({ formData, selectedFile }))
       }
       navigate("/profile")
   }
@@ -92,34 +96,41 @@ function EventForm() {
       {edit? <h3>Edit Event</h3>: <h3>Create Event</h3>}
       
       <section className="form">
-          <form onSubmit={onSubmit}>
+          <form onSubmit={ onSubmit }>
               <label htmlFor="title">Title</label>
               <input type="text" id="title" name="title" onChange={ onChange } value={ title }/>
 
-              <label htmlFor="caption">Caption character limit: {captionLength}</label>
-                <input type="text" name="caption" id="caption" value={caption} onChange={onChange} maxLength={150}/>
+              <label htmlFor="caption">Caption character limit: { captionLength }</label>
+                <input type="text" name="caption" id="caption" value={ caption } onChange={ onChange } maxLength={ 150 }/>
 
-              {/* <label htmlFor="description">Description</label>
-              <input type="text" id="description" name="description" onChange={ onChange } value={ description }/> */}
-
-              <label htmlFor="description">Description min character: {descriptionLength}</label>
-              <input type="text" name="description" id="description" value={description} onChange={onChange} minLength={150}/>
+              <label htmlFor="description">Description min character: { descriptionLength }</label>
+              {/* ALSO MAKE SURE DESCRIPTION DOESN'T GO INTO THE NEGATIVES */}
+              <input type="text" name="description" id="description" value={ description } onChange={onChange} minLength={ 150 }/>
+              {/* <input type="text" name="description" id="description" value={test} onChange={ onChange } minLength={150}/> */}
 
               <label htmlFor="dateTime">Date and Time</label>
-              <input type="datetime-local" id="dateTime" name="dateTime" min={date} onChange={ onChange } value={ dateTime }/>
+              <input type="datetime-local" id="dateTime" name="dateTime" min={ date } onChange={ onChange } value={ dateTime }/>
 
               <label htmlFor="street">Street</label>
               <input type="text" id="street" name="street" onChange={ onChange } value={ street }/>
 
               <label htmlFor="city">City</label>
-              <input type="text" id="city" name="city" onChange={ onChange } value={ city }/>
+
+              <select name="city" id="city" defaultValue={ cities[0] } onChange={ onChange }>
+                {
+                  cities.map((city, i) => <option key={ i } value={ city }>{ city }</option>)
+                }
+              </select>
+
+              <label htmlFor="maxAttendee">Maximum number of people (max: 20)</label>
+              <input type="number" id="maxAttendee" name="maxAttendee" onChange={ onChange } max={20} value={ maxAttendee }/>
               
               <label htmlFor="eventPic">Select image less than 5mb</label>
               <input id="eventPic" type="file" name="image" onChange={ onSelectFile } className="form-input"/>
 
-              <button type="submit" disabled={buttonDisable}>Submit</button>
+              <button type="submit" disabled={ buttonDisable }>Submit</button>
           </form>
-          <img src={selectedFile} className={selectedFile ? "image" : "hide"} width={300}  alt="preview image" />
+          <img src={ selectedFile } className={ selectedFile ? "image" : "hide" } width={ 300 }  alt="preview image" />
       </section>
     </>
   )

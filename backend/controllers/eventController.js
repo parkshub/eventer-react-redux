@@ -23,13 +23,18 @@ exports.createEvent = asyncHandler(async(req, res) => {
             {height: 300, width:300, crop: "scale"}
         ]
     })
+
+    console.log('this is formData', req.body.formData)
         
     const event = await EventModel.create({
-        title: req.body.formData.title,
-        caption: req.body.formData.caption,
-        dateTime: req.body.formData.dateTime,
         user: req.user.id,
         userName: req.user.firstName + ' ' + req.user.lastName,
+        title: req.body.formData.title,
+        caption: req.body.formData.caption,
+        description: req.body.formData.description,
+        dateTime: req.body.formData.dateTime,
+        street: req.body.formData.street,
+        city: req.body.formData.city,
         // attendee: [{[req.user.id]: req.user.firstName}],
         attendee: 
         [{
@@ -40,7 +45,8 @@ exports.createEvent = asyncHandler(async(req, res) => {
                 }
         }],
         imageUrl: imageResponse.secure_url,
-        cloudinaryId: imageResponse.public_id
+        cloudinaryId: imageResponse.public_id,
+        maxAttendee: req.body.formData.maxAttendee
     })
     res.status(200).json(event)
 
@@ -199,7 +205,7 @@ exports.unattendEvent = async(req, res) => {
     try {
         console.log('unattendEvent controller')
         const fullName = req.user.firstName + ' ' + req.user.lastName
-        const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, { // this also works
+        const updatedEvent = await EventModel.findByIdAndUpdate(req.params.id, {
             $pull: {attendee: {[req.user.id]: {
                 name: fullName,
                 image: req.user.image
