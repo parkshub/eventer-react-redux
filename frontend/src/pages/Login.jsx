@@ -57,17 +57,17 @@ function Login() {
                 <form  onSubmit={onSubmit}>
                     
                     <div className="formGroup">
-                        <label htmlFor="email">email</label>
+                        <label htmlFor="email">Email</label>
                         <input type="email" name="email" value = {email} id="email" onChange={onChange}/>
                     </div>
 
                     <div className="formGroup">
-                        <label htmlFor="password">password</label>
+                        <label htmlFor="password">Password</label>
                         <input type="password" name="password" value = {password} id="password" onChange={onChange}/>
                     </div>
 
                     <div className="formGroup">
-                        <button type="submit">Login</button>
+                        <button className="btn" type="submit">Login</button>
                     </div>
 
                 </form>
