@@ -14,6 +14,7 @@ function Home () {
     const navigate = useNavigate()
 
     const { homeEvents, events, isPending, isRejected, message } = useSelector((state) => state.events)
+    const { user } = useSelector((state) => state.auth)
     
     useEffect(() => {
         
@@ -38,6 +39,7 @@ function Home () {
         <>
             <section className="heading">
                 <h1>Top Events</h1>
+                {!user ? <p>Login or Signup to See More Events!</p> : <p>Create or Attend Events in California!</p>}
             </section>
             
             <section className="content">
@@ -51,7 +53,6 @@ function Home () {
                     : (
                     <h2>no events</h2>
                 )}
-                <h4>Login or Signup to see more events!</h4>
             </section>
         </>
 

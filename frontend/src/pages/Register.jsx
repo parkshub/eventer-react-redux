@@ -136,33 +136,33 @@ function Register() {
                 <form onSubmit={onSubmit}>
 
                     <div className="formGroup">
-                        <label htmlFor="firstName">first name</label>
+                        <label htmlFor="firstName">First Name</label>
                         <input type="text" name="firstName" id="firstName" value={firstName} onChange={onChange}/>
                     </div>
                     
                     <div className="formGroup">
-                        <label htmlFor="lastName">last name</label>
+                        <label htmlFor="lastName">Last Name</label>
                         <input type="text" name="lastName" id="lastName" value={lastName} onChange={onChange}/>
                     </div>
 
                     <div className="formGroup">
-                        <label htmlFor="email">email</label>
+                        <label htmlFor="email">Email</label>
                         <input type="email" name="email" id="email" value={email} onChange={onChange}/>
                     </div>
 
                     <div className="formGroup">
-                        <label htmlFor="password">password</label>
+                        <label htmlFor="password">Password</label>
                         <input type="password" name="password" id="password" value={password} onChange={onChange}/>
                     </div>
 
                     <div className="formGroup">
-                        <label htmlFor="password2">confirm password</label>
+                        <label htmlFor="password2">Confirm Password</label>
                         <input type="password" name="password2" id="password2" value={password2} onChange={onChange}/>
                     </div>
 
                     <div className="formGroup">
                         <label htmlFor="bio">Bio character limit: {bioLength}</label>
-                        <input type="text" name="bio" id="bio" value={bio} onChange={onChange} maxLength={150}/>
+                        <textarea name="bio" id="bio" rows={4} value={bio} onChange={ onChange } maxLength={150} />
                     </div>
 
                     <div className="formGroup">
@@ -174,15 +174,21 @@ function Register() {
                         </select>
                     </div>
 
-                    <div className={choice==="upload fromGroup" ? "" : "hide"}>
-                        <label htmlFor="profilePic">Select profile picture less than 5mb</label>
+                    <div className={choice==="upload" ? "formGroup" : "hide"}>
+                        <label htmlFor="profilePic">Select profile picture less than 5MBs</label>
                         <input id="profilePic" type="file" name="profilePic" onChange={ onSelectFile } className="form-input"/>
                     </div>
 
-                    <div id="colorPicker" className={choice==="default fromGroup" ? "" : "hide"}>
-                        <img id="preview" className="profileImagePreview defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile-pic" />
+
+                    <div className="formGroup">
+                        <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/>
+                    </div>
+
+                    <div className={choice==="default" ? "formGroup defaultImageContainer" : "hide"}>
+                        <img id="preview" className="defaultImagePreview" src={ imgSrc.length <= 0 ? createImageFromInitials(200, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile-pic" />
                         <h6>Customize Color</h6>
-                        <SketchPicker onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
+                        
+                        <SketchPicker id="colorPicker" disableAlpha={true} onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
                     </div>
 
                     <div className="formGroup">
@@ -191,7 +197,6 @@ function Register() {
                 </form>
 
                 {/* <img src={selectedFile} className={selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/> */}
-                <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/>
 
             </section>
         </>

@@ -98,11 +98,12 @@ function ProfileForm() {
     return (
         <>
             <section className="heading">
-                <h1>Edit Profile Info</h1>
+                <h1>Edit Profile</h1>
+                <p>Please enter changes</p>
             </section>
             
             <section className="form">
-                <form action="" onSubmit={onSubmit}>
+                <form onSubmit={onSubmit}>
 
                     <div className="formGroup">
                         <label htmlFor="firstName">First Name</label>
@@ -116,7 +117,8 @@ function ProfileForm() {
 
                     <div className="formGroup">
                         <label htmlFor="bio">Bio character limit: {bioLength}</label>
-                        <input id="bio" name="bio" type="text" value={bio} onChange={onChange}/>
+                        {/* <input id="bio" name="bio" type="text" value={bio} onChange={onChange}/> */}
+                        <textarea name="bio" id="bio" rows={4} value={bio} onChange={ onChange } maxLength={150} />
                     </div>
 
                     <div className="formGroup">
@@ -128,7 +130,7 @@ function ProfileForm() {
                     </div>
 
                     <div className={choice==="upload" ? "formGroup" : "hide"}>
-                        <label htmlFor="imageUpload">Select profile picture less than 5mb</label>
+                        <label htmlFor="imageUpload">Select profile picture less than 5MBs</label>
                         <input id="imageUpload" type="file" name="imageUpload" onChange={ onSelectFile } className="form-input"/>
                     </div>
 
@@ -136,7 +138,7 @@ function ProfileForm() {
                     <div id="colorPicker" className={choice==="default" ? "formGroup" : "hide"}>
                         <img id="preview" className="profileImagePreview" src={ imgSrc.length <= 0 ? createImageFromInitials(300, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile-pic" />
                         <h6>Customize Color</h6>
-                        <SketchPicker onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
+                        <SketchPicker disableAlpha={true} onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
                     </div>
 
                     <div className="formGroup">

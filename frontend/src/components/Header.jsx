@@ -45,38 +45,38 @@ function Header() {
         
         <header className="header">
             <div className="logo">
-                <Link to ="/">Eventer - USA California</Link>
+                <Link to ="/">EVENTER - USA California</Link>
             </div>
             
             {!user ? (
                 <ul>
                     <li>
-                        <button className="btn"onClick={ onClickLogin }>
-                            <FaUserAlt/> Login
+                        <button className="btn-header" onClick={ onClickLogin }>
+                            <FaUserAlt className="fa-icon"/> Login
                         </button>
                     </li>
                     
                     <li>
-                        <button className="btn" onClick={ onClickRegister }>
-                            <FaCashRegister /> Register
+                        <button className="btn-header" onClick={ onClickRegister }>
+                            <FaCashRegister className="fa-icon"/> Register
                         </button>
                     </li>
                 </ul>
             ) : (
                 <ul>
                     <li>
-                        <button className="btn"onClick={ onClickProfile }>
-                            <FaUserCircle/> Profile
+                        <button className="btn-header" onClick={ onClickProfile }>
+                            <FaUserCircle className="fa-icon"/> Profile
                         </button>
                     </li>
                     <li>
-                        <button className="btn"onClick={ onClickLogout }>
-                            <FaSignOutAlt /> Logout
+                        <button className="btn-header"onClick={ onClickLogout }>
+                            <FaSignOutAlt className="fa-icon"/> Logout
                         </button>
                     </li>
                     <li>
-                        <button className="btn" onClick={onClickBrowse}>
-                            <FaLayerGroup /> Browse All
+                        <button className="btn-header" onClick={onClickBrowse}>
+                            <FaLayerGroup className="fa-icon"/> Browse
                         </button>
                     </li>
                 </ul>

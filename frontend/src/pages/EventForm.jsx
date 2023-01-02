@@ -106,14 +106,14 @@ function EventForm() {
             </div>
 
             <div className="formGroup">
-              <label htmlFor="caption">Caption character limit: { captionLength }</label>
-              <input type="text" name="caption" id="caption" value={ caption } onChange={ onChange } maxLength={ 150 }/>
+              <label htmlFor="caption">Caption (max character: { captionLength })</label>
+              <textarea type="text" name="caption" id="caption" rows={1} value={ caption } onChange={ onChange } maxLength={ 50 }/>
             </div>
 
             <div className="formGroup">
-              <label htmlFor="description">Description min character: { descriptionLength }</label>
+              <label htmlFor="description">Description (min character: { descriptionLength })</label>
               {/* ALSO MAKE SURE DESCRIPTION DOESN'T GO INTO THE NEGATIVES */}
-              <input type="text" name="description" id="description" value={ description } onChange={onChange} minLength={ 150 }/>
+              <textarea type="text" name="description" id="description" rows={5} value={ description } onChange={onChange} minLength={ 150 }/>
               {/* <input type="text" name="description" id="description" value={test} onChange={ onChange } minLength={150}/> */}
             </div>
 
@@ -129,7 +129,6 @@ function EventForm() {
             
             <div className="formGroup">
               <label htmlFor="city">City</label>
-
               <select name="city" id="city" defaultValue={ cities[0] } onChange={ onChange }>
                 {
                   cities.map((city, i) => <option key={ i } value={ city }>{ city }</option>)
@@ -138,20 +137,23 @@ function EventForm() {
             </div>
             
             <div className="formGroup">
-              <label htmlFor="maxAttendee">Maximum number of people (max: 20)</label>
+              <label htmlFor="maxAttendee">Maximum Number of Attendees (max: 20)</label>
               <input type="number" id="maxAttendee" name="maxAttendee" onChange={ onChange } max={20} value={ maxAttendee }/>
             </div>
 
             <div className="formGroup">
-              <label htmlFor="eventImage">Select image less than 5mb</label>
+              <label htmlFor="eventImage">Select an image less than 5MBs</label>
               <input id="eventImage" type="file" name="eventImage" onChange={ onSelectFile } className="form-input"/>
+            </div>
+            
+            <div className="formGroup">
+              <img src={ selectedFile } className={ selectedFile ? "eventImagePreview" : "hide" } width={ 300 }  alt="preview image" />
             </div>
 
             <div className="formGroup">
               <button className="btn" type="submit" disabled={ buttonDisable }>Submit</button>
             </div>
           </form>
-          <img src={ selectedFile } className={ selectedFile ? "eventImagePreview" : "hide" } width={ 300 }  alt="preview image" />
       </section>
     </>
   )
