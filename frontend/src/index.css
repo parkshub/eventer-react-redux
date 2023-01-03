@@ -132,11 +132,11 @@ div.logo {
 }
 
 .content-body {
-  display: grid;
-  grid-template-columns: repeat(autofit, minmax(240px, 1fr));
+  /* display: grid; */
+  /* grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); */
   text-align: center;
-  align-items: center;
-  /* justify-content: center; */
+  /* align-items: center; */
+  /* justify-content: space-around; */
 
 }
 
@@ -144,9 +144,27 @@ div.logo {
   font-size: 2rem;
 }
 
+.hover:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
 /* EVENT PAGE STYLE */
 
+section.event {
+  display: grid;
+  font-size: 2rem;
+  justify-content: center;
+  grid-template-columns: repeat(auto-fill, 1fr);
+}
 
+section.event-text-container {
+  width: 600px;
+}
+
+section.event p {
+  padding: 0 10rem;
+}
 
 /* EVENTS STYLE */
 

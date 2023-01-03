@@ -97,42 +97,47 @@ function Event() {
   return (
     <>
       <section className="heading">
-        <div>Title: {eventState.title}</div>
-        <div>Created by: {eventState.userName}</div>
+        <h1>Event Name: {eventState.title}</h1>
+        <p>Hosted by: {eventState.userName}</p>
       </section>
+
+      <section className="content-body">
       
-      <section className="event">
-        <img src={eventState.imageUrl} height={200} width={200} alt="" />
-        <div>Event</div>
-        <div>{eventState._id}</div>
-        <div>Description: {eventState.description}</div>
-        <div>Date & Time: {formattedDate + " " + formattedTime}</div>
-        <div>{eventState.attending}/{eventState.maxAttendee} Attending</div>
-        <div>these are ppl attending {JSON.stringify(eventState.attendee)}</div>
+        <section className="event">
+          <section className="img">
+            <img src={eventState.imageUrl} height={500} width={500} alt="" />
+          </section>
+          <section className="event-text-container">
+            <p><b>Description: </b>{eventState.description}</p>
+            <p><b>Date & Time: </b>{formattedDate + " " + formattedTime}</p>
+            <p><b>{eventState.attending}/{eventState.maxAttendee} Attending</b></p>
+            <p><b>Attendees</b></p>
+          </section>
 
-        <div>these are ppl attending 
-          {eventState.attendee.map((x, i) => 
-            Object.values(x)[0].image.startsWith("#") ?
-              <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? "profileImage hostPic" : "profileImage"} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={onClickProfile}/> :
-              <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i==0 ? "profileImage hostPic" : "profileImage"} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
-          )
+          <div>
+            {eventState.attendee.map((x, i) => 
+              Object.values(x)[0].image.startsWith("#") ?
+                <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i===0 ? "profileImage hostPic hover" : "profileImage hover"} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={onClickProfile}/> :
+                <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i===0 ? "profileImage hostPic hover" : "profileImage hover"} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
+            )
+            }
+          </div>
+
+          {
+            user.id === eventState.user ?// if user is the event creator
+              <>
+                <button className="btn" onClick={onClickEdit}>Edit Event</button>
+                <button className="btn" onClick={onClickDelete}>Delete Event</button>
+              </> :
+              attendeeArray.includes(user.id) ?
+                <button className="btn" onClick={onClickUnattend}>Unattend</button> :
+                eventState.maxAttendee === eventState.attending ?
+                  <h3>Event is currently full</h3> :
+                  !attendeeArray.includes(user.id) ?
+                    <button className="btn" onClick={onClickAttend}>Attend</button> :
+                    ""
           }
-        </div>
-
-        {
-          user.id === eventState.user ?// if user is the event creator
-            <>
-              <button className="btn" onClick={onClickEdit}>Edit Event</button>
-              <button className="btn" onClick={onClickDelete}>Delete Event</button>
-            </> :
-            attendeeArray.includes(user.id) ?
-              <button className="btn" onClick={onClickUnattend}>Unattend</button> :
-              eventState.maxAttendee === eventState.attending ?
-                <h3>Event is currently full</h3> :
-                !attendeeArray.includes(user.id) ?
-                  <button className="btn" onClick={onClickAttend}>Attend</button> :
-                  ""
-        }
+        </section>
       </section>
     </>
   )

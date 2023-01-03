@@ -45,10 +45,8 @@ function AllEvents() {
 
   useEffect(() => {
 
-    if (events==="") {
-      dispatch(getAllEvents())
-    }
-
+    dispatch(getAllEvents())
+    
     if (isRejected) {
       toast.error(message)
     }
@@ -79,17 +77,20 @@ function AllEvents() {
           </select>
         </div>
 
-        <div className="formGroup">
+        {/* <div className="formGroup">
           <button className="btn" type="submit">Filter</button>
-        </div>
+        </div> */}
 
       </form>
     </section>
 
     <section className="content">
-      {eventState ?
+      {events ?
         <ul className="events">
-            {eventState.map((event) => 
+            {/* {events.map((event) =>  
+                <EventItem key={event._id} event={event}/>
+            )} */}
+            {events.filter((filteredEvent)=> eventFilter=="all" ? filteredEvent : filteredEvent.city===eventFilter).map((event) =>  
                 <EventItem key={event._id} event={event}/>
             )}
         </ul> :
