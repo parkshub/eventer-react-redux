@@ -55,43 +55,51 @@ function VisitorsProfile() {
 
   return (
     <>
+      <section className="heading">
+        <h1>Visitor's Profile Page</h1>
+        <p>Welcome {visitingUser.firstName}'s to profile</p>
+        {
+          visitingUser && visitingUser.image.startsWith("#")
+          ?
+          <img id="preview" className="profileImage defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, visitingUser.firstName + " " + visitingUser.lastName, visitingUser.image) : imgSrc } alt="profile-pic" />
+          :
+          <img src={visitingUser.image} alt="" className={"profileImage"}/>
+        }
+      </section>
 
-    {
-      visitingUser && visitingUser.image.startsWith("#")
-      ?
-      <img id="preview" className="profileImage defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, visitingUser.firstName + " " + visitingUser.lastName, visitingUser.image) : imgSrc } alt="profile-pic" />
-      :
-      <img src={visitingUser.image} alt="" className={"profileImage"}/>
-    }
-
-    <h1>Welcome to {visitingUser.firstName}'s profile</h1>
-
-    <h2>Bio</h2>
-    <h3>{visitingUser.bio}</h3>
-    
-    <h2>Events {visitingUser.firstName} is Hosting</h2>
-
-    {/* { userEvents.length > 0 ? */}
-    { userEvents ?
-    userEvents.map(userEvent => 
-      <EventItem key={userEvent._id} event={userEvent}/>
-      ) : 
-      <div>you have no events. let's create an event!</div>
-      }
-    
-    <h2>Events {visitingUser.firstName} is Attending</h2>
-
-    { attendingEvents ?
-       <div> {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
-              <EventItem key={attendingEvent._id} event={attendingEvent}/>
+      <section className="content-main">
+        <p>"{visitingUser.bio}"</p>
+      </section>
+      
+      <section className="content-body">
+        { userEvents? <h3>Events {visitingUser.firstName} is Hosting</h3> : <div>no events</div>}
+        {/* <h3>Events {visitingUser.firstName} is Hosting</h3> */}
+        <section className="content">
+            { userEvents ? 
+              <ul className="events">
+                {userEvents.map(userEvent => 
+                  <EventItem key={userEvent._id} event={userEvent}/>
+                )} 
+              </ul> : 
+              <div>No events</div>
+            }
+        </section>
+        
+        <h3>Events {visitingUser.firstName} is Attending</h3>
+        
+        <section className="content">
+          { attendingEvents ?
+            <ul className="events"> 
+              {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
+                <EventItem key={attendingEvent._id} event={attendingEvent}/>
               )}
-        </div>
-      : ""
-    }
-
-  </>
-)
-  
+            </ul> :
+            <div>No events</div>
+          }
+        </section>
+      </section>
+    </>
+  )
 }
 
 export default VisitorsProfile

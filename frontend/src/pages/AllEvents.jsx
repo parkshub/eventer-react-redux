@@ -88,11 +88,11 @@ function AllEvents() {
 
     <section className="content">
       {eventState ?
-        <div className="events">
+        <ul className="events">
             {eventState.map((event) => 
                 <EventItem key={event._id} event={event}/>
             )}
-        </div> :
+        </ul> :
         (
           <h2>no events</h2>
         )

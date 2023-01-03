@@ -51,7 +51,7 @@ function Login() {
         <>
             <section className='heading'>
                 <h1>Login</h1>
-                <p>Please Login</p>
+                <p>Please login</p>
             </section>
             <section className="form">
                 <form  onSubmit={ onSubmit }>

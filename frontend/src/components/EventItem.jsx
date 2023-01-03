@@ -19,21 +19,23 @@ function EventItem({event}) {
     const {formattedDate, formattedTime} = formatDate(event.dateTime)
 
     return (
-        <>
-            <div className="event">
-                <img src={event.imageUrl} width={250} height={250} alt="" />
-                <h3>{event._id}</h3>
-                <h4 className="eventName">{event.title}</h4>
-                <p className="eventCaption">{event.caption}</p>
-                <p className="attending">Date & Time: {formattedDate + " " + formattedTime}</p>
-                <p className="attending">{event.attending}/{event.maxAttendee} attending</p>
-                <p className="location">Location: {event.street}, {event.city}, California </p>
-                { user ? 
-                    <button className="btn" value={event._id} onClick={onClick}>View</button> :
-                    ""
-                }
-            </div>
-        </>
+        <li className="event">
+            <figure>
+                <img className="eventThumbnail" src={event.imageUrl} alt="" />
+                <figcaption>
+                    <h3 className="eventName">{event.title}</h3>
+                </figcaption>
+            </figure>
+            {/* <h3 className="eventName">{event.title}</h3> */}
+            <p className="eventCaption">"{event.caption}"</p>
+            <p className="attending">Date & Time: {formattedDate + " " + formattedTime}</p>
+            <p className="location">Location: {event.street}, {event.city}, California </p>
+            <p className="attending">{event.attending}/{event.maxAttendee} attending</p>
+            { user ? 
+                <button className="btn" value={event._id} onClick={onClick}>View Event</button> :
+                ""
+            }
+        </li>
     )
 }
 

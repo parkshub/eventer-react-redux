@@ -60,22 +60,22 @@ function Profile() {
   return (
     <>
       <section className="heading">
-        <h1>Welcome to your profile, {user.firstName}</h1>
+        <h1>Profile</h1>
+        <p>Welcome to your profile, {user.firstName}</p>
         {
           user.image.startsWith("#")
           ?
-          <img id="preview" className="profileImage defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, user.firstName + " " + user.lastName, user.image) : imgSrc } alt="profile-pic" />
+          <img className="profileImage" src={ imgSrc.length <= 0 ? createImageFromInitials(300, user.firstName + " " + user.lastName, user.image) : imgSrc } alt="profile-pic" />
           :
-          <img src={user.image} alt="" className={"profileImage"}/>
+          <img src={user.image} alt="" className="profileImage"/>
         }
 
       </section>
 
+      <section className="content-main">
+        <p>"{user.bio}"</p>
 
-        <h3>Bio</h3>
-        <h4>{user.bio}</h4>
-
-        <ul>
+        <ul className="content-main-item">
           <li>
             <button className="btn" onClick={onClickEdit}>Edit Profile</button>
           </li>
@@ -84,34 +84,36 @@ function Profile() {
             <button className="btn" onClick={onClick}>Create Event</button>
           </li>
         </ul>
-
-      
-      
-      <h3>Your Events</h3>
-
-      <section className="content">
-        { userEvents ?
-        <div className="events">
-          {userEvents.map(userEvent => 
-            <EventItem key={userEvent._id} event={userEvent}/>
-          )}
-        </div>
-          : 
-          <div>you have no events. let's create an event!</div>
-        }
       </section>
-      
-      <h3>Events Your Attending</h3>
 
-      <section className="content">
-        { attendingEvents ?
-          <div className="events"> 
-            {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
-              <EventItem key={attendingEvent._id} event={attendingEvent}/>
+      <section className="content-body">
+      
+        <h3>Your Events</h3>
+
+        <section className="content">
+          { userEvents ?
+          <ul className="events">
+            {userEvents.map(userEvent => 
+              <EventItem key={userEvent._id} event={userEvent}/>
             )}
-          </div>
-          : ""
-        }
+          </ul>
+            : 
+            <div>you have no events. let's create an event!</div>
+          }
+        </section>
+        
+        <h3>Events You're Attending</h3>
+
+        <section className="content">
+          { attendingEvents ?
+            <ul className="events"> 
+              {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
+                <EventItem key={attendingEvent._id} event={attendingEvent}/>
+              )}
+            </ul>
+            : ""
+          }
+        </section>
       </section>
 
     </>

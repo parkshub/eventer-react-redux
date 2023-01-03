@@ -39,20 +39,21 @@ function Home () {
         <>
             <section className="heading">
                 <h1>Top Events</h1>
-                {!user ? <p>Login or Signup to See More Events!</p> : <p>Create or Attend Events in California!</p>}
+                {!user ? <p>Login or signup to attend and see more events!</p> : <p>Create or attend events in California!</p>}
             </section>
-            
-            <section className="content">
-                {homeEvents.length > 0 ? 
-                    <div className="events">
-                        {homeEvents.map((homeEvent) => 
-                            <EventItem key={homeEvent._id} event={homeEvent}/>
-                        )
-                        }
-                    </div>
-                    : (
-                    <h2>no events</h2>
-                )}
+            <section className="content-body">
+                <section className="content">
+                    {homeEvents.length > 0 ? 
+                        <ul className="events">
+                            {homeEvents.map((homeEvent) => 
+                                <EventItem key={homeEvent._id} event={homeEvent}/>
+                            )
+                            }
+                        </ul>
+                        : (
+                        <h2>no events</h2>
+                    )}
+                </section>
             </section>
         </>
 

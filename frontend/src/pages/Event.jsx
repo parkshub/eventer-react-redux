@@ -85,7 +85,7 @@ function Event() {
 
     return () => {
       dispatch(reset())
-      localStorage.removeItem("event")
+      // localStorage.removeItem("event")
     }
   }, [message ,isRejected ,dispatch])
 

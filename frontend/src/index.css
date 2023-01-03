@@ -4,6 +4,7 @@
 
 html {
   font-size: 62.5%;
+  display: grid;
 }
 
 body {
@@ -82,15 +83,13 @@ div.logo {
 /* HEADING STYLE */
 
 .heading {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  text-align: center;
-  /* align-content: center; */
   align-items: center;
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 50px;
+  margin-bottom: 3%;
   padding: 0 20px;
 }
 
@@ -101,6 +100,111 @@ div.logo {
 .heading p {
   color: #828282;
   margin: 0;
+}
+
+.profileImage {
+  border-radius: 50%;
+  height: 200px;
+  width: 200px;
+  margin-top: 2%;
+  /* margin-bottom: 0%; */
+}
+
+/* PROFILE STYLE */
+
+.content-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content-main p {
+  font-size: 1.8rem;
+  padding: 0 30%;
+  text-align: center;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.content-main ul.content-main-item {
+  justify-content: center;
+  padding: 0;
+}
+
+.content-body {
+  display: grid;
+  grid-template-columns: repeat(autofit, minmax(240px, 1fr));
+  text-align: center;
+  align-items: center;
+  /* justify-content: center; */
+
+}
+
+.content-body h3 {
+  font-size: 2rem;
+}
+
+/* EVENT PAGE STYLE */
+
+
+
+/* EVENTS STYLE */
+
+ul.events {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: 1rem;
+  padding: 0;
+}
+
+
+li.event {
+  background-color: rgb(244, 241, 241);
+  border: 1px solid black;
+  border-radius: .5rem;
+  box-sizing: content-box;
+  max-width: 500px;
+  margin-left: 0px;
+  text-align: center;
+}
+
+li.event p {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+figure {
+  max-width: 500px;
+  overflow: hidden;
+  border-top-left-radius: .5rem;
+  border-top-right-radius: .5rem;
+  position: relative;
+  margin: 0 0;
+}
+figure > figcaption {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0,0,0,.7);
+  width: 100%;
+  color: white;
+}
+
+figure > figcaption > h3 {
+  color: white;
+  font-size: 1.25rem;
+}
+
+ul > li > p {
+  font-size: 1rem;
+  line-height: 1.5;
+  padding: 1rem .75rem;
+  color: #666666;
+}
+
+.eventThumbnail {
+  width: 100%;
 }
 
 /* FORM STLYE */
@@ -169,11 +273,8 @@ form {
   margin: 20px 0;
 }
 
-.profileImage {
-  border-radius: 50%;
-  height: 100px;
-  width: 100px;
-}
+
+
 
 .uploadedPic {
   display: none;
@@ -184,41 +285,18 @@ form {
  display: block;
 }
 /* MAKE HOSTS PIC SPECIAL .hostPic */
-.profileImage:hover {
-  opacity: 0.5;
-  cursor: pointer;
-}
+
 
 .hostPic {
   border-color: aqua;
   border-width: 50px;
 }
 
-.events {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-
-.event {
-  background-color: #f4f4f4;
-  margin: 10px 0;
-  padding: 20px 0 10px;
-  position: relative;
-}
-
-.event .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  cursor: pointer;
-  border: none;
-  background: none;
-}
 
 
 .btn {
   padding: 10px 20px;
+  /* margin-bottom: 0.2; */
   border: 1px solid #000;
   border-radius: 5px;
   background: #000;
@@ -227,7 +305,7 @@ form {
   font-weight: 700;
   cursor: pointer;
   text-align: center;
-  appearance: button;
+  /* appearance: button; */
   display: flex;
   align-items: center;
   justify-content: center;

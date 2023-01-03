@@ -20,7 +20,7 @@ exports.createEvent = asyncHandler(async(req, res) => {
     const imageResponse = await cloudinary.uploader.upload(image, {
         folder: "userImage",
         transformation: [
-            {height: 300, width:300, crop: "scale"}
+            {height: 500, width: 500, crop: "scale"}
         ]
     })
 
