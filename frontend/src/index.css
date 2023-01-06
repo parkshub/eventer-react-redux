@@ -4,7 +4,7 @@
 
 html {
   font-size: 62.5%;
-  display: grid;
+  /* display: grid; */
 }
 
 body {
@@ -131,6 +131,11 @@ div.logo {
   padding: 0;
 }
 
+.content-main-item {
+  margin: 0% 0%;
+  /* al */
+}
+
 .content-body {
   /* display: grid; */
   /* grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); */
@@ -169,8 +174,10 @@ section.event p {
 /* EVENTS STYLE */
 
 ul.events {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  display: flex;
+  /* grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); */
+  flex-wrap: wrap;
+  justify-content: center;
   grid-gap: 1rem;
   padding: 0;
 }
@@ -184,6 +191,7 @@ li.event {
   max-width: 500px;
   margin-left: 0px;
   text-align: center;
+  flex:max(400px, 100%/2 + 0.1%); /* and this */
 }
 
 li.event p {
@@ -191,6 +199,7 @@ li.event p {
   font-weight: bold;
   margin: 0;
   padding: 0.5rem;
+  overflow-wrap: anywhere;
 }
 
 figure {
