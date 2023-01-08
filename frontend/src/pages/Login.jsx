@@ -14,7 +14,8 @@ function Login() {
 
     const { email, password } = formData
 
-    const { user, isPending, isFulfilled, isRejected, message } = useSelector((state) => state.auth)
+    // const { user, isPending, isFulfilled, isRejected, message } = useSelector((state) => state.auth)
+    const { isPending, isFulfilled, isRejected, message } = useSelector((state) => state.auth)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()

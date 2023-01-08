@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, useLocation } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { reset, getEvent, attendEvent, deleteEvent, unattendEvent } from "../features/events/eventSlice"
+import { reset, getEvent, attendEvent, deleteEvent, unattendEvent, getVisitingProfile } from "../features/events/eventSlice"
+
 import { attendEventUser, unattendEventUser } from "../features/auth/authSlice"
 import { createImageFromInitials } from "../components/Utils"
-import Loading from "../components/Loading"
 
-import { getVisitingProfile } from "../features/events/eventSlice"
 import { formatDate } from "../components/Utils"
 
 
@@ -16,7 +15,7 @@ function Event() {
   const navigate = useNavigate()
 
   
-  const { event, isPending, isRejected, message } = useSelector((state) => state.events)
+  const { event, isRejected, message } = useSelector((state) => state.events)
   const { user } = useSelector((state) => state.auth)
   
   const [eventState, setEventState] = useState(event || JSON.parse(localStorage.getItem("event")))
@@ -25,7 +24,12 @@ function Event() {
   let imgSrc = ""
 
   const { formattedDate, formattedTime } = formatDate(eventState.dateTime)
-  console.log(formattedDate, formattedTime)
+  console.log(eventState.attending)
+
+  const overflow = eventState.attending > 3 ? true : false
+  const overflowVal = `+ ${String(eventState.attending - 3)}`
+
+  console.log(eventState)
 
   const onClickAttend = () => {
 
@@ -68,9 +72,21 @@ function Event() {
   }
 
   const onClickProfile = (e) => {
-    console.log(e.target.id)
+    if (e.target.id === user.id) {
+      return
+    }
+    else if (e.target.id === "overflowImage") {
+      const docs = document.querySelectorAll('.overflown')
+      docs.forEach(x => x.classList.toggle('hide'))
+    } else {
     dispatch(getVisitingProfile(e.target.id))
     navigate("/visitorsProfile")
+    }
+  }
+
+  const onClickShowLess = () => {
+    const docs = document.querySelectorAll('.overflown')
+    docs.forEach(x => x.classList.toggle('hide'))
   }
 
   
@@ -84,8 +100,8 @@ function Event() {
     }
 
     return () => {
+      // localStorage.removeItem('event')
       dispatch(reset())
-      // localStorage.removeItem("event")
     }
   }, [message ,isRejected ,dispatch])
 
@@ -104,8 +120,8 @@ function Event() {
       <section className="content-body">
       
         <section className="event">
-          <section className="img">
-            <img src={eventState.imageUrl} height={500} width={500} alt="" />
+          <section className="image-container">
+            <img src={eventState.imageUrl} alt="" />
           </section>
           <section className="event-text-container">
             <p><b>Description: </b>{eventState.description}</p>
@@ -114,21 +130,35 @@ function Event() {
             <p><b>Attendees</b></p>
           </section>
 
-          <div>
+          <div className="profile-image-container">
+            <div className="image-item">
             {eventState.attendee.map((x, i) => 
               Object.values(x)[0].image.startsWith("#") ?
-                <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i===0 ? "profileImage hostPic hover" : "profileImage hover"} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={onClickProfile}/> :
-                <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i===0 ? "profileImage hostPic hover" : "profileImage hover"} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
+
+                <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i===0 ? "profileImage hostPic hover" : i > 2 ? "profileImage hover hide overflown" : "profileImage hover"} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={onClickProfile}/>
+                 :
+
+                <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i===0 ? "profileImage hostPic hover" : i > 2 ? "profileImage hover hide overflown" : "profileImage hover"} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
             )
             }
+            {
+            overflow ? <img id="overflowImage" className="profileImage overflowImage hover overflown" src={ imgSrc.length <= 0 ? createImageFromInitials(300, overflowVal, "#00ffff") : imgSrc } alt="" onClick={onClickProfile}/>: ""
+            }
+            <div className="btn-container">
+              <button className="btn overflown hide" onClick={onClickShowLess}>show less</button>
+            </div>
+            </div>
+
+
+
           </div>
 
           {
             user.id === eventState.user ?// if user is the event creator
-              <>
+              <div className="btn-container">
                 <button className="btn" onClick={onClickEdit}>Edit Event</button>
                 <button className="btn" onClick={onClickDelete}>Delete Event</button>
-              </> :
+              </div> :
               attendeeArray.includes(user.id) ?
                 <button className="btn" onClick={onClickUnattend}>Unattend</button> :
                 eventState.maxAttendee === eventState.attending ?

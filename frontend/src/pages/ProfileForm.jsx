@@ -1,18 +1,13 @@
 import React from "react"
-import { useSelector } from "react-redux"
-
 import { useState } from "react"
-import { useEffect } from "react"
-
-import { toast } from "react-toastify"
-import { createImageFromInitials } from "../components/Utils"
-import { SketchPicker } from "react-color";
-
-import { useDispatch } from "react-redux"
-import { changeProfile } from "../features/auth/authSlice"
 import { useNavigate } from "react-router-dom"
-
+import { useSelector, useDispatch } from "react-redux"
+import { SketchPicker } from "react-color";
+import { createImageFromInitials } from "../components/Utils"
 import Loading from "../components/Loading"
+import { changeProfile } from "../features/auth/authSlice"
+import { toast } from "react-toastify"
+
 
 function ProfileForm() {
 
@@ -27,9 +22,9 @@ function ProfileForm() {
     const imageType = image.startsWith('#') ? 'hex' : 'image'
     
     
-    const [selectedFile, setSelectedFile] = useState(imageType=='image' ? image : '')
-    const [sketchPickerColor, setSketchPickerColor] = useState(imageType=='hex' ? image : "#4F57B0");
-    const [choice, setChoice] = useState(imageType == 'image' ? 'upload' : 'default');
+    const [selectedFile, setSelectedFile] = useState(imageType ==='image' ? image : '')
+    const [sketchPickerColor, setSketchPickerColor] = useState(imageType === 'hex' ? image : "#4F57B0");
+    const [choice, setChoice] = useState(imageType === 'image' ? 'upload' : 'default');
     const [bioLength, setBioLength] = useState("150");
 
     let imgSrc = ""
@@ -39,8 +34,8 @@ function ProfileForm() {
 
     const onChange = (e) => {
 
-        if (e.target.id == "bio") {
-            setBioLength(150-e.target.value.length)
+        if (e.target.id === "bio") {
+            setBioLength(150 - e.target.value.length)
         }
 
         setFormData((prevState) => ({
@@ -117,7 +112,6 @@ function ProfileForm() {
 
                     <div className="formGroup">
                         <label htmlFor="bio">Bio character limit: {bioLength}</label>
-                        {/* <input id="bio" name="bio" type="text" value={bio} onChange={onChange}/> */}
                         <textarea name="bio" id="bio" rows={4} value={bio} onChange={ onChange } maxLength={150} />
                     </div>
 
@@ -135,14 +129,14 @@ function ProfileForm() {
                     </div>
 
                     
-                    <div id="colorPicker" className={choice==="default" ? "formGroup" : "hide"}>
-                        <img id="preview" className="profileImagePreview" src={ imgSrc.length <= 0 ? createImageFromInitials(300, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile-pic" />
+                    <div id="colorPicker" className={choice==="default" ? "formGroup image-container" : "hide"}>
+                        <img id="preview" className="profileImagePreview" src={ imgSrc.length <= 0 ? createImageFromInitials(300, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile" />
                         <h6>Customize Color</h6>
                         <SketchPicker disableAlpha={true} onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
                     </div>
 
-                    <div className="formGroup">
-                        <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/>
+                    <div className="formGroup image-container">
+                        <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300} alt="profile"/>
                     </div>
 
                     <div className="formGroup">

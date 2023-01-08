@@ -1,8 +1,8 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useNavigate, Link } from "react-router-dom"
-import { getEvent } from "../features/events/eventSlice"
+import { useNavigate } from "react-router-dom"
 import { formatDate } from "../components/Utils"
+import { getEvent } from "../features/events/eventSlice"
 
 
 function EventItem({event}) {

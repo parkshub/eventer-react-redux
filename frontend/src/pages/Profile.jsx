@@ -1,21 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate, Link } from "react-router-dom"
-
-
-// import { getUserEvents, reset } from "../features/events/eventSlice"
+import { useNavigate } from "react-router-dom"
 import { reset, getProfileEvents } from "../features/events/eventSlice"
-import {createEvent} from "../features/events/eventSlice"
-
-// import { getAttendingEvents } from "../features/events/eventSlice"
-
 import Loading from "../components/Loading"
 import EventItem from "../components/EventItem"
-
-
-import EventForm from "./EventForm"
 import { toast } from "react-toastify"
-
 import { createImageFromInitials } from "../components/Utils"
 
 

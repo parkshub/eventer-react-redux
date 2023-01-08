@@ -1,15 +1,9 @@
 import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, Link } from "react-router-dom"
-
 import { logout } from "../features/auth/authSlice"
-
 import { getAllEvents } from "../features/events/eventSlice"
-
-import { FaSignInAlt, FaUserAstronaut, FaSignOutAlt, FaUserAlt, FaCashRegister, FaLayerGroup, FaUserCircle } from "react-icons/fa"
-
-import Loading from "../components/Loading"
-
+import { FaSignOutAlt, FaUserAlt, FaCashRegister, FaLayerGroup, FaUserCircle } from "react-icons/fa"
 
 function Header() {
 

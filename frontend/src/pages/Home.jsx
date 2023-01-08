@@ -1,19 +1,16 @@
-import React, {useState, useEffect} from "react"
+import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import { reset, resetHomeEvents, getHomeEvents } from "../features/events/eventSlice"
+import { resetHomeEvents, getHomeEvents } from "../features/events/eventSlice"
 
 import Loading from "../components/Loading"
 import EventItem from "../components/EventItem"
 
-import { getEvent } from "../features/events/eventSlice"
 
 function Home () {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
-    const { homeEvents, events, isPending, isRejected, message } = useSelector((state) => state.events)
+    const { homeEvents, isPending, isRejected, message } = useSelector((state) => state.events)
     const { user } = useSelector((state) => state.auth)
     
     useEffect(() => {

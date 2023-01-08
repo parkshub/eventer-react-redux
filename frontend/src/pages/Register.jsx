@@ -4,12 +4,12 @@
 import React, {useState, useEffect} from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { createImageFromInitials } from "../components/Utils"
+import Loading from "../components/Loading"
 import { register, reset } from "../features/auth/authSlice"
 import { toast } from "react-toastify"
-import { createImageFromInitials } from "../components/Utils"
 import { SketchPicker } from "react-color";
 
-import Loading from "../components/Loading"
 
 
 function Register() {
@@ -54,7 +54,7 @@ function Register() {
 
     const onChange = (e) => {
 
-        if (e.target.id == "bio") {
+        if (e.target.id === "bio") {
             setBioLength(150-e.target.value.length)
         }
 
@@ -181,11 +181,11 @@ function Register() {
 
 
                     <div className="formGroup">
-                        <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/>
+                        <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300} alt="preview"/>
                     </div>
 
                     <div className={choice==="default" ? "formGroup defaultImageContainer" : "hide"}>
-                        <img id="preview" className="defaultImagePreview" src={ imgSrc.length <= 0 ? createImageFromInitials(200, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="profile-pic" />
+                        <img id="preview" className="defaultImagePreview" src={ imgSrc.length <= 0 ? createImageFromInitials(200, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="preview" />
                         <h6>Customize Color</h6>
                         
                         <SketchPicker id="colorPicker" disableAlpha={true} onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 

@@ -5,7 +5,6 @@ import { createEvent, updateEvent } from "../features/events/eventSlice"
 import Loading from "../components/Loading"
 import { toast } from "react-toastify"
 
-import { formatDate } from "../components/Utils"
 import { cities } from "../components/Utils"
 
 function EventForm() {
@@ -18,7 +17,6 @@ function EventForm() {
   const eventObj = {
     title:"",
     caption:"",
-    description: "test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test",
     description: "",
     dateTime: date,
     street: "",
@@ -36,7 +34,7 @@ function EventForm() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
-  const { title, caption, description, dateTime, street, city, maxAttendee } = formData
+  const { title, caption, description, dateTime, street, maxAttendee } = formData
 
   const buttonDisable = title && caption && dateTime && selectedFile ? false : true
 
@@ -146,8 +144,8 @@ function EventForm() {
               <input id="eventImage" type="file" name="eventImage" onChange={ onSelectFile } className="form-input"/>
             </div>
             
-            <div className="formGroup">
-              <img src={ selectedFile } className={ selectedFile ? "eventImagePreview" : "hide" } width={ 300 }  alt="preview image" />
+            <div className="formGroup image-container">
+              <img src={ selectedFile } className={ selectedFile ? "eventImagePreview" : "hide" } width={ 300 }  alt="preview" />
             </div>
 
             <div className="formGroup">

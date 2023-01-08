@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-
-
-import { reset, getProfileEvents } from "../features/events/eventSlice"
-
-
 import Loading from "../components/Loading"
 import EventItem from "../components/EventItem"
-
+import { reset, getProfileEvents } from "../features/events/eventSlice"
+import { getUserInfo } from "../features/auth/authSlice"
+import { createImageFromInitials } from "../components/Utils"
 import { toast } from "react-toastify"
 
-import { createImageFromInitials } from "../components/Utils"
 
-import { getUserInfo } from "../features/auth/authSlice"
 
 
 function VisitorsProfile() {
@@ -32,9 +26,7 @@ function VisitorsProfile() {
   
   let imgSrc = ""
   const dispatch = useDispatch()
-  const navigate = useNavigate()
-  
-  
+    
   useEffect(() => {
     
     dispatch(getProfileEvents(visitingProfile))

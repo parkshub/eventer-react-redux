@@ -122,11 +122,12 @@ const getProfileEvents = async(id, token) => {
 }
 
 const getAllEvents = async(token) => {
-    const config = {
-        headers: {
-            authorization: `Bearer ${token}`
-        }
-    }
+    // const config = {
+    //     headers: {
+    //         authorization: `Bearer ${token}`
+    //     }
+    // }
+    
     const response = await axios.get(API_URL + "getAllEvents")
 
     if (response.data) {
