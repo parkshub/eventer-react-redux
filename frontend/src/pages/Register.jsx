@@ -1,6 +1,3 @@
-//https://betterprogramming.pub/create-a-letter-picture-like-google-with-react-ae12a7a4390e
-// https://github.com/danilo95/letter-picture-like-Google-with-React
-
 import React, {useState, useEffect} from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
@@ -9,8 +6,6 @@ import Loading from "../components/Loading"
 import { register, reset } from "../features/auth/authSlice"
 import { toast } from "react-toastify"
 import { SketchPicker } from "react-color";
-
-
 
 function Register() {
 
@@ -91,10 +86,6 @@ function Register() {
     const onChoiceChange = (e) => {
         console.log(e.target.value)
         setChoice(e.target.value)
-        // if (e.target.value == "default") {
-            // setSelectedFile("")
-            // document.querySelector("#profilePic").value = ""
-        // }
     }
 
     const onSubmit = (e) => {
@@ -124,7 +115,6 @@ function Register() {
 
     return (
         <>
-
             <section className='heading'>
                 <h1>
                  Register
@@ -195,9 +185,6 @@ function Register() {
                         <button type="submit" className="btn">Register</button>
                     </div>
                 </form>
-
-                {/* <img src={selectedFile} className={selectedFile ? "profileImagePreview" : "hide "} width={300} height={300}/> */}
-
             </section>
         </>
     )

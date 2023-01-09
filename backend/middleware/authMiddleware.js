@@ -9,7 +9,6 @@ const auth = asyncHandler(async(req, res, next)=> {
             let token = req.headers.authorization.split(" ")[1]
             const decoded = jwt.verify(token, process.env.JWT_SECRET)
             req.user = await userModel.findById(decoded.id).select("-password -email")
-            // later, make the request to only send user name and id, so exclude password and email
             next()
         } catch (err) {
             console.log(err)

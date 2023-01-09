@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken") 
 const UserModel = require("../models/User")
-const asyncHandler = require("express-async-handler")
 const bcrypt = require("bcryptjs")
 const cloudinary = require("../config/cloudinary")
 const EventModel = require("../models/Events")
@@ -11,10 +10,8 @@ function generateToken(id) {
     })
 }
 
-exports.registerUser = asyncHandler(async (req, res) => {
+exports.registerUser = async (req, res) => {
     const { firstName, lastName, email, password, image, bio } = req.body
-
-    console.log("this is what controller received", req.body)
 
     if (!firstName || !lastName || !email || !password || !image || !bio) {
         res.status(400).send("Please enter all fields")
@@ -30,8 +27,7 @@ exports.registerUser = asyncHandler(async (req, res) => {
 
     const regex = /#[0-9A-Fa-f]{6}/g;
 
-    if (!image.match(regex)) { //if user actually uploaded an image
-        console.log("user uploaded an image")
+    if (!image.match(regex)) {
         const imageResponse = await cloudinary.uploader.upload(image, {
             folder: "profilePic",
             transformation: [
@@ -39,8 +35,6 @@ exports.registerUser = asyncHandler(async (req, res) => {
                 {radius: "max"}
             ]
         })
-
-
         
         const user = await UserModel.create({
             firstName: firstName,
@@ -82,33 +76,19 @@ exports.registerUser = asyncHandler(async (req, res) => {
             image: user.image,
             bio: user.bio
         })
-    }
-
-    // if (user) {
-    //     // this part is to see that the token hasn"t been tampered with
-    //     res.status(201).json({
-    //         id: user.id,
-    //         firstName: user.firstName,
-    //         lastName: user.lastName,
-    //         token: generateToken(user.id),
-    //         attending: []
-    //     })
-    else {
+    } else {
         res.status(400).send("Invalid user data")
     }
-})
+}
 
-exports.loginUser = asyncHandler(async (req, res) => {
-    // get email and password
+exports.loginUser = async (req, res) => {
     let {email, password} = req.body
 
-    // find user with that email
     const user = await UserModel.findOne({email: email})
 
     if(!user) {
         res.status(400).send("Invalid credentials")
     }
-    
     else if (await bcrypt.compare(password, user.password)) {
         res.status(201).json({
             id: user.id,
@@ -123,50 +103,37 @@ exports.loginUser = asyncHandler(async (req, res) => {
     } else {
         res.status(400).send("Invalid credentials")
     }
-    // compare model"s user"s password with the one provided using bcrypy
-    // and if they match, respond with jwt
-})
+}
 
-exports.getUser = asyncHandler(async(req, res) => {
+exports.getUser = async(req, res) => {
     res.json(req.user)
     console.log(req.user)
-})
+}
 
 exports.getUserInfo = async(req, res) => {
     const user = await UserModel.findById(req.params.id).select("-password -email -id")
     res.status(201).json(user)
 }
 
-exports.changeProfile = async(req, res) => {
-
-    console.log('changeProfile controller received', req.body)
-    
+exports.changeProfile = async(req, res) => {    
     const regex = /#[0-9A-Fa-f]{6}/g;
 
     const { id, firstName, lastName, image, bio } = req.body
 
-    console.log(id, firstName, lastName, image, bio)
-
     const previousUser = await UserModel.findById(id)
 
     const imageResponse = 
-        image.startsWith('data:image') 
-            ?
-                await cloudinary.uploader.upload(image, {
-                    folder: "profilePic",
-                    transformation: [
-                        {height: 300, width:300, crop: "scale"},
-                        {radius: "max"}
-                    ]
-                })
-
-            :
-                image
-    
+        image.startsWith('data:image') ?
+            await cloudinary.uploader.upload(image, {
+                folder: "profilePic",
+                transformation: [
+                    {height: 300, width:300, crop: "scale"},
+                    {radius: "max"}
+                ]
+            }) :
+            image
 
     if (image.match(regex)) {
-        console.log('user uploaded hex')
-
         if (previousUser.cloudinaryId !== '') {
             await cloudinary.uploader.destroy(previousUser.cloudinaryId)
         }
@@ -179,11 +146,7 @@ exports.changeProfile = async(req, res) => {
             bio: bio
         }
 
-        const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'}) //*****MAYBE CHANGE THIS TO NEW: TRUE */
-        // FIND ALL EVENTS AND UPDATE
-        // const events = await EventModel.findById(user.attending)
-
-        console.log('this is the new user', user)
+        const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'})
 
         const events = await EventModel.find(
             {
@@ -191,18 +154,13 @@ exports.changeProfile = async(req, res) => {
             }
         )
 
-        // const user = await UserModel.findById(req.params.id)
-
         for (i of events) {
-            // console.log(i)
-            // i.attendee.map(x => console.log(Object.keys(x)))
             const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== req.params.id)
             const newAttendee = {[req.params.id]: {"name": user.name, "image": user.image}}
             const attendees = oldAttendee.concat(newAttendee)
             i.attendee = attendees
             await i.save()
         }
-
 
         res.status(201).json({
             id: user.id,
@@ -215,8 +173,6 @@ exports.changeProfile = async(req, res) => {
         })
 
     } else if (!image.match(regex)){
-        console.log('user uploaded an image')
-        
         if (previousUser.cloudinaryId !== '') {
             await cloudinary.uploader.destroy(previousUser.cloudinaryId)
         }
@@ -231,8 +187,6 @@ exports.changeProfile = async(req, res) => {
 
         const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'})
 
-        console.log('this is the new user', user)
-
         const events = await EventModel.find(
             {
                 "_id" : {$in : user.attending}
@@ -240,8 +194,6 @@ exports.changeProfile = async(req, res) => {
         )
 
         for (i of events) {
-            // console.log(i)
-            // i.attendee.map(x => console.log(Object.keys(x)))
             const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== user.id)
             const newAttendee = {[user.id]: {"name": user.firstName + " " + user.lastName, "image": user.image}}
             const attendees = oldAttendee.concat(newAttendee)
@@ -270,16 +222,15 @@ exports.test = async(req, res) => {
             "_id" : {$in : user.attending}
         }
     )
+
     for (i of events) {
-        // console.log(i)
         i.attendee.map(x => console.log(Object.keys(x)))
         const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== req.params.id)
         const newAttendee = {[req.params.id]: {"name": "andrew aaaa", "image": user.image}}
         const attendees = oldAttendee.concat(newAttendee)
         i.attendee = attendees
         await i.save()
-        // test.name = "andrew aa"
-        // await test.save()
     }
+
     res.json(events)
 }

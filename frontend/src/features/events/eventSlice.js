@@ -7,9 +7,7 @@ const initialState = {
     userEvents: [],
     visitingProfile:"",
     attendingEvents: "",
-    //
     profileEvents: "",
-    //
     events: "",
     isPending: false,
     isRejected: false, 
@@ -35,7 +33,6 @@ export const getEvent = createAsyncThunk(
     "event/getEvent",
     async(id, thunkAPI) => {
         try {
-            console.log("getEventPage slice")
             return await eventService.getEvent(id)
         } catch (error) {
             const message = error.response.data
@@ -49,7 +46,6 @@ export const createEvent = createAsyncThunk(
     "event/createEvent",
     async({formData, selectedFile}, thunkAPI) => {
         try {
-            console.log("createEvent slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.createEvent(token, {formData, selectedFile})
         } catch (error) {
@@ -63,7 +59,6 @@ export const attendEvent = createAsyncThunk(
     "event/attendEvent",
     async(id, thunkAPI) => {
         try {
-            console.log("attendEvent slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.attendEvent(token, id)
         } catch (error) {
@@ -80,7 +75,6 @@ export const deleteEvent = createAsyncThunk(
     "event/delete",
     async(id, thunkAPI) => {
         try {
-            console.log(`deleteEvent slice`)
             const token = thunkAPI.getState().auth.user.token
             return await eventService.deleteEvent(token, id)
         } catch (error) {
@@ -93,7 +87,6 @@ export const deleteEvent = createAsyncThunk(
 export const updateEvent = createAsyncThunk(
     "event/updateEvent",
     async({formData, selectedFile}, thunkAPI) => {
-        console.log("updateEvent Slice")
         try {
             const token = thunkAPI.getState().auth.user.token
             return await eventService.updateEvent(token, {formData, selectedFile})
@@ -107,7 +100,6 @@ export const unattendEvent = createAsyncThunk(
     "event/unattend",
     async(formData, thunkAPI) => {
         try {
-            console.log("unattendEvent slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.unattendEvent(token, formData)
 
@@ -117,40 +109,11 @@ export const unattendEvent = createAsyncThunk(
         }
     }
 )
-// export const getUserEvents = createAsyncThunk(
-//     "event/getUserEvents",
-//     async(_, thunkAPI) => {
-//         try {
-//             console.log("getUserEvents slice")
-//             const token = thunkAPI.getState().auth.user.token
-//             return await eventService.getUserEvents(token)
-//         } catch (error) {
-//             const message = error.response.data
-//             return thunkAPI.rejectWithValue(message)
-//         }
-//     }
-// )
-
-// export const getAttendingEvents = createAsyncThunk(
-//     "event/attendingEvents",
-//     async(_, thunkAPI) => {
-//         try {
-//             console.log("getAttendingEvents slice")
-//             const token = thunkAPI.getState().auth.user.token
-//             // return await eventService.getAttendingEvents(token, attendingEvents)
-//             return await eventService.getAttendingEvents(token)
-//         } catch (error) {
-//             const message = error.response.data
-//             return thunkAPI.rejectWithValue(message)
-//         }
-//     }
-// )
 
 export const getProfileEvents = createAsyncThunk(
     "event/getProfileEvents",
     async(id, thunkAPI) => {
         try {
-            console.log("getProfileEvents slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.getProfileEvents(id, token)
         } catch (error) {
@@ -164,7 +127,6 @@ export const getAllEvents = createAsyncThunk(
     "event/getAllEvents",
     async(_, thunkAPI) => {
         try {
-            console.log("getAllEvents Slice")
             const token = thunkAPI.getState().auth.user.token
             return await eventService.getAllEvents(token)
         } catch (error) {
@@ -326,7 +288,6 @@ const eventSlice = createSlice({
             })
             .addCase(getVisitingProfile.fulfilled, (state) => {
                 state.isFulfilled = true
-                // state.visitingProfile = action.payload
             })
         }
     })

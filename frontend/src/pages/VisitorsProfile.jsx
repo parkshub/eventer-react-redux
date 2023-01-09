@@ -12,19 +12,15 @@ import { toast } from "react-toastify"
 
 function VisitorsProfile() {
   
-  // const { events, isPending, isRejected, message } = useSelector((state) => state.events)
   const { profileEvents, isPending, isRejected, message } = useSelector((state) => state.events)
+  const { user, visitingUser } = useSelector((state) => state.auth)
 
-  const {user, visitingUser} = useSelector((state) => state.auth)
-
-  // const { attendingEvents, userEvents } = events
   const { attendingEvents, userEvents } = profileEvents
 
   const visitingProfile = JSON.parse(localStorage.getItem("visitingProfile"))
-
-  // console.log("these are the events", events)
   
   let imgSrc = ""
+
   const dispatch = useDispatch()
     
   useEffect(() => {
@@ -55,38 +51,39 @@ function VisitorsProfile() {
           ?
           <img id="preview" className="profileImage defaultPic" src={ imgSrc.length <= 0 ? createImageFromInitials(300, visitingUser.firstName + " " + visitingUser.lastName, visitingUser.image) : imgSrc } alt="profile-pic" />
           :
-          <img src={visitingUser.image} alt="" className={"profileImage"}/>
+          <img src={ visitingUser.image } alt="" className={ "profileImage" }/>
         }
       </section>
 
       <section className="content-main">
-        <p>"{visitingUser.bio}"</p>
+        <p>"{ visitingUser.bio }"</p>
       </section>
       
       <section className="content-body">
-        { userEvents? <h3>Events {visitingUser.firstName} is Hosting</h3> : <div>no events</div>}
-        {/* <h3>Events {visitingUser.firstName} is Hosting</h3> */}
+        { userEvents ? <h3>Events { visitingUser.firstName } is Hosting</h3> : <div>no events</div> }
         <section className="content">
-            { userEvents ? 
+          { 
+            userEvents ? 
               <ul className="events">
                 {userEvents.map(userEvent => 
-                  <EventItem key={userEvent._id} event={userEvent}/>
-                )} 
+                  <EventItem key={userEvent._id} event={ userEvent }/>
+                )}
               </ul> : 
               <div>No events</div>
-            }
+          }
         </section>
         
-        <h3>Events {visitingUser.firstName} is Attending</h3>
+        <h3>Events { visitingUser.firstName } is Attending</h3>
         
         <section className="content">
-          { attendingEvents ?
-            <ul className="events"> 
-              {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
-                <EventItem key={attendingEvent._id} event={attendingEvent}/>
-              )}
-            </ul> :
-            <div>No events</div>
+          { 
+            attendingEvents ?
+              <ul className="events"> 
+                {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
+                  <EventItem key={attendingEvent._id} event={attendingEvent}/>
+                )}
+              </ul> :
+              <div>No events</div>
           }
         </section>
       </section>

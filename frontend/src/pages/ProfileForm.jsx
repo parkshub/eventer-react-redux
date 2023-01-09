@@ -21,7 +21,6 @@ function ProfileForm() {
     
     const imageType = image.startsWith('#') ? 'hex' : 'image'
     
-    
     const [selectedFile, setSelectedFile] = useState(imageType ==='image' ? image : '')
     const [sketchPickerColor, setSketchPickerColor] = useState(imageType === 'hex' ? image : "#4F57B0");
     const [choice, setChoice] = useState(imageType === 'image' ? 'upload' : 'default');

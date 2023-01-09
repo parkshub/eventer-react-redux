@@ -8,6 +8,7 @@ import { getEvent } from "../features/events/eventSlice"
 function EventItem({event}) {
 
     const { user } = useSelector((state) => state.auth)
+    
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -35,7 +36,6 @@ function EventItem({event}) {
                         </figcaption>
                 }
             </figure>
-            {/* <h3 className="eventName">{event.title}</h3> */}
             <p className="eventCaption">"{event.caption}"</p>
             <p className="attending">Date & Time: {formattedDate + " " + formattedTime}</p>
             <p className="location">Location: {event.street}, {event.city}, California </p>

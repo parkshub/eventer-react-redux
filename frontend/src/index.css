@@ -1,10 +1,9 @@
-/* All Style */
+/* GENERAL STYLE */
 
 * { box-sizing: border-box; }
 
 html {
   font-size: 62.5%;
-  /* display: grid; */
 }
 
 body {
@@ -30,7 +29,7 @@ a {
   display: none !important;
 }
 
-/* Header Style */
+/* HEADER STYLE */
 
 .btn-header {
   border: 1px black solid;
@@ -47,16 +46,6 @@ a {
 .btn-header:hover {
   transform: scale(0.98);
 }
-
-/* .header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  justify-content: center;
-  align-items: center;
-  border-bottom: 1px solid #e6e6e6;
-  padding-bottom: 1%;
-  margin-bottom: 1%;
-} */
 
 .header {
   display: grid;
@@ -117,7 +106,6 @@ div.logo {
   height: 200px;
   width: 200px;
   margin-top: 2%;
-  /* margin-bottom: 0%; */
 }
 
 /* PROFILE STYLE */
@@ -222,8 +210,6 @@ section.event p {
   }
 }
 
-
-
 /* EVENTS STYLE */
 
 section.content {
@@ -237,7 +223,6 @@ ul.events {
   justify-content: center;
   grid-gap: 1rem;
   padding: 0;
-  /* newly added */
   max-width: 1200px; 
 }
 
@@ -249,7 +234,7 @@ li.event {
   max-width: 500px;
   margin-left: 0px;
   text-align: center;
-  flex:max(400px, 100%/1 + 0.1%); /* and this */
+  flex:max(400px, 100%/1 + 0.1%);
 }
 
 li.event p {
@@ -268,6 +253,7 @@ figure {
   position: relative;
   margin: 0 0;
 }
+
 figure > figcaption {
   position: absolute;
   bottom: 0;
@@ -275,11 +261,6 @@ figure > figcaption {
   width: 100%;
   color: white;
 }
-
-/* figure > figcaption > h3 {
-  color: white;
-  font-size: 1.25rem;
-} */
 
 ul > li > p {
   font-size: 1rem;
@@ -336,10 +317,7 @@ form {
   text-align: left;
 }
 
-
-
-/* SOMETHING ELSE */
-
+/* OTHERS */
 
 .defaultImagePreview {
   width: 300px;
@@ -352,7 +330,6 @@ form {
   margin: 20px 0;
 }
 
-
 .profileImagePreview {
   width: 300px;
   height: 300px !important;
@@ -360,14 +337,12 @@ form {
   background: #512DA8;
   font-size: 1.5rem;
   color: #fff;
-  /* text-align: center; */
   line-height: 27px;
   margin: 20px 0;
 }
 
 .pastEvent {
   background-color: red;
-  /* padding: 1%; */
   color: white;
 }
 
@@ -383,23 +358,12 @@ figcaption.pastEvent {
   display: none;
 }
 
-
 .uploadedPic[src] {
  display: block;
 }
-/* MAKE HOSTS PIC SPECIAL .hostPic */
-
-
-.hostPic {
-  border-color: aqua;
-  border-width: 50px;
-}
-
-
 
 .btn {
   padding: 10px 20px;
-  /* margin-bottom: 0.2; */
   border: 1px solid #000;
   border-radius: 5px;
   background: #000;
@@ -408,12 +372,10 @@ figcaption.pastEvent {
   font-weight: 700;
   cursor: pointer;
   text-align: center;
-  /* appearance: button; */
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 
 .btn-block {
   width: 100%;
@@ -448,7 +410,7 @@ ul li {
   }
 }
 
-
+/* https://github.com/bradtraversy/mern-tutorial */
 .loadingSpinnerContainer {
   position: fixed;
   top: 0;

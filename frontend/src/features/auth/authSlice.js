@@ -1,9 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import authService from "./authService"
 
-// we have to parse here because local storages can only have strings
 const user = JSON.parse(localStorage.getItem("user"))
-console.log("this ran")
 
 const initialState = {
     user: user ? user : null,
@@ -14,7 +12,6 @@ const initialState = {
     message: ""
 }
 
-// remember thunkAPI can be used to show nice pop up error messages, and! to get the value of global state values
 export const register = createAsyncThunk(
     "auth/register", 
     async(userData, thunkAPI) => {
@@ -42,7 +39,6 @@ export const login = createAsyncThunk(
 export const logout = createAsyncThunk(
     "auth/logout",
     async(_, thunkAPI) => {
-        console.log("logout slice")
         await authService.logout()
     }
 )
@@ -63,7 +59,6 @@ export const unattendEventUser = createAsyncThunk(
     "auth/unattendEvent",
     async(id, thunkAPI) => {
         try {
-            console.log("unattendEvent slice")
             return await authService.unattendEventUser(id)
         } catch (error) {
             const message = error.response.data

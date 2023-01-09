@@ -24,14 +24,12 @@ function Event() {
   let imgSrc = ""
 
   const { formattedDate, formattedTime } = formatDate(eventState.dateTime)
-  console.log(eventState.attending)
 
   const overflow = eventState.attending > 3 ? true : false
   const overflowVal = `+ ${String(eventState.attending - 3)}`
 
   const currentDate = new Date()
   const eventDate = new Date (eventState.dateTime)
-  console.log(eventDate < currentDate)
 
   const onClickAttend = () => {
 
@@ -93,66 +91,57 @@ function Event() {
 
   
   useEffect(() => {
-    // if (event === "") {
-      dispatch(getEvent(eventState._id))
-    // }
+    
+    dispatch(getEvent(eventState._id))
 
     if (isRejected) {
       toast.error(message)
     }
 
     return () => {
-      // localStorage.removeItem('event')
       dispatch(reset())
     }
   }, [message ,isRejected ,dispatch])
 
-
-  // if (isPending) {
-  //   return <Loading/>
-  // }
-
   return (
     <>
       <section className="heading">
-        <h1>Event Name: {eventState.title}</h1>
-        <p>Hosted by: {eventState.userName}</p>
+        <h1>Event Name: { eventState.title }</h1>
+        <p>Hosted by: { eventState.userName }</p>
       </section>
 
       <section className="content-body">
       
         <section className="event">
           <section className="image-container">
-            <img src={eventState.imageUrl} alt="" />
+            <img src={ eventState.imageUrl } alt="event" />
           </section>
           <section className="event-text-container">
-            <p><b>Description: </b>{eventState.description}</p>
-            <p><b>Date & Time: </b>{formattedDate + " " + formattedTime}</p>
-            <p><b>{eventState.attending}/{eventState.maxAttendee} Attending</b></p>
+            <p><b>Description: </b>{ eventState.description }</p>
+            <p><b>Date & Time: </b>{ formattedDate + " " + formattedTime }</p>
+            <p><b>{ eventState.attending }/{ eventState.maxAttendee } Attending</b></p>
             <p><b>Attendees</b></p>
           </section>
 
           <div className="profile-image-container">
             <div className="image-item">
-            {eventState.attendee.map((x, i) => 
-              Object.values(x)[0].image.startsWith("#") ?
+              {
+                eventState.attendee.map((x, i) => 
+                  Object.values(x)[0].image.startsWith("#") 
+                    ?
+                    <img key={ Object.keys(x)[0] } id={ Object.keys(x)[0] } className={ i===0 ? "profileImage hostPic hover" : i > 2 ? "profileImage hover hide overflown" : "profileImage hover" } src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={ onClickProfile }/>
+                    :
+                    <img key={ Object.keys(x)[0] } id={ Object.keys(x)[0] } className={ i===0 ? "profileImage hostPic hover" : i > 2 ? "profileImage hover hide overflown" : "profileImage hover" } src={ Object.values(x)[0].image } alt="" onClick={ onClickProfile }/>
+                  )
+              }
 
-                <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i===0 ? "profileImage hostPic hover" : i > 2 ? "profileImage hover hide overflown" : "profileImage hover"} src={ imgSrc.length <= 0 ? createImageFromInitials(300, Object.values(x)[0].name, Object.values(x)[0].image) : imgSrc } alt="profile-pic" onClick={onClickProfile}/>
-                 :
-
-                <img key={Object.keys(x)[0]} id={Object.keys(x)[0]} className={i===0 ? "profileImage hostPic hover" : i > 2 ? "profileImage hover hide overflown" : "profileImage hover"} src={Object.values(x)[0].image} alt="" onClick={onClickProfile}/>
-            )
-            }
-            {
-            overflow ? <img id="overflowImage" className="profileImage overflowImage hover overflown" src={ imgSrc.length <= 0 ? createImageFromInitials(300, overflowVal, "#00ffff") : imgSrc } alt="" onClick={onClickProfile}/>: ""
-            }
-            <div className="btn-container">
-              <button className="btn overflown hide" onClick={onClickShowLess}>show less</button>
+              {
+                overflow ? <img id="overflowImage" className="profileImage overflowImage hover overflown" src={ imgSrc.length <= 0 ? createImageFromInitials(300, overflowVal, "#00ffff") : imgSrc } alt="" onClick={ onClickProfile }/>: ""
+              }
+              <div className="btn-container">
+                <button className="btn overflown hide" onClick={ onClickShowLess }>show less</button>
+              </div>
             </div>
-            </div>
-
-
-
           </div>
 
           {
@@ -161,19 +150,19 @@ function Event() {
                 eventDate < currentDate && user.id === eventState.user ?
                   <>
                     <h3 className="pastEvent">This Event is Over</h3>
-                    <button className="btn" onClick={onClickDelete}>Delete Event</button>
+                    <button className="btn" onClick={ onClickDelete }>Delete Event</button>
                   </> :
-                  user.id === eventState.user ?// if user is the event creator
+                  user.id === eventState.user ?
                     <div className="btn-container">
-                      <button className="btn" onClick={onClickEdit}>Edit Event</button>
-                      <button className="btn" onClick={onClickDelete}>Delete Event</button>
+                      <button className="btn" onClick={ onClickEdit }>Edit Event</button>
+                      <button className="btn" onClick={ onClickDelete }>Delete Event</button>
                     </div> :
                     attendeeArray.includes(user.id) ?
-                      <button className="btn" onClick={onClickUnattend}>Unattend</button> :
+                      <button className="btn" onClick={ onClickUnattend }>Unattend</button> :
                       eventState.maxAttendee === eventState.attending ?
                         <h3>Event is currently full</h3> :
                         !attendeeArray.includes(user.id) ?
-                          <button className="btn" onClick={onClickAttend}>Attend</button> :
+                          <button className="btn" onClick={ onClickAttend }>Attend</button> :
                           ""
           }
         </section>

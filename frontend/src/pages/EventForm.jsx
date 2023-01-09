@@ -52,7 +52,6 @@ function EventForm() {
       ...prev,
       [e.target.id]: e.target.value
     }))
-    // console.log(formData)
   }
 
   const onSelectFile = (e) => {
@@ -76,7 +75,6 @@ function EventForm() {
   
   const onSubmit = async(e) => {
       e.preventDefault()
-      // if it's in edit mode, then it should navigate back to the event page not the profile
       if (edit) {
         await dispatch(updateEvent({ formData, selectedFile }))
       } else {
@@ -105,14 +103,12 @@ function EventForm() {
 
             <div className="formGroup">
               <label htmlFor="caption">Caption (max character: { captionLength })</label>
-              <textarea type="text" name="caption" id="caption" rows={1} value={ caption } onChange={ onChange } maxLength={ 50 }/>
+              <textarea type="text" name="caption" id="caption" rows={ 1 } value={ caption } onChange={ onChange } maxLength={ 50 }/>
             </div>
 
             <div className="formGroup">
               <label htmlFor="description">Description (min character: { descriptionLength })</label>
-              {/* ALSO MAKE SURE DESCRIPTION DOESN'T GO INTO THE NEGATIVES */}
-              <textarea type="text" name="description" id="description" rows={5} value={ description } onChange={onChange} minLength={ 150 }/>
-              {/* <input type="text" name="description" id="description" value={test} onChange={ onChange } minLength={150}/> */}
+              <textarea type="text" name="description" id="description" rows={ 5 } value={ description } onChange={ onChange } minLength={ 150 }/>
             </div>
 
             <div className="formGroup">
@@ -136,7 +132,7 @@ function EventForm() {
             
             <div className="formGroup">
               <label htmlFor="maxAttendee">Maximum Number of Attendees (max: 20)</label>
-              <input type="number" id="maxAttendee" name="maxAttendee" onChange={ onChange } max={20} value={ maxAttendee }/>
+              <input type="number" id="maxAttendee" name="maxAttendee" onChange={ onChange } max={ 20 } value={ maxAttendee }/>
             </div>
 
             <div className="formGroup">

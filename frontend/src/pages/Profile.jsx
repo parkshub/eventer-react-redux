@@ -80,27 +80,28 @@ function Profile() {
         <h3>Your Events</h3>
 
         <section className="content">
-          { userEvents ?
-          <ul className="events">
-            {userEvents.map(userEvent => 
-              <EventItem key={userEvent._id} event={userEvent}/>
-            )}
-          </ul>
-            : 
-            <div>you have no events. let's create an event!</div>
+          { 
+            userEvents ?
+              <ul className="events">
+                {userEvents.map(userEvent => 
+                  <EventItem key={userEvent._id} event={userEvent}/>
+                )}
+              </ul> : 
+              <div>you have no events. let's create an event!</div>
           }
         </section>
         
         <h3>Events You're Attending</h3>
 
         <section className="content">
-          { attendingEvents ?
-            <ul className="events"> 
-              {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
-                <EventItem key={attendingEvent._id} event={attendingEvent}/>
-              )}
-            </ul>
-            : ""
+          { 
+            attendingEvents ?
+              <ul className="events"> 
+                {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
+                  <EventItem key={attendingEvent._id} event={attendingEvent}/>
+                )}
+              </ul> : 
+              ""
           }
         </section>
       </section>

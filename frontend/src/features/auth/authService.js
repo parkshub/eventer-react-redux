@@ -23,13 +23,10 @@ const login = async(userData) => {
 }
 
 const logout = async() => {
-    console.log("logout service")
     await localStorage.clear()
-    // await localStorage.removeItem("user") IT WAS THIS BEFORE CHANGE IT BACK IF SOMETHING BREAKS
 }
 
 const attendEventUser = async(id) => {
-    console.log("attendEventUser service")
     const user = JSON.parse(localStorage.getItem("user"))
     user.attending.push(id)
     localStorage.setItem("user", JSON.stringify(user))
@@ -37,7 +34,6 @@ const attendEventUser = async(id) => {
 }
 
 const unattendEventUser = async(id) => {
-    console.log("unattendEventUser service")
     const user = JSON.parse(localStorage.getItem("user"))
     user.attending = user.attending.filter(x => x!==id)
     localStorage.setItem("user", JSON.stringify(user))
@@ -62,12 +58,8 @@ const changeProfile = async(token, userData) => {
     }
 
     const response = await axios.put(API_URL + 'changeProfile', userData, config)
-
-    console.log('this was the response', response.data)
     
     if (response.data) {
-        console.log('changing storage')
-        // localStorage.setItem("user", JSON.stringify(response.data))
         await localStorage.removeItem("user")
         await localStorage.setItem("user", JSON.stringify(response.data))
     }

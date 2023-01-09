@@ -8,7 +8,6 @@ import { FaSignOutAlt, FaUserAlt, FaCashRegister, FaLayerGroup, FaUserCircle } f
 function Header() {
 
     const { user, isPending } = useSelector((state) => state.auth)
-    
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -42,39 +41,42 @@ function Header() {
                 <Link to ="/">EVENTER - USA California</Link>
             </div>
             
-            {!user ? (
-                <ul>
-                    <li>
-                        <button className="btn-header" onClick={ onClickLogin }>
-                            <FaUserAlt className="fa-icon"/> Login
-                        </button>
-                    </li>
-                    
-                    <li>
-                        <button className="btn-header" onClick={ onClickRegister }>
-                            <FaCashRegister className="fa-icon"/> Register
-                        </button>
-                    </li>
-                </ul>
-            ) : (
-                <ul>
-                    <li>
-                        <button className="btn-header" onClick={ onClickProfile }>
-                            <FaUserCircle className="fa-icon"/> Profile
-                        </button>
-                    </li>
-                    <li>
-                        <button className="btn-header"onClick={ onClickLogout }>
-                            <FaSignOutAlt className="fa-icon"/> Logout
-                        </button>
-                    </li>
-                    <li>
-                        <button className="btn-header" onClick={onClickBrowse}>
-                            <FaLayerGroup className="fa-icon"/> Browse
-                        </button>
-                    </li>
-                </ul>
-            )}
+            { !user ? 
+                (
+                    <ul>
+                        <li>
+                            <button className="btn-header" onClick={ onClickLogin }>
+                                <FaUserAlt className="fa-icon"/> Login
+                            </button>
+                        </li>
+                        
+                        <li>
+                            <button className="btn-header" onClick={ onClickRegister }>
+                                <FaCashRegister className="fa-icon"/> Register
+                            </button>
+                        </li>
+                    </ul>
+                ) : 
+                (
+                    <ul>
+                        <li>
+                            <button className="btn-header" onClick={ onClickProfile }>
+                                <FaUserCircle className="fa-icon"/> Profile
+                            </button>
+                        </li>
+                        <li>
+                            <button className="btn-header"onClick={ onClickLogout }>
+                                <FaSignOutAlt className="fa-icon"/> Logout
+                            </button>
+                        </li>
+                        <li>
+                            <button className="btn-header" onClick={onClickBrowse}>
+                                <FaLayerGroup className="fa-icon"/> Browse
+                            </button>
+                        </li>
+                    </ul>
+                )
+            }
         </header>
     )
 }

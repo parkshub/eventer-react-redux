@@ -16,26 +16,12 @@ function AllEvents() {
   const dispatch = useDispatch()
 
   const { events, isPending, isRejected, message } = useSelector((state) => state.events)
-  // const { user } = useSelector((state) => state.auth)
-
-  // const [eventState, setEventState] = useState(events || JSON.parse(localStorage.getItem("events")))
 
   const [eventFilter, setEventFilter] = useState("all")
 
   const onFilterChange = (e) => {
     setEventFilter(e.target.value)
   }
-
-  // const filterEvents = async(e) => {
-  //   e.preventDefault()
-    
-  //   // if (eventFilter === 'all') {
-  //     // setEventState(events || JSON.parse(localStorage.getItem("events")))
-  //   // } else {
-  //     const filteredEvents = events.filter(x => x.city === eventFilter)
-  //     // setEventState(filteredEvents)
-  //   }
-  
 
   useEffect(() => {
 
@@ -53,8 +39,6 @@ function AllEvents() {
   if (isPending) {
     return <Loading />
   }
-
-
     
   return (
     <>
@@ -77,7 +61,7 @@ function AllEvents() {
           {events ?
             <ul className="events">
                 {events.filter((filteredEvent) => eventFilter === "all" ? filteredEvent : filteredEvent.city === eventFilter).map((event) =>  
-                    <EventItem key={event._id} event={event}/>
+                    <EventItem key={ event._id } event={ event }/>
                 )}
             </ul> :
             (

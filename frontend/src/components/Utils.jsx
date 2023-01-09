@@ -1,3 +1,6 @@
+//https://betterprogramming.pub/create-a-letter-picture-like-google-with-react-ae12a7a4390e
+// https://github.com/danilo95/letter-picture-like-Google-with-React
+
 export const  getRandomColor=()=> {
     var letters = "0123456789ABCDEF";
     var color = "#";
@@ -22,8 +25,6 @@ export const  getRandomColor=()=> {
 
     return initials.toUpperCase();
 };
-
-
 
 export const createImageFromInitials = (size, name, color) => {
     if (name == null) return;

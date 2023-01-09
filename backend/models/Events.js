@@ -47,7 +47,6 @@ const eventSchema = new mongoose.Schema({
         default: 1,
     },
     attendee: {
-        // type: String
     },
     maxAttendee: {
         type: Number,
