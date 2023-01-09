@@ -29,7 +29,9 @@ function Event() {
   const overflow = eventState.attending > 3 ? true : false
   const overflowVal = `+ ${String(eventState.attending - 3)}`
 
-  console.log(eventState)
+  const currentDate = new Date()
+  const eventDate = new Date (eventState.dateTime)
+  console.log(eventDate < currentDate)
 
   const onClickAttend = () => {
 
@@ -154,18 +156,25 @@ function Event() {
           </div>
 
           {
-            user.id === eventState.user ?// if user is the event creator
-              <div className="btn-container">
-                <button className="btn" onClick={onClickEdit}>Edit Event</button>
-                <button className="btn" onClick={onClickDelete}>Delete Event</button>
-              </div> :
-              attendeeArray.includes(user.id) ?
-                <button className="btn" onClick={onClickUnattend}>Unattend</button> :
-                eventState.maxAttendee === eventState.attending ?
-                  <h3>Event is currently full</h3> :
-                  !attendeeArray.includes(user.id) ?
-                    <button className="btn" onClick={onClickAttend}>Attend</button> :
-                    ""
+            eventDate < currentDate && user.id !== eventState.user? 
+              <h3 className="pastEvent">This Event is Over</h3> :
+                eventDate < currentDate && user.id === eventState.user ?
+                  <>
+                    <h3 className="pastEvent">This Event is Over</h3>
+                    <button className="btn" onClick={onClickDelete}>Delete Event</button>
+                  </> :
+                  user.id === eventState.user ?// if user is the event creator
+                    <div className="btn-container">
+                      <button className="btn" onClick={onClickEdit}>Edit Event</button>
+                      <button className="btn" onClick={onClickDelete}>Delete Event</button>
+                    </div> :
+                    attendeeArray.includes(user.id) ?
+                      <button className="btn" onClick={onClickUnattend}>Unattend</button> :
+                      eventState.maxAttendee === eventState.attending ?
+                        <h3>Event is currently full</h3> :
+                        !attendeeArray.includes(user.id) ?
+                          <button className="btn" onClick={onClickAttend}>Attend</button> :
+                          ""
           }
         </section>
       </section>

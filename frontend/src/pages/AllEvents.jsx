@@ -72,17 +72,19 @@ function AllEvents() {
         </form>
       </section>
 
-      <section className="content">
-        {events ?
-          <ul className="events">
-              {events.filter((filteredEvent) => eventFilter === "all" ? filteredEvent : filteredEvent.city === eventFilter).map((event) =>  
-                  <EventItem key={event._id} event={event}/>
-              )}
-          </ul> :
-          (
-            <h2>no events</h2>
-          )
-        }
+      <section className="content-body">
+        <section className="content">
+          {events ?
+            <ul className="events">
+                {events.filter((filteredEvent) => eventFilter === "all" ? filteredEvent : filteredEvent.city === eventFilter).map((event) =>  
+                    <EventItem key={event._id} event={event}/>
+                )}
+            </ul> :
+            (
+              <h2>no events</h2>
+            )
+          }
+        </section>
       </section>
     </>
   )

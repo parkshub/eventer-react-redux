@@ -3,6 +3,7 @@ const UserModel = require("../models/User")
 const asyncHandler = require("express-async-handler")
 const bcrypt = require("bcryptjs")
 const cloudinary = require("../config/cloudinary")
+const EventModel = require("../models/Events")
 
 function generateToken(id) {
     return jwt.sign({id}, process.env.JWT_SECRET, {
@@ -162,6 +163,7 @@ exports.changeProfile = async(req, res) => {
             :
                 image
     
+
     if (image.match(regex)) {
         console.log('user uploaded hex')
 
@@ -177,9 +179,29 @@ exports.changeProfile = async(req, res) => {
             bio: bio
         }
 
-        const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'})
+        const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'}) //*****MAYBE CHANGE THIS TO NEW: TRUE */
+        // FIND ALL EVENTS AND UPDATE
+        // const events = await EventModel.findById(user.attending)
 
         console.log('this is the new user', user)
+
+        const events = await EventModel.find(
+            {
+                "_id" : {$in : user.attending}
+            }
+        )
+
+        // const user = await UserModel.findById(req.params.id)
+
+        for (i of events) {
+            // console.log(i)
+            // i.attendee.map(x => console.log(Object.keys(x)))
+            const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== req.params.id)
+            const newAttendee = {[req.params.id]: {"name": user.name, "image": user.image}}
+            const attendees = oldAttendee.concat(newAttendee)
+            i.attendee = attendees
+            await i.save()
+        }
 
 
         res.status(201).json({
@@ -211,6 +233,22 @@ exports.changeProfile = async(req, res) => {
 
         console.log('this is the new user', user)
 
+        const events = await EventModel.find(
+            {
+                "_id" : {$in : user.attending}
+            }
+        )
+
+        for (i of events) {
+            // console.log(i)
+            // i.attendee.map(x => console.log(Object.keys(x)))
+            const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== user.id)
+            const newAttendee = {[user.id]: {"name": user.firstName + " " + user.lastName, "image": user.image}}
+            const attendees = oldAttendee.concat(newAttendee)
+            i.attendee = attendees
+            await i.save()
+        }
+
         res.status(201).json({
             id: user.id,
             firstName: user.firstName,
@@ -223,4 +261,25 @@ exports.changeProfile = async(req, res) => {
     } else {
         res.status(201).json(previousUser)
     }
+}
+
+exports.test = async(req, res) => {
+    const user = await UserModel.findById(req.params.id)
+    const events = await EventModel.find(
+        {
+            "_id" : {$in : user.attending}
+        }
+    )
+    for (i of events) {
+        // console.log(i)
+        i.attendee.map(x => console.log(Object.keys(x)))
+        const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== req.params.id)
+        const newAttendee = {[req.params.id]: {"name": "andrew aaaa", "image": user.image}}
+        const attendees = oldAttendee.concat(newAttendee)
+        i.attendee = attendees
+        await i.save()
+        // test.name = "andrew aa"
+        // await test.save()
+    }
+    res.json(events)
 }

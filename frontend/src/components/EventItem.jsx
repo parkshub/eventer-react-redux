@@ -17,14 +17,23 @@ function EventItem({event}) {
     }
 
     const {formattedDate, formattedTime} = formatDate(event.dateTime)
+    const currentDate = new Date()
+    const eventDate = new Date(event.dateTime)
 
     return (
+        
         <li className="event">
             <figure>
                 <img className="eventThumbnail" src={event.imageUrl} alt="" />
                 <figcaption>
                     <h3 className="eventName">{event.title}</h3>
                 </figcaption>
+                {
+                    currentDate > eventDate && 
+                        <figcaption className="pastEvent">
+                            <h3 className="eventName">Past Event</h3>
+                        </figcaption>
+                }
             </figure>
             {/* <h3 className="eventName">{event.title}</h3> */}
             <p className="eventCaption">"{event.caption}"</p>

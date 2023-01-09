@@ -276,10 +276,10 @@ figure > figcaption {
   color: white;
 }
 
-figure > figcaption > h3 {
+/* figure > figcaption > h3 {
   color: white;
   font-size: 1.25rem;
-}
+} */
 
 ul > li > p {
   font-size: 1rem;
@@ -355,7 +355,7 @@ form {
 
 .profileImagePreview {
   width: 300px;
-  height: 300px;
+  height: 300px !important;
   border-radius: 50%;
   background: #512DA8;
   font-size: 1.5rem;
@@ -365,8 +365,19 @@ form {
   margin: 20px 0;
 }
 
+.pastEvent {
+  background-color: red;
+  /* padding: 1%; */
+  color: white;
+}
 
-
+figcaption.pastEvent {
+  position: absolute;
+  bottom: 50%;
+  background-color: red;
+  width: 100%;
+  color: white;
+}
 
 .uploadedPic {
   display: none;
