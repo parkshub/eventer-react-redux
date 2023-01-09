@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const eventSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
         required: true
     },
     userName: {
@@ -10,35 +11,35 @@ const eventSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: [true, "Please enter title"]
+        required: [true, "Please enter a title"]
     },
     caption: {
         type: String,
-        required: [true, "Please enter caption"]
+        required: [true, "Please enter a caption"]
     },
     description: {
         type: String,
-        required: true,
+        required: [true, "Please enter a description"]
     },
     dateTime: {
         type: String,
-        required: true,
+        required: [true, "Please choose a data and time"]
     },
     street: {
         type: String,
-        required: true
+        required: [true, "Please enter the street address"]
     },
     city: {
         type: String,
-        required: true
+        required: [true, "Please enter a city"]
     },
     imageUrl: {
         type: String,
-        require: [true, "Please input an image"],
+        require: [true, "Please choose an image"],
     },
     cloudinaryId: {
         type: String,
-        require: [true, "Please input an image"],
+        require: [true, "Please choose an image"],
     },
     attending: {
         type: Number,
@@ -51,7 +52,11 @@ const eventSchema = new mongoose.Schema({
     maxAttendee: {
         type: Number,
         required: [true, "Please input maximum attendee"]
-    }
+    },
+    test: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }]
 });
 
 module.exports = mongoose.model("Event", eventSchema)

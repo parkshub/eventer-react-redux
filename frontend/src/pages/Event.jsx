@@ -91,9 +91,9 @@ function Event() {
 
   
   useEffect(() => {
-    if (event === "") {
+    // if (event === "") {
       dispatch(getEvent(eventState._id))
-    }
+    // }
 
     if (isRejected) {
       toast.error(message)

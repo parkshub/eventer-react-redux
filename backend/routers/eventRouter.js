@@ -25,6 +25,8 @@ router.put("/unattendEvent/:id", auth, eventController.unattendEvent)
 router.delete("/deleteEvent/:id", auth, eventController.deleteEvent)
 
 
+router.get("/testEvents/:id", eventController.testEvents)
+
 
 
 

@@ -29,18 +29,6 @@ const createEvent = async(token, {formData, selectedFile}) => {
     return response.data
 }
 
-const attendEvent = async(token, id) => {
-    console.log("attendEvent service")
-    
-    const config = {
-        headers: {
-            authorization: `Bearer ${token}`
-        }
-    }
-
-    const response = await axios.put(API_URL + `attendEvent/${id}`, null, config)
-    return response.data
-}
 
 const deleteEvent = async(token, id) => {
     console.log("deleteEvent service")
@@ -70,6 +58,22 @@ const updateEvent = async(token, {formData, selectedFile}) => {
     return response.data
 }
 
+const attendEvent = async(token, id) => {
+    console.log("attendEvent service")
+    
+    const config = {
+        headers: {
+            authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(API_URL + `attendEvent/${id}`, null, config)
+    if (response.data) {
+        localStorage.setItem('event', JSON.stringify(response.data))
+    }
+    return response.data
+}
+
 const unattendEvent = async(token, formData) => {
 
     console.log("unattendEvent service")
@@ -83,6 +87,10 @@ const unattendEvent = async(token, formData) => {
     const eventId = formData._id
 
     const response = await axios.put(API_URL + `unattendEvent/${eventId}`, formData, config)
+    
+    if (response.data) {
+        localStorage.setItem('event', JSON.stringify(response.data))
+    }
     return response.data
 }
 

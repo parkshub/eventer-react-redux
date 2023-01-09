@@ -76,28 +76,6 @@ exports.getAllEvents = async(req, res) => {
     
 }
 
-
-// exports.uploadPic = asyncHandler(async(req, res) => { // make sure to combine these together later
-//     const image = req.body.selectedFile // remember this is the name you set on the frontend redux, might change later
-//     try {
-//         const response = await cloudinary.uploader.upload(image, {
-//             folder: "userImage",
-//         })
-//         console.log(response)
-
-//         const result = await ImageModel.create({
-//             public_id: response.public_id,
-//             url: response.secure_url
-//         })
-
-//         res.json('awesome');
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).json({ err: 'Something went wrong' });
-//     }
-// }
-// )
-
 exports.deleteEvent = asyncHandler(async(req, res) => {
     console.log('deleteEvent controller')
     
@@ -192,6 +170,8 @@ exports.attendEvent = asyncHandler(async(req, res) => {
                 name: fullName,
                 image: req.user.image
             }}}
+        }, {
+            new: true
         })
         const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
             $push: {attending: updatedEvent.id}
@@ -211,6 +191,8 @@ exports.unattendEvent = async(req, res) => {
                 image: req.user.image
             }}},
             $inc: {attending: -1}
+        }, {
+            new: true
         })
 
         const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, {
@@ -263,6 +245,12 @@ exports.getProfileEvents = async(req, res) => {
             userEvents: userEvents,
             attendingEvents: attendingEvents
         })
+}
+
+exports.testEvents = async(req, res) => {
+    const event = await EventModel.findById(req.params.id)
+    const test = await event.populate("test", "firstName lastName image")
+    res.json(test)
 }
 
 
