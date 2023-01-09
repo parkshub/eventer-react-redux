@@ -13,7 +13,7 @@ function generateToken(id) {
 exports.registerUser = async (req, res) => {
     const { firstName, lastName, email, password, image, bio } = req.body
 
-    if (!firstName || !lastName || !email || !password || !image || !bio) {
+    if (!firstName || !lastName || !email || !password || !image || bio==="") {
         res.status(400).send("Please enter all fields")
     }
 
@@ -57,7 +57,6 @@ exports.registerUser = async (req, res) => {
         })
 
     } else if (image.match(regex)) {
-        console.log("user uploaded an hex")
         const user = await UserModel.create({
             firstName: firstName,
             lastName: lastName,
@@ -99,7 +98,6 @@ exports.loginUser = async (req, res) => {
             image: user.image,
             bio: user.bio
         })
-        console.log(user.firstName + " is logged in")
     } else {
         res.status(400).send("Invalid credentials")
     }
@@ -107,7 +105,6 @@ exports.loginUser = async (req, res) => {
 
 exports.getUser = async(req, res) => {
     res.json(req.user)
-    console.log(req.user)
 }
 
 exports.getUserInfo = async(req, res) => {
@@ -224,7 +221,6 @@ exports.test = async(req, res) => {
     )
 
     for (i of events) {
-        i.attendee.map(x => console.log(Object.keys(x)))
         const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== req.params.id)
         const newAttendee = {[req.params.id]: {"name": "andrew aaaa", "image": user.image}}
         const attendees = oldAttendee.concat(newAttendee)

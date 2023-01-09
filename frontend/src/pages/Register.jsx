@@ -40,7 +40,6 @@ function Register() {
         }
 
         if (isFulfilled || user) {
-            console.log(isFulfilled, user)
             navigate("/")
         }
 
@@ -50,14 +49,13 @@ function Register() {
     const onChange = (e) => {
 
         if (e.target.id === "bio") {
-            setBioLength(150-e.target.value.length)
+            setBioLength(150 - e.target.value.length)
         }
 
         setFormData((prevState) => ({
             ...prevState,
             [e.target.id]: e.target.value
         }))
-        console.log(formData)
     }
 
     const onSelectFile = (e) => {
@@ -65,7 +63,6 @@ function Register() {
         if (e.target.files[0]!==undefined) {
             
             const file = e.target.files[0];
-            
             const fileSize = e.target.files.item(0).size
             const fileMb = fileSize / 1024 ** 2
         
@@ -84,7 +81,6 @@ function Register() {
     }
 
     const onChoiceChange = (e) => {
-        console.log(e.target.value)
         setChoice(e.target.value)
     }
 
@@ -123,62 +119,62 @@ function Register() {
             </section>
 
             <section className="form">
-                <form onSubmit={onSubmit}>
+                <form onSubmit={ onSubmit }>
 
                     <div className="formGroup">
                         <label htmlFor="firstName">First Name</label>
-                        <input type="text" name="firstName" id="firstName" value={firstName} onChange={onChange}/>
+                        <input type="text" name="firstName" id="firstName" value={ firstName } onChange={ onChange }/>
                     </div>
                     
                     <div className="formGroup">
                         <label htmlFor="lastName">Last Name</label>
-                        <input type="text" name="lastName" id="lastName" value={lastName} onChange={onChange}/>
+                        <input type="text" name="lastName" id="lastName" value={ lastName } onChange={ onChange }/>
                     </div>
 
                     <div className="formGroup">
                         <label htmlFor="email">Email</label>
-                        <input type="email" name="email" id="email" value={email} onChange={onChange}/>
+                        <input type="email" name="email" id="email" value={ email } onChange={ onChange }/>
                     </div>
 
                     <div className="formGroup">
                         <label htmlFor="password">Password</label>
-                        <input type="password" name="password" id="password" value={password} onChange={onChange}/>
+                        <input type="password" name="password" id="password" value={ password } onChange={ onChange }/>
                     </div>
 
                     <div className="formGroup">
                         <label htmlFor="password2">Confirm Password</label>
-                        <input type="password" name="password2" id="password2" value={password2} onChange={onChange}/>
+                        <input type="password" name="password2" id="password2" value={ password2 } onChange={ onChange }/>
                     </div>
 
                     <div className="formGroup">
-                        <label htmlFor="bio">Bio character limit: {bioLength}</label>
-                        <textarea name="bio" id="bio" rows={4} value={bio} onChange={ onChange } maxLength={150} />
+                        <label htmlFor="bio">Bio character limit: { bioLength }</label>
+                        <textarea name="bio" id="bio" rows={ 4 } value={ bio } onChange={ onChange } maxLength={ 150 } />
                     </div>
 
                     <div className="formGroup">
                         <label htmlFor="photo">Choose own photo or choose default?</label>
-                        <select name="photo" id="photo" defaultValue={choice} onChange={onChoiceChange}>
+                        <select name="photo" id="photo" defaultValue={ choice } onChange={ onChoiceChange }>
                             <option value="">please choose an option</option>
                             <option value="upload">upload own photo</option>
                             <option value="default">choose default photo</option>
                         </select>
                     </div>
 
-                    <div className={choice==="upload" ? "formGroup" : "hide"}>
+                    <div className={ choice==="upload" ? "formGroup" : "hide" }>
                         <label htmlFor="profilePic">Select profile picture less than 5MBs</label>
                         <input id="profilePic" type="file" name="profilePic" onChange={ onSelectFile } className="form-input"/>
                     </div>
 
 
                     <div className="formGroup">
-                        <img src={selectedFile} className={choice==='upload' && selectedFile ? "profileImagePreview" : "hide "} width={300} height={300} alt="preview"/>
+                        <img src={ selectedFile } className={ choice==='upload' && selectedFile ? "profileImagePreview" : "hide " } width={ 300 } height={ 300 } alt="preview"/>
                     </div>
 
-                    <div className={choice==="default" ? "formGroup defaultImageContainer" : "hide"}>
+                    <div className={ choice==="default" ? "formGroup defaultImageContainer" : "hide" }>
                         <img id="preview" className="defaultImagePreview" src={ imgSrc.length <= 0 ? createImageFromInitials(200, formData.firstName + " " + formData.lastName, sketchPickerColor) : imgSrc } alt="preview" />
                         <h6>Customize Color</h6>
                         
-                        <SketchPicker id="colorPicker" disableAlpha={true} onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
+                        <SketchPicker id="colorPicker" disableAlpha={ true } onChange={(color) => { setSketchPickerColor(color.hex); }} color={sketchPickerColor} /> 
                     </div>
 
                     <div className="formGroup">
