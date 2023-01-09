@@ -10,11 +10,11 @@ import { SketchPicker } from "react-color";
 function Register() {
 
     const [formData, setFormData] = useState({
-        firstName:"new",
-        lastName:"new",
-        email: "new@new.com",
-        password: "new",
-        password2: "new",
+        firstName:"",
+        lastName:"",
+        email: "",
+        password: "",
+        password2: "",
         image: "",
         bio: "",
 
