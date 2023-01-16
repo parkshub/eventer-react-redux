@@ -40,16 +40,31 @@ function Home () {
             </section>
             <section className="content-body">
                 <section className="content">
-                    {homeEvents.length > 0 ? 
-                        <ul className="events">
-                            {homeEvents.map((homeEvent) => 
-                                <EventItem key={homeEvent._id} event={homeEvent}/>
-                            )
-                            }
-                        </ul>
-                        : (
-                        <h2>no events</h2>
-                    )}
+                    {
+                        // homeEvents.length > 0 
+                        // ? 
+                        // <ul className="events">
+                        //     {homeEvents.map((homeEvent) => 
+                        //         <EventItem key={homeEvent._id} event={homeEvent}/>
+                        //     )
+                        //     }
+                        // </ul>
+                        // : 
+                        // (<h2>no events</h2>)
+                        JSON.stringify(homeEvents) === "[]" 
+                        ?
+                        <p className="noEventMsg"> <u><i>there are no events</i></u> </p>
+                        :
+                            homeEvents
+                            ?
+                            <ul className="events">
+                                {homeEvents.map((homeEvent) => 
+                                    <EventItem key={homeEvent._id} event={homeEvent}/>
+                                )}
+                            </ul>
+                            :
+                            ""
+                    }
                 </section>
             </section>
         </>

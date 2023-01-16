@@ -81,13 +81,19 @@ function Profile() {
 
         <section className="content">
           { 
-            userEvents ?
+            JSON.stringify(userEvents) === "[]" 
+            ?
+            <p className="noEventMsg">you have no events. let's create an event!</p> 
+            :
+              userEvents 
+              ?
               <ul className="events">
                 {userEvents.map(userEvent => 
                   <EventItem key={userEvent._id} event={userEvent}/>
                 )}
-              </ul> : 
-              <div>you have no events. let's create an event!</div>
+              </ul> 
+              : 
+              ""
           }
         </section>
         
@@ -95,12 +101,18 @@ function Profile() {
 
         <section className="content">
           { 
-            attendingEvents ?
+            JSON.stringify(attendingEvents) === "[]" 
+            ?
+            <p className="noEventMsg">you are not attending any events</p> 
+            :
+              attendingEvents 
+              ?
               <ul className="events"> 
                 {attendingEvents.filter(x => x.user !== user.id).map((attendingEvent) => 
                   <EventItem key={attendingEvent._id} event={attendingEvent}/>
                 )}
-              </ul> : 
+              </ul> 
+              : 
               ""
           }
         </section>

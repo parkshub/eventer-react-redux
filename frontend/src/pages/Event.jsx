@@ -136,7 +136,11 @@ function Event() {
               }
 
               {
-                overflow ? <img id="overflowImage" className="profileImage overflowImage hover overflown" src={ imgSrc.length <= 0 ? createImageFromInitials(300, overflowVal, "#00ffff") : imgSrc } alt="" onClick={ onClickProfile }/>: ""
+                overflow 
+                ? 
+                <img id="overflowImage" className="profileImage overflowImage hover overflown" src={ imgSrc.length <= 0 ? createImageFromInitials(300, overflowVal, "#00ffff") : imgSrc } alt="" onClick={ onClickProfile }/>
+                : 
+                ""
               }
               <div className="btn-container">
                 <button className="btn overflown hide" onClick={ onClickShowLess }>show less</button>
@@ -145,25 +149,37 @@ function Event() {
           </div>
 
           {
-            eventDate < currentDate && user.id !== eventState.user? 
-              <h3 className="pastEvent">This Event is Over</h3> :
-                eventDate < currentDate && user.id === eventState.user ?
-                  <>
-                    <h3 className="pastEvent">This Event is Over</h3>
-                    <button className="btn" onClick={ onClickDelete }>Delete Event</button>
-                  </> :
-                  user.id === eventState.user ?
-                    <div className="btn-container">
-                      <button className="btn" onClick={ onClickEdit }>Edit Event</button>
-                      <button className="btn" onClick={ onClickDelete }>Delete Event</button>
-                    </div> :
-                    attendeeArray.includes(user.id) ?
-                      <button className="btn" onClick={ onClickUnattend }>Unattend</button> :
-                      eventState.maxAttendee === eventState.attending ?
-                        <h3>Event is currently full</h3> :
-                        !attendeeArray.includes(user.id) ?
-                          <button className="btn" onClick={ onClickAttend }>Attend</button> :
-                          ""
+            eventDate < currentDate && user.id !== eventState.user
+            ? 
+            <h3 className="pastEvent">This Event is Over</h3> 
+            :
+              eventDate < currentDate && user.id === eventState.user 
+              ?
+              <>
+                <h3 className="pastEvent">This Event is Over</h3>
+                <button className="btn" onClick={ onClickDelete }>Delete Event</button>
+              </> 
+              :
+                user.id === eventState.user 
+                ?
+                <div className="btn-container">
+                  <button className="btn" onClick={ onClickEdit }>Edit Event</button>
+                  <button className="btn" onClick={ onClickDelete }>Delete Event</button>
+                </div> 
+                :
+                  attendeeArray.includes(user.id) 
+                  ?
+                  <button className="btn" onClick={ onClickUnattend }>Unattend</button> 
+                  :
+                    eventState.maxAttendee === eventState.attending 
+                    ?
+                    <h3>Event is currently full</h3> 
+                    :
+                      !attendeeArray.includes(user.id) 
+                      ?
+                      <button className="btn" onClick={ onClickAttend }>Attend</button> 
+                      :
+                      ""
           }
         </section>
       </section>

@@ -90,7 +90,7 @@ function EventForm() {
   return (
     <>
       <section className="heading">
-        {edit? <h1>Edit Event</h1>: <h1>Create Event</h1>}
+        {edit ? <h1>Edit Event</h1>: <h1>Create Event</h1>}
       </section>
       
       <section className="form">

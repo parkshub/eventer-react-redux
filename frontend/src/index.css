@@ -110,6 +110,11 @@ div.logo {
 
 /* PROFILE STYLE */
 
+.noEventMsg {
+  font-size: 1.5rem;
+  /* font-style: italic; */
+}
+
 .content-main {
   display: flex;
   flex-direction: column;

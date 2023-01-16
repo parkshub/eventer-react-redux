@@ -58,15 +58,29 @@ function AllEvents() {
 
       <section className="content-body">
         <section className="content">
-          {events ?
-            <ul className="events">
-                {events.filter((filteredEvent) => eventFilter === "all" ? filteredEvent : filteredEvent.city === eventFilter).map((event) =>  
-                    <EventItem key={ event._id } event={ event }/>
-                )}
-            </ul> :
-            (
-              <h2>no events</h2>
-            )
+          {
+            // events 
+            // ?
+            // <ul className="events">
+            //     {events.filter((filteredEvent) => eventFilter === "all" ? filteredEvent : filteredEvent.city === eventFilter).map((event) =>  
+            //         <EventItem key={ event._id } event={ event }/>
+            //     )}
+            // </ul> 
+            // :
+            // (<h2>no events</h2>)
+            JSON.stringify(events) === "" 
+            ?
+            <p className="noEventMsg"> <u><i>there are no events</i></u> </p>
+            :
+              events 
+              ?
+              <ul className="events">
+                  {events.filter((filteredEvent) => eventFilter === "all" ? filteredEvent : filteredEvent.city === eventFilter).map((event) =>  
+                      <EventItem key={ event._id } event={ event }/>
+                  )}
+              </ul> 
+              :
+              ""
           }
         </section>
       </section>

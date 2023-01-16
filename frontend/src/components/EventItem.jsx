@@ -40,10 +40,7 @@ function EventItem({event}) {
             <p className="attending">Date & Time: {formattedDate + " " + formattedTime}</p>
             <p className="location">Location: {event.street}, {event.city}, California </p>
             <p className="attending">{event.attending}/{event.maxAttendee} attending</p>
-            { user ? 
-                <button className="btn" value={event._id} onClick={onClick}>View Event</button> :
-                ""
-            }
+            { user ? <button className="btn" value={event._id} onClick={onClick}>View Event</button> : "" }
         </li>
     )
 }
