@@ -6,7 +6,7 @@ const EventModel = require("../models/Events")
 
 function generateToken(id) {
     return jwt.sign({id}, process.env.JWT_SECRET, {
-        expiresIn: "7d"
+        // expiresIn: "7d"
     })
 }
 
