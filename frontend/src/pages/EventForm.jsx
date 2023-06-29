@@ -39,6 +39,8 @@ function EventForm() {
   const [captionLength, setCaptionLength] = useState("50");
   const [descriptionLength, setDescriptionLength] = useState("150");
 
+  console.log('this is desc length', descriptionLength)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
   
@@ -83,13 +85,20 @@ function EventForm() {
   
   const onSubmit = async(e) => {
       e.preventDefault()
-      if (edit) {
-        await dispatch(updateEvent({ formData, selectedFile }))
+
+      if (descriptionLength > 0) {
+        toast.error('Please describe your event in greater detail')
       } else {
-        await dispatch(createEvent({ formData, selectedFile }))
+        if (edit) {
+          await dispatch(updateEvent({ formData, selectedFile }))
+        } else {
+          await dispatch(createEvent({ formData, selectedFile }))
+        }
+        navigate("/profile")
       }
-      navigate("/profile")
   }
+
+  console.log('this is formdata', formData, Object.values(formData).includes(""))
 
   if (isPending) {
     return <Loading />
