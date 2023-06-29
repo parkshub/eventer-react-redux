@@ -75,9 +75,16 @@ function AllEvents() {
               events 
               ?
               <ul className="events">
-                  {events.filter((filteredEvent) => eventFilter === "all" ? filteredEvent : filteredEvent.city === eventFilter).map((event) =>  
-                      <EventItem key={ event._id } event={ event }/>
-                  )}
+                  {events.filter((filteredEvent) => eventFilter === "all" ? filteredEvent : filteredEvent.city === eventFilter).map((event) => {
+                    if (new Date(event.dateTime) > new Date()) {
+                      return <EventItem key={ event._id } event={ event }/>
+                    }
+                  })}
+                                {/* {homeEvents.map((homeEvent) => {
+                                    if (new Date(homeEvent.dateTime) > new Date()) {
+                                        return <EventItem key={homeEvent._id} event={homeEvent}/>
+                                    }
+                                })} */}
               </ul> 
               :
               ""
