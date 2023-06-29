@@ -145,19 +145,19 @@ exports.changeProfile = async(req, res) => {
 
         const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'})
 
-        const events = await EventModel.find(
-            {
-                "_id" : {$in : user.attending}
-            }
-        )
+        // const events = await EventModel.find(
+        //     {
+        //         "_id" : {$in : user.attending}
+        //     }
+        // )
 
-        for (i of events) {
-            const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== req.params.id)
-            const newAttendee = {[req.params.id]: {"name": user.name, "image": user.image}}
-            const attendees = oldAttendee.concat(newAttendee)
-            i.attendee = attendees
-            await i.save()
-        }
+        // for (i of events) {
+        //     const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== req.params.id)
+        //     const newAttendee = {[req.params.id]: {"name": user.name, "image": user.image}}
+        //     const attendees = oldAttendee.concat(newAttendee)
+        //     i.attendee = attendees
+        //     await i.save()
+        // }
 
         res.status(201).json({
             id: user.id,
@@ -184,19 +184,19 @@ exports.changeProfile = async(req, res) => {
 
         const user = await UserModel.findByIdAndUpdate(id, updateInfo, {returnDocument: 'after'})
 
-        const events = await EventModel.find(
-            {
-                "_id" : {$in : user.attending}
-            }
-        )
+        // const events = await EventModel.find(
+        //     {
+        //         "_id" : {$in : user.attending}
+        //     }
+        // )
 
-        for (i of events) {
-            const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== user.id)
-            const newAttendee = {[user.id]: {"name": user.firstName + " " + user.lastName, "image": user.image}}
-            const attendees = oldAttendee.concat(newAttendee)
-            i.attendee = attendees
-            await i.save()
-        }
+        // for (i of events) {
+        //     const oldAttendee = i.attendee.filter(x => Object.keys(x)[0] !== user.id)
+        //     const newAttendee = {[user.id]: {"name": user.firstName + " " + user.lastName, "image": user.image}}
+        //     const attendees = oldAttendee.concat(newAttendee)
+        //     i.attendee = attendees
+        //     await i.save()
+        // }
 
         res.status(201).json({
             id: user.id,

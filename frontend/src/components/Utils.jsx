@@ -2,67 +2,67 @@
 // https://github.com/danilo95/letter-picture-like-Google-with-React
 
 export const  getRandomColor=()=> {
-    var letters = "0123456789ABCDEF";
-    var color = "#";
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
   }
+  return color;
+}
 
 
-  const getInitials = (name) => {
-    let initials;
-    const nameSplit = name.split(" ");
-    const nameLength = nameSplit.length;
-    if (nameLength > 1) {
-        initials =
-            nameSplit[0].substring(0, 1) +
-            nameSplit[nameLength - 1].substring(0, 1);
-    } else if (nameLength === 1) {
-        initials = nameSplit[0].substring(0, 1);
-    } else return;
+const getInitials = (name) => {
+  let initials;
+  const nameSplit = name.split(" ");
+  const nameLength = nameSplit.length;
+  if (nameLength > 1) {
+      initials =
+          nameSplit[0].substring(0, 1) +
+          nameSplit[nameLength - 1].substring(0, 1);
+  } else if (nameLength === 1) {
+      initials = nameSplit[0].substring(0, 1);
+  } else return;
 
-    return initials.toUpperCase();
+  return initials.toUpperCase();
 };
 
 export const createImageFromInitials = (size, name, color) => {
-    if (name == null) return;
-    name=getInitials(name)
+  if (name == null) return;
+  name=getInitials(name)
 
-    const canvas=document.createElement("canvas")
-    const context=canvas.getContext("2d")
-    canvas.width=canvas.height=size
+  const canvas=document.createElement("canvas")
+  const context=canvas.getContext("2d")
+  canvas.width=canvas.height=size
 
-    context.fillStyle="#ffffff"
-    context.fillRect(0,0,size,size)
+  context.fillStyle="#ffffff"
+  context.fillRect(0,0,size,size)
 
-    context.fillStyle=`${color}50`
-    context.fillRect(0,0,size,size)
+  context.fillStyle=`${color}50`
+  context.fillRect(0,0,size,size)
 
-    context.fillStyle="#FFFFFF";
-    context.textBaseline="middle"
-    context.textAlign="center"
-    context.font =`${size/2}px Roboto`
-    context.fillText(name,(size/2),(size/2))
+  context.fillStyle="#FFFFFF";
+  context.textBaseline="middle"
+  context.textAlign="center"
+  context.font =`${size/2}px Roboto`
+  context.fillText(name,(size/2),(size/2))
 
-    return canvas.toDataURL()
+  return canvas.toDataURL()
 };
 
 export const formatDate = (rawDate) => {
-  let time = rawDate.split('T')[1].split(':')
-  let hours = time[0]
+let time = rawDate.split('T')[1].split(':')
+let hours = time[0]
 
-  let amPM = hours.slice(0,2) < 12 ? "AM" : "PM"
+let amPM = hours.slice(0,2) < 12 ? "AM" : "PM"
 
-  let formattedTime = hours.slice(0,2) > 12 ? String(hours.slice(0,2) - 12) : String(hours.slice(0,2))
-  formattedTime = formattedTime.length === 1 ? "0" + formattedTime + ":" + time[1] : formattedTime + ":" + time[1]
-  formattedTime = formattedTime + amPM
+let formattedTime = hours.slice(0,2) > 12 ? String(hours.slice(0,2) - 12) : String(hours.slice(0,2))
+formattedTime = formattedTime.length === 1 ? "0" + formattedTime + ":" + time[1] : formattedTime + ":" + time[1]
+formattedTime = formattedTime + amPM
 
-  let formattedDate = rawDate.split('T')[0].split('-')
-  formattedDate = formattedDate[1] + '/' + formattedDate[2] + '/' + formattedDate[0]
+let formattedDate = rawDate.split('T')[0].split('-')
+formattedDate = formattedDate[1] + '/' + formattedDate[2] + '/' + formattedDate[0]
 
-  return {formattedTime, formattedDate}
+return {formattedTime, formattedDate}
 }
 
 export const cities = ["Acton",

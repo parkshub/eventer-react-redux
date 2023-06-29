@@ -15,4 +15,9 @@ router.put("/attendEvent/:id", auth, eventController.attendEvent)
 router.put("/unattendEvent/:id", auth, eventController.unattendEvent)
 router.delete("/deleteEvent/:id", auth, eventController.deleteEvent)
 
+router.post('/testCreate', auth, eventController.testCreate)
+router.put('/testAttend/:id', auth, eventController.testAttend)
+router.put('/testUnattend/:id', auth, eventController.testUnattend)
+
+
 module.exports = router

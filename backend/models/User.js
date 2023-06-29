@@ -32,8 +32,9 @@ const UserSchema = mongoose.Schema(
             required: [true, "Please enter bio"]
         },
         attending: {
-            type: [String],
-            default: []
+            type: [mongoose.Schema.Types.ObjectId],
+            default: [],
+            ref: "Event"
         }
     }
 )

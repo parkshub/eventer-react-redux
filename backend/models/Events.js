@@ -46,16 +46,14 @@ const eventSchema = new mongoose.Schema({
         required: true,
         default: 1,
     },
-    attendee: {
-    },
     maxAttendee: {
         type: Number,
         required: [true, "Please input maximum attendee"]
     },
-    test: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    }]
+    attendee: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: "User"
+    }
 });
 
 module.exports = mongoose.model("Event", eventSchema)

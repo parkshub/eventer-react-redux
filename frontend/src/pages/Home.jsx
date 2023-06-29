@@ -58,9 +58,11 @@ function Home () {
                             homeEvents
                             ?
                             <ul className="events">
-                                {homeEvents.map((homeEvent) => 
-                                    <EventItem key={homeEvent._id} event={homeEvent}/>
-                                )}
+                                {homeEvents.map((homeEvent) => {
+                                    if (new Date(homeEvent.dateTime) > new Date()) {
+                                        return <EventItem key={homeEvent._id} event={homeEvent}/>
+                                    }
+                                })}
                             </ul>
                             :
                             ""

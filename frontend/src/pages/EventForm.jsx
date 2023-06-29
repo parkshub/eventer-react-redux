@@ -12,7 +12,15 @@ function EventForm() {
   const edit = localStorage.getItem("event") ? true : false
   
   let date = new Date()
-  date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ (date.getDate()+1) + "T" + date.getHours() + ":" + date.getMinutes()
+
+  date = date.getFullYear() 
+    + "-" 
+    + (date.getMonth() >= 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1))
+    + "-"
+    + (date.getDate() >= 9 ? date.getDate() + 1 : '0' + (date.getDate() + 2)) 
+    + "T00:00" 
+
+  console.log('this is date', date)
 
   const eventObj = {
     title:"",
@@ -20,7 +28,7 @@ function EventForm() {
     description: "",
     dateTime: date,
     street: "",
-    city: "Acto",
+    city: "Acton",
     maxAttendee: "",
   }
 
