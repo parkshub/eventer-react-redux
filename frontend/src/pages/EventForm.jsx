@@ -116,7 +116,7 @@ function EventForm() {
 
             <div className="formGroup">
               <label htmlFor="description">Description (min character: { descriptionLength })</label>
-              <textarea type="text" name="description" id="description" rows={ 5 } value={ description } onChange={ onChange } minLength={ 150 }/>
+              <textarea type="text" name="description" id="description" rows={ 5 } value={ description } onChange={ onChange } minLength="150"/>
             </div>
 
             <div className="formGroup">
