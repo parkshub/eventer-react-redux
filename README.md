@@ -1,12 +1,6 @@
 # Eventer – California
 
-
-
 https://github.com/parkshub/eventer-react-redux/assets/87814883/50f2aa48-d975-4f09-8c66-8d3190ffc716
-
-
-
-![KakaoTalk_20230703_164009686](https://github.com/parkshub/eventer-react-redux/assets/87814883/83addfcd-ae95-449d-94b6-b46547b57c9a)
 
 ## Introduction
 
