@@ -2,6 +2,8 @@
 
 https://github.com/parkshub/eventer-react-redux/assets/87814883/50f2aa48-d975-4f09-8c66-8d3190ffc716
 
+### Please feel free to test out the site using username: test@test.com password: test
+
 ## Introduction
 
 ####             This web application allows users to create and attend events, albeit limited to California. When posting an event, users upload a picture representative of the event and a short description of what’s expected—expenses, necessary items, etc. The creator may also edit or delete the event page except when the event has already occurred. On the event page, users can see the profile pictures of other attendees. When clicked, they’ll be redirected to the user’s profile. There, they’ll be able to browse other events the user is attending and events the user is hosting. While that’s one way to browse the available events, events are also displayed on the Home and Browse pages. The Home page displays the top 4 events ranked by attendees, whereas the Browse page displays all the events. On the Browse page, users can also filter through events depending on the city it’s taking place. Another notable function is the user’s ability to upload their own photo or choose a default profile picture, a colored circle with their initials in the middle, much like Google’s profile picture. However, unlike Google, users can change the color of the circle.
